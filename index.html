@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Review | The Loop That Runs Your Day</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #030303;
+            --surface-color: rgba(255, 255, 255, 0.02);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(255, 255, 255, 0.18);
+            --text-heading: #ffffff;
+            --text-body: #D6D6D2;
+            --text-accent: #ffffff;
+            --text-subtle: rgba(255, 255, 255, 0.6);
+            --warning-border: rgba(255, 70, 70, 0.15);
+        }
+
+        html.lenis, html.lenis body {
+            height: auto;
+        }
+
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+
+        .lenis.lenis-smooth iframe {
+            pointer-events: none;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-body);
+            font-family: 'Inter', sans-serif;
+            font-size: 1.0625rem;
+            font-weight: 400;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /* Mobile Visibility Helpers */
+        @media (max-width: 600px) {
+            .desktop-only { display: none !important; }
+        }
+        @media (min-width: 601px) {
+            .mobile-only { display: none !important; }
+        }
+
+        /* Ambient Grain */
+        .grain {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.015;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Typography Sub-system */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Crimson Pro', serif;
+            color: var(--text-heading);
+            font-weight: 400;
+        }
+
+        h1 {
+            font-size: clamp(3.5rem, 7vw, 6rem);
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 2rem;
+            text-wrap: balance;
+        }
+
+        h2 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 0; /* Margin managed by grid now */
+            font-weight: 500;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.03);
+            text-wrap: balance;
+        }
+
+        /* High distinction between titles and body */
+        .section-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            color: #8A8A82;
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+
+        .section-label::before {
+            content: "";
+            display: inline-block;
+            width: 24px;
+            height: 1px;
+            background: currentColor;
+            margin-right: 12px;
+            vertical-align: middle;
+            opacity: 0.5;
+        }
+
+        .centered-label::after {
+            content: "";
+            display: inline-block;
+            width: 24px;
+            height: 1px;
+            background: currentColor;
+            margin-left: 12px;
+            vertical-align: middle;
+            opacity: 0.5;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text-heading);
+            font-weight: 400;
+        }
+
+        p {
+            margin-bottom: 2rem; /* Larger breathing room per paragraph for skimming */
+        }
+
+        p:last-child {
+            margin-bottom: 0;
+        }
+
+        em, i {
+            font-style: italic;
+            color: var(--text-heading);
+        }
+
+        strong {
+            color: var(--text-heading);
+            font-weight: 500;
+        }
+
+        /* Special text formats */
+        .monospace {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85em;
+            letter-spacing: 0.05em;
+        }
+
+        .piercing-question {
+            font-family: 'Crimson Pro', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-style: italic;
+            line-height: 1.2;
+            color: #ffffff;
+            display: block;
+            margin: 3rem 0;
+            padding-left: 2rem;
+            border-left: 1px solid var(--border-highlight);
+        }
+
+        /* Layout & Structures */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        section {
+            padding: 96px 0;
+            margin-bottom: 0;
+        }
+
+        /* Split layout separates heavy text from the scanning titles */
+        .split-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        @media (min-width: 900px) {
+            .split-layout {
+                grid-template-columns: 4fr 6fr; /* Left (Title), Right (Text) */
+                gap: 100px;
+            }
+        }
+
+        @media (min-width: 900px) {
+            .split-layout-left {
+                position: sticky;
+                top: 120px;
+            }
+        }
+
+        .hero-section {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 5vh;
+            margin-bottom: 0;
+        }
+
+        .hero-briefing {
+            max-width: 760px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 1.25rem;
+            line-height: 1.6;
+        }
+
+        /* Card Engine */
+        .card {
+            background: rgba(255,255,255,0.035);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.02) inset;
+            padding: 48px;
+            border-radius: 6px; 
+            transition: border-color 0.4s ease, background 0.4s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(255,255,255,0.18);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        @media (min-width: 800px) {
+            .bento-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Tables & Lists */
+        .audit-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: var(--text-body);
+        }
+
+        .audit-table td {
+            padding: 20px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        
+        .audit-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .audit-table td:last-child {
+            text-align: right;
+            color: var(--text-heading);
+        }
+
+        .list-clear {
+            list-style: none;
+            padding: 0;
+        }
+
+        .list-clear li {
+            position: relative;
+            padding-left: 32px;
+            margin-bottom: 24px;
+        }
+
+        .list-clear li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--border-highlight);
+        }
+
+        /* Interactive Elements */
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            color: #000000;
+            padding: 18px 40px;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 1.1rem;
+            font-family: 'Inter', sans-serif;
+            text-decoration: none;
+            margin-top: 40px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 14px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .cta-button:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.15);
+        }
+
+        /* Specific Modifiers */
+        .warning-card {
+            border-color: var(--warning-border);
+            background: rgba(255, 50, 50, 0.02);
+        }
+
+        .vault-card {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-color: var(--border-highlight);
+            background: rgba(10, 10, 10, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vault-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        }
+
+        /* Cost Equation Styling */
+        .cost-equation {
+            margin-top: 80px;
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            flex-wrap: nowrap;
+            gap: 20px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cost-equation .equation-card {
+            padding: 24px 32px;
+            border-radius: 6px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 160px;
+            margin: 0;
+        }
+
+        .cost-equation .result-card {
+            border-color: rgba(255,255,255,0.18);
+        }
+
+        .cost-equation .operator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-subtle);
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+
+        /* Reveal Logic */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .qa-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 60px;
+        }
+
+        @media (min-width: 900px) {
+            .qa-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 80px;
+            }
+        }
+        
+        .divider {
+            height: 1px;
+            background: var(--border-color);
+            border: none;
+            margin: 72px 0;
+        }
+
+        /* SVG Visuals Animations */
+        @keyframes drawLine {
+            to { stroke-dashoffset: 0; }
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        @keyframes fillBar {
+            to { width: 60%; }
+        }
+        @keyframes crossFadeIn {
+            to { opacity: 0.6; }
+        }
+        .reveal.visible .svg-anim-fade {
+            animation: fadeIn 0.8s forwards;
+        }
+        .reveal.visible .svg-anim-path {
+            animation: drawLine 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+        
+        .reveal.visible .svg-vis-2-fill {
+            animation: fillBar 2.5s ease-out forwards;
+        }
+        .reveal.visible .svg-vis-2-label {
+            animation: fadeIn 0.5s forwards;
+        }
+
+        .reveal.visible .svg-vis-3-circle {
+            animation: drawLine 3s forwards;
+        }
+        .reveal.visible .svg-vis-3-cross {
+            animation: crossFadeIn 0.3s forwards;
+        }
+        .reveal.visible .svg-vis-3-label {
+            animation: fadeIn 0.8s forwards;
+        }
+
+        .outcome-row {
+            padding: 32px 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+        }
+        .outcome-row:last-child {
+            border-bottom: none;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 0 20px; }
+            section { padding: 64px 0; }
+            .hero-section { min-height: auto; padding-top: 8vh; padding-bottom: 0; }
+            
+            /* Typography Tweaks */
+            h1 { 
+                font-size: 3.5rem !important; 
+                margin-bottom: 1.5rem; 
+                line-height: 1.05;
+                font-weight: 500;
+                letter-spacing: -0.04em;
+            }
+            h2 { font-size: clamp(2rem, 6vw, 2.5rem); }
+            
+            /* Mobile Component Styling (Non-Brochure) */
+            .bento-grid {
+                gap: 20px;
+            }
+            .bento-grid .card {
+                padding: 32px 24px;
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                border-left: 3px solid rgba(255, 255, 255, 0.15);
+                background: linear-gradient(90deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.0) 100%);
+                border-radius: 4px;
+            }
+            
+            .qa-grid {
+                gap: 20px;
+            }
+            .qa-grid .card {
+                padding: 32px 24px;
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                border-left: 3px solid var(--border-highlight);
+                background: linear-gradient(90deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.0) 100%);
+                border-radius: 4px;
+            }
+            
+            /* Responsive SVG Wrapper */
+            .svg-wrapper-mobile {
+                overflow: visible !important;
+                justify-content: center !important;
+                padding: 0 10px !important;
+            }
+            .svg-wrapper-mobile svg { 
+                width: 100% !important; 
+                min-width: unset !important;
+                height: auto !important;
+            }
+            .svg-wrapper-mobile svg text {
+                font-size: 26px !important;
+            }
+            .svg-wrapper-mobile svg path,
+            .svg-wrapper-mobile svg line,
+            .svg-wrapper-mobile svg circle {
+                stroke-width: 2.5px !important;
+            }
+            
+            /* Cost Equation Vertical Stack */
+            .cost-equation {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+            .cost-equation .equation-card {
+                width: 100%;
+                max-width: 240px;
+                padding: 20px 24px;
+            }
+            
+            /* Responsive Outcome Rows */
+            .outcome-row { 
+                padding: 32px 24px; 
+                flex-direction: row; 
+                gap: 16px; 
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .svg-vis-2-label, .svg-vis-3-cross, .svg-vis-3-label, .svg-anim-fade { opacity: 1 !important; animation: none !important; }
+            .svg-vis-3-cross { opacity: 0.6 !important; }
+            .svg-vis-2-fill { width: 60% !important; animation: none !important; }
+            .svg-vis-3-circle, .svg-anim-path { stroke-dashoffset: 0 !important; animation: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="grain"></div>
+
+    <div class="container">
+        
+        <!-- HERO -->
+        <section class="hero-section reveal">
+            <h1>The loop that runs your day</h1>
+            <div class="hero-briefing" style="margin-top: 40px;">
+                <p>One small thing happens.</p>
+                <p>A message. A look. A delay.</p>
+                <p>Your mind doesn't stop there. It multiplies.</p>
+                <p>One detail becomes pressure, then doubt, then self-attack. The thoughts keep changing. The feeling stays the same.</p>
+                <p style="color: var(--text-accent); margin-top: 40px;"><strong>You don't need more thought. You need a map of what keeps multiplying it.</strong></p>
+                <div style="margin-top: 40px; display: flex; flex-direction: column; align-items: center;">
+                    <a href="apply.html" class="cta-button" style="margin-top: 0;">Apply for a Private Review</a>
+                    <p style="margin-top: 16px; margin-bottom: 0;" class="section-label centered-label">Free. Async. Structured.</p>
+                </div>
+            </div>
+            
+        </section>
+
+        <!-- THEMATIC VISUAL: Mental Multiplication -->
+        <div class="reveal desktop-only" style="display: flex; justify-content: center; align-items: center; width: 100%; max-width: 1000px; margin: 0 auto; padding: 60px 20px 50px 20px;">
+            <svg width="100%" height="auto" viewBox="8 0 800 260" xmlns="http://www.w3.org/2000/svg" style="overflow: visible;">
+                <!-- Top Label -->
+                <text x="415" y="40" text-anchor="middle" font-family="'Inter', sans-serif" font-weight="300" font-size="14px" fill="var(--text-subtle)" letter-spacing="0.1em" class="svg-anim-fade" style="animation-delay: 0.2s; opacity: 0;">MENTAL MULTIPLICATION</text>
+                
+                <!-- Left: Trigger -->
+                <g class="svg-anim-fade" style="animation-delay: 0.5s; opacity: 0;">
+                    <path d="M 120 150 L 140 150 L 145 135 L 155 165 L 160 150 L 175 150" fill="none" stroke="var(--text-subtle)" stroke-width="1.5" stroke-linejoin="round"/>
+                    <circle cx="180" cy="150" r="4" fill="var(--text-heading)"/>
+                    <text x="150" y="210" text-anchor="middle" font-family="'Inter', sans-serif" font-weight="300" font-size="14px" fill="var(--text-subtle)" letter-spacing="0.1em">TRIGGER</text>
+                </g>
+
+                <!-- Right: Time Tax -->
+                <g class="svg-anim-fade" style="animation-delay: 2.5s; opacity: 0;">
+                    <circle cx="650" cy="150" r="16" fill="none" stroke="var(--text-subtle)" stroke-width="1.5"/>
+                    <circle cx="650" cy="150" r="6" fill="none" stroke="var(--text-heading)" stroke-width="1.5"/>
+                    <line x1="650" y1="120" x2="650" y2="130" stroke="var(--text-subtle)" stroke-width="1.5"/>
+                    <line x1="650" y1="170" x2="650" y2="180" stroke="var(--text-subtle)" stroke-width="1.5"/>
+                    <line x1="620" y1="150" x2="630" y2="150" stroke="var(--text-subtle)" stroke-width="1.5"/>
+                    <line x1="670" y1="150" x2="680" y2="150" stroke="var(--text-subtle)" stroke-width="1.5"/>
+                    <text x="650" y="210" text-anchor="middle" font-family="'Inter', sans-serif" font-weight="300" font-size="14px" fill="var(--text-subtle)" letter-spacing="0.1em">TIME TAX</text>
+                </g>
+
+                <!-- Center Lines: Envelope -->
+                <g fill="none" stroke="var(--border-highlight)" stroke-width="1.5">
+                    <path d="M 180 150 C 240 150, 260 70, 415 70 S 590 150, 650 150" class="svg-anim-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay: 1.0s; opacity: 0.3;"/>
+                    <path d="M 180 150 C 240 150, 260 95, 415 95 S 590 150, 650 150" class="svg-anim-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay: 1.1s; opacity: 0.5;"/>
+                    <path d="M 180 150 C 240 150, 260 120, 415 120 S 590 150, 650 150" class="svg-anim-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay: 1.2s; opacity: 0.7;"/>
+                    <line x1="180" y1="150" x2="650" y2="150" class="svg-anim-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay: 1.3s; opacity: 0.9;" stroke="var(--text-subtle)"/>
+                    <path d="M 180 150 C 240 150, 260 180, 415 180 S 590 150, 650 150" class="svg-anim-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay: 1.2s; opacity: 0.7;"/>
+                    <path d="M 180 150 C 240 150, 260 205, 415 205 S 590 150, 650 150" class="svg-anim-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay: 1.1s; opacity: 0.5;"/>
+                    <path d="M 180 150 C 240 150, 260 230, 415 230 S 590 150, 650 150" class="svg-anim-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay: 1.0s; opacity: 0.3;"/>
+                </g>
+            </svg>
+        </div>
+
+        <!-- MOBILE VISUAL: Mental Multiplication -->
+        <div class="reveal mobile-only" style="display: flex; justify-content: center; align-items: center; width: 100%; padding: 30px 0 0 0;">
+            <svg width="100%" height="auto" viewBox="0 0 300 500" xmlns="http://www.w3.org/2000/svg" style="overflow: visible; max-width: 320px;">
+                <!-- Top: Trigger -->
+                <g class="svg-anim-fade" style="animation-delay: 0.5s; opacity: 0;">
+                    <circle cx="150" cy="50" r="4" fill="var(--text-heading)"/>
+                    <text x="150" y="30" text-anchor="middle" font-family="'Inter', sans-serif" font-weight="300" font-size="14px" fill="var(--text-subtle)" letter-spacing="0.1em">TRIGGER</text>
+                </g>
+                
+                <!-- Bottom: Time Tax -->
+                <g class="svg-anim-fade" style="animation-delay: 2.5s; opacity: 0;">
+                    <circle cx="150" cy="450" r="16" fill="none" stroke="var(--text-subtle)" stroke-width="1.5"/>
+                    <circle cx="150" cy="450" r="6" fill="none" stroke="var(--text-heading)" stroke-width="1.5"/>
+                    <text x="150" y="490" text-anchor="middle" font-family="'Inter', sans-serif" font-weight="300" font-size="14px" fill="var(--text-subtle)" letter-spacing="0.1em">TIME TAX</text>
+                </g>
+
+                <!-- Vertical Envelope Lines (Perfectly Symmetrical Spindle) -->
+                <g fill="none" stroke="var(--border-highlight)" stroke-width="1.5">
+                    <path d="M 150 50 C 150 110, 50 130, 50 250 S 150 390, 150 450" class="svg-anim-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay: 1.0s; opacity: 0.3;"/>
+                    <path d="M 150 50 C 150 110, 80 130, 80 250 S 150 390, 150 450" class="svg-anim-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay: 1.1s; opacity: 0.5;"/>
+                    <path d="M 150 50 C 150 110, 110 130, 110 250 S 150 390, 150 450" class="svg-anim-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay: 1.2s; opacity: 0.7;"/>
+                    <line x1="150" y1="50" x2="150" y2="450" class="svg-anim-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay: 1.3s; opacity: 0.9;" stroke="var(--text-subtle)"/>
+                    <path d="M 150 50 C 150 110, 190 130, 190 250 S 150 390, 150 450" class="svg-anim-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay: 1.2s; opacity: 0.7;"/>
+                    <path d="M 150 50 C 150 110, 220 130, 220 250 S 150 390, 150 450" class="svg-anim-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay: 1.1s; opacity: 0.5;"/>
+                    <path d="M 150 50 C 150 110, 250 130, 250 250 S 150 390, 150 450" class="svg-anim-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay: 1.0s; opacity: 0.3;"/>
+                </g>
+            </svg>
+        </div>
+
+        <!-- WHAT IT COSTS YOU -->
+        <section class="reveal">
+            <div style="margin-bottom: 60px;">
+                <span class="section-label">The Hidden Bill</span>
+                <h2>What it costs you</h2>
+            </div>
+            
+            <div class="bento-grid">
+                <!-- Time Tax -->
+                <div class="card">
+                    <h3 class="monospace" style="color: var(--text-heading); font-size: 1rem; margin-bottom: 32px;">[ TIME TAX ]</h3>
+                    <ul class="list-clear">
+                        <li>A rumination episode runs <strong>20 to 40 minutes</strong>.</li>
+                        <li>A self-aware professional hits <strong>three to five of them</strong> on a normal workday.</li>
+                        <li>That's <strong>7 to 15 hours a week</strong>. A full workweek a month.</li>
+                    </ul>
+                    <p style="color: var(--text-accent); margin-top: 24px; margin-bottom: 0;"><strong>Gone to internal friction, not to real work.</strong></p>
+                </div>
+
+                <!-- The Second Bill -->
+                <div class="card bg-depth">
+                    <h3 class="monospace" style="color: var(--text-heading); font-size: 1rem; margin-bottom: 32px;">[ THE SECOND BILL ]</h3>
+                    <p style="color: var(--text-heading);">Then the second bill arrives.</p>
+                    <ul class="list-clear" style="margin-top: 24px;">
+                        <li>You stop trusting your own timing.</li>
+                        <li>Small decisions take the bandwidth of big ones.</li>
+                        <li>You dread the ordinary.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- VISUAL 2: The Cost Equation -->
+            <div class="reveal cost-equation">
+                
+                <div class="card equation-card">
+                    <div style="font-size: 1.25rem; color: var(--text-heading); margin-bottom: 4px;">20–40 min</div>
+                    <div style="font-size: 1rem; color: var(--text-subtle);">/ episode</div>
+                </div>
+                
+                <div class="operator">&times;</div>
+                
+                <div class="card equation-card">
+                    <div style="font-size: 1.25rem; color: var(--text-heading); margin-bottom: 4px;">3–5 episodes</div>
+                    <div style="font-size: 1rem; color: var(--text-subtle);">/ day</div>
+                </div>
+                
+                <div class="operator">&times;</div>
+                
+                <div class="card equation-card">
+                    <div style="font-size: 1.25rem; color: var(--text-heading);">5 workdays</div>
+                </div>
+                
+                <div class="operator">=</div>
+                
+                <div class="card equation-card result-card">
+                    <div style="font-size: 1.25rem; color: #fff; margin-bottom: 4px; font-weight: 500;">7–15 hours</div>
+                    <div style="font-size: 1rem; color: var(--text-subtle);">/ week lost</div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- WHY IT DOESN'T STOP ON ITS OWN -->
+        <section class="reveal split-layout">
+            <div class="split-layout-left">
+                <span class="section-label">The Mechanism</span>
+                <h2>Why it doesn't stop<br>on its own</h2>
+            </div>
+            <div>
+                <!-- VISUAL 3: The Closed Loop Diagram -->
+                <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 60px;">
+                    <svg width="100%" height="auto" style="max-width: 400px; overflow: visible;" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <g id="loop-node">
+                                <circle cx="160" cy="40" r="7" fill="#000" />
+                                <circle cx="160" cy="40" r="5" fill="none" stroke="var(--text-subtle)" stroke-width="1.5" />
+                                <circle cx="160" cy="40" r="2" fill="var(--text-heading)" />
+                            </g>
+                            <g id="loop-arrow">
+                                <!-- Arrow pointing right at the top (160, 40) -->
+                                <path d="M 154 35 L 160 40 L 154 45" fill="none" stroke="var(--text-subtle)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </g>
+                        </defs>
+
+                        <!-- Outer Path (Circle) -->
+                        <circle cx="160" cy="160" r="120" fill="none" stroke="var(--border-highlight)" stroke-width="1.5" class="svg-anim-path" stroke-dasharray="754" stroke-dashoffset="754" style="animation-delay: 0s;" />
+
+                        <!-- Nodes & Arrows (Fade In) -->
+                        <g class="svg-anim-fade" style="animation-delay: 1.5s; opacity: 0;">
+                            <!-- Nodes every 45 degrees -->
+                            <use href="#loop-node" transform="rotate(0 160 160)" />
+                            <use href="#loop-node" transform="rotate(45 160 160)" />
+                            <use href="#loop-node" transform="rotate(90 160 160)" />
+                            <use href="#loop-node" transform="rotate(135 160 160)" />
+                            <use href="#loop-node" transform="rotate(180 160 160)" />
+                            <use href="#loop-node" transform="rotate(225 160 160)" />
+                            <use href="#loop-node" transform="rotate(270 160 160)" />
+                            <use href="#loop-node" transform="rotate(315 160 160)" />
+
+                            <!-- Arrows placed just before nodes (-10 degrees from nodes) -->
+                            <use href="#loop-arrow" transform="rotate(35 160 160)" />
+                            <use href="#loop-arrow" transform="rotate(80 160 160)" />
+                            <use href="#loop-arrow" transform="rotate(125 160 160)" />
+                            <use href="#loop-arrow" transform="rotate(170 160 160)" />
+                            <use href="#loop-arrow" transform="rotate(215 160 160)" />
+                            <use href="#loop-arrow" transform="rotate(260 160 160)" />
+                            <use href="#loop-arrow" transform="rotate(305 160 160)" />
+                            <use href="#loop-arrow" transform="rotate(350 160 160)" />
+                        </g>
+
+                        <!-- Text Labels -->
+                        <g font-family="'Inter', sans-serif" font-size="10px" fill="var(--text-subtle)" font-weight="300" letter-spacing="0.05em" class="svg-anim-fade" style="animation-delay: 2.0s; opacity: 0;">
+                            <text x="90" y="100" text-anchor="middle">TRIGGER</text>
+                            <text x="230" y="100" text-anchor="middle">SELF-PROTECTION</text>
+                            <text x="230" y="220" text-anchor="middle">RATIONALIZATION</text>
+                            <text x="90" y="220" text-anchor="middle">RE-TRIGGERING</text>
+                        </g>
+
+                        <!-- Central Target -->
+                        <g class="svg-anim-fade" style="animation-delay: 1.0s; opacity: 0;">
+                            <circle cx="160" cy="160" r="28" fill="none" stroke="var(--border-highlight)" stroke-width="1.5" opacity="0.5" />
+                            <circle cx="160" cy="160" r="16" fill="none" stroke="var(--border-highlight)" stroke-width="1.5" />
+                            <circle cx="160" cy="160" r="5" fill="var(--text-heading)" />
+                        </g>
+                    </svg>
+                </div>
+
+                <p style="font-size: 1.25rem; color: var(--text-accent);">The outside world hits once. <strong>Your mind hits again, and again.</strong></p>
+                
+                <ul class="list-clear" style="margin-top: 32px;">
+                    <li><strong>Not truth-seeking:</strong> The spiral isn't aimed at truth. It's aimed at self-protection. Protection first, rationalization after.</li>
+                    <li><strong>False thinking:</strong> The loop feels like thinking. It's actually defense.</li>
+                    <li><strong>Why advice fails:</strong> That's why advice doesn't dismantle it. Defense systems don't disarm themselves.</li>
+                </ul>
+
+                <div class="card warning-card" style="margin-top: 40px; padding: 32px;">
+                    <p style="margin: 0; color: #fff;">They recruit whatever you throw at them, including <em>"stop overthinking,"</em> as fresh ammunition.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- WHAT CHANGES WHEN IT BREAKS -->
+        <section class="reveal split-layout">
+            <div class="split-layout-left">
+                <span class="section-label">After The Loop</span>
+                <h2>What changes when<br>it breaks</h2>
+            </div>
+            <div>
+                <div class="card" style="margin-bottom: 32px; padding: 0; overflow: hidden;">
+                    <div class="outcome-row">
+                        <span class="monospace" style="color: var(--text-subtle); padding-top: 4px; font-size: 0.85rem;">01</span>
+                        <div>
+                            <strong style="font-size: 1.15rem; color: var(--text-heading); display: block; margin-bottom: 6px;">Reply</strong>
+                            <span style="color: var(--text-body); line-height: 1.5; display: block;">to the message in ten minutes. Close the tab.</span>
+                        </div>
+                    </div>
+                    <div class="outcome-row">
+                        <span class="monospace" style="color: var(--text-subtle); padding-top: 4px; font-size: 0.85rem;">02</span>
+                        <div>
+                            <strong style="font-size: 1.15rem; color: var(--text-heading); display: block; margin-bottom: 6px;">Decide</strong>
+                            <span style="color: var(--text-body); line-height: 1.5; display: block;">on the outcome in one evening instead of three days.</span>
+                        </div>
+                    </div>
+                    <div class="outcome-row">
+                        <span class="monospace" style="color: var(--text-subtle); padding-top: 4px; font-size: 0.85rem;">03</span>
+                        <div>
+                            <strong style="font-size: 1.15rem; color: var(--text-heading); display: block; margin-bottom: 6px;">Observe</strong>
+                            <span style="color: var(--text-body); line-height: 1.5; display: block;">a stressor arrive, watch it land, and watch it resolve where it started, instead of spawning five more.</span>
+                        </div>
+                    </div>
+                </div>
+                <p>You keep your intelligence, your standards, your sensitivity.</p>
+                <p style="color: var(--text-accent);"><strong>You just stop paying interest on them.</strong></p>
+            </div>
+        </section>
+
+
+        <hr class="divider">
+
+        <!-- THE REVIEW, IN FOUR STEPS -->
+        <section class="reveal">
+            <div style="margin-bottom: 48px;">
+                <span class="section-label">The Process</span>
+                <h2>The review, in four steps</h2>
+                <p style="font-size: 1.25rem;">A purely asynchronous, structurally precise breakdown.</p>
+            </div>
+            
+            <div class="bento-grid">
+                <div class="card">
+                    <span class="monospace" style="color: #ffffff; font-weight: 500; display: block; margin-bottom: 24px;">STEP 1</span>
+                    <h3>You Apply</h3>
+                    <p>Four questions: what keeps happening, one recent example, what it's costing you, what you think is going on and what you've tried.</p>
+                </div>
+                <div class="card">
+                    <span class="monospace" style="color: #ffffff; font-weight: 500; display: block; margin-bottom: 24px;">STEP 2</span>
+                    <h3>I Review</h3>
+                    <p>I read your answers looking for the multiplier—the part of your response that converts a one-unit trigger into a five-unit problem.</p>
+                </div>
+                <div class="card">
+                    <span class="monospace" style="color: #ffffff; font-weight: 500; display: block; margin-bottom: 24px;">STEP 3</span>
+                    <h3>You Receive A Map</h3>
+                    <p>A concise breakdown of the likely core pattern, delivered to your private Signal vault. Yours to keep.</p>
+                </div>
+                <div class="card">
+                    <span class="monospace" style="color: #ffffff; font-weight: 500; display: block; margin-bottom: 24px;">STEP 4</span>
+                    <h3>We Decide</h3>
+                    <p>If there's a real fit, you move into ongoing async work. If not, you walk away with the map. No follow-up, no pitch.</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 80px; display: flex; flex-direction: column; align-items: center;">
+                <a href="apply.html" class="cta-button" style="margin-top: 0;">Apply for a Private Review</a>
+                <p style="margin-top: 16px; margin-bottom: 0;" class="section-label centered-label">Free. Async. Structured.</p>
+            </div>
+        </section>
+
+        <!-- HOW WE WORK TOGETHER -->
+        <section class="reveal split-layout">
+            <div class="split-layout-left">
+                <span class="section-label">Operations</span>
+                <h2>How we work together</h2>
+            </div>
+            <div class="bento-grid">
+                <div class="card">
+                    <h3 style="font-size: 1.2rem; margin-bottom: 12px; color: var(--text-heading);">Channel</h3>
+                    <p style="margin-bottom: 0;">Private Signal channel. End-to-end encrypted. If you don't already use Signal, setup takes two minutes.</p>
+                </div>
+                <div class="card">
+                    <h3 style="font-size: 1.2rem; margin-bottom: 12px; color: var(--text-heading);">Cadence</h3>
+                    <p style="margin-bottom: 0;">Async by design. You drop messages or voice notes whenever you want. No live chat, no rapid replies—those feed the exact reactive loops we're here to dismantle.</p>
+                </div>
+                <div class="card">
+                    <h3 style="font-size: 1.2rem; margin-bottom: 12px; color: var(--text-heading);">Review Blocks (EST)</h3>
+                    <p>Monday to Friday.</p>
+                    <ul class="list-clear" style="margin-bottom: 16px;">
+                        <li><strong>Morning:</strong> 7:00–11:00 AM</li>
+                        <li><strong>Afternoon:</strong> 1:30–3:30 PM</li>
+                    </ul>
+                    <p style="margin-bottom: 0;">Your submissions return by the end of the active block, or the start of the next one.</p>
+                </div>
+                <div class="card">
+                    <h3 style="font-size: 1.2rem; margin-bottom: 12px; color: var(--text-heading);">Delivery Format</h3>
+                    <p style="margin-bottom: 0;">Every response arrives as a structured written breakdown: trigger, escalation, mechanism, action. Re-readable. Referenceable. Yours to keep.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- INVESTMENT -->
+        <section class="reveal split-layout">
+            <div class="split-layout-left">
+                <span class="section-label">Investment</span>
+                <h2>Pricing & Terms</h2>
+                <p style="margin-top: 16px; font-size: 1.1rem; color: var(--text-subtle);">Free first review. Continue only if the map is useful.</p>
+            </div>
+            <div>
+                <div class="card vault-card" style="margin-bottom: 16px;">
+                    <p style="color: var(--text-heading); font-size: 1.2rem; margin-bottom: 16px;"><strong>First review:</strong> Free.</p>
+                    <h3 style="color: #fff; margin-bottom: 24px; font-size: 2rem;">$325 <span style="font-size: 1.1rem; color: var(--text-body); font-weight: 300;">per month</span></h3>
+                    
+                    <ul class="list-clear" style="margin-bottom: 32px;">
+                        <li><strong>Includes:</strong> Unlimited async access, pattern analysis across new situations, structured written feedback.</li>
+                        <li><strong>Terms:</strong> Month-to-month. Cancel anytime.</li>
+                    </ul>
+                    <p style="font-size: 0.95rem; margin-top: 24px; color: var(--text-subtle);"><strong>Context:</strong> One hour with a licensed therapist on the East Coast runs $200 to $400. This is the cost of a single session for continuous access, all month.</p>
+                </div>
+
+                <div class="card" style="border-style: solid; border-color: var(--border-highlight); background: transparent;">
+                    <span class="section-label" style="color: #fff;">30-Day Guarantee</span>
+                    <p style="color: var(--text-heading); margin-top: 8px; margin-bottom: 0;">If your first month doesn't produce a clearer structural map than you started with, I refund it. One email.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- STRAIGHT ANSWERS -->
+        <section class="reveal">
+            <div style="margin-bottom: 80px;">
+                <span class="section-label">Objection Handling</span>
+                <h2>Straight Answers</h2>
+            </div>
+            
+            <style>
+                .qa-grid {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    gap: 24px;
+                }
+                @media (min-width: 800px) {
+                    .qa-grid {
+                        grid-template-columns: 1fr 1fr;
+                    }
+                }
+            </style>
+            <div class="qa-grid">
+                <div class="card" style="padding: 32px;">
+                    <h3 style="font-size: 1.25rem;">Is this therapy?</h3>
+                    <p style="margin-bottom: 0;">No. Not clinical practice, not mental-health treatment, not a substitute for either. If you're in crisis or managing a diagnosed condition, you need a licensed clinician. I'll refer you out in the free review if that's the call.</p>
+                </div>
+                <div class="card" style="padding: 32px;">
+                    <h3 style="font-size: 1.25rem;">Why async, not calls?</h3>
+                    <p style="margin-bottom: 0;">Calls hide the pattern. People rush, perform clarity, answer before the real answer surfaces. Writing slows the machinery down enough to photograph it.</p>
+                </div>
+                <div class="card" style="padding: 32px;">
+                    <h3 style="font-size: 1.25rem;">Who is this not for?</h3>
+                    <p style="margin-bottom: 0;">Anyone who wants comfort more than a clear answer, or whose self-image must be protected at all costs. That instinct is often what keeps the loop alive.</p>
+                </div>
+                <div class="card" style="padding: 32px;">
+                    <h3 style="font-size: 1.25rem;">What qualifies you to do this?</h3>
+                    <p style="margin-bottom: 0;">Pattern recognition isn't credentialed — it's practiced. This work sits outside clinical territory by design. What qualifies it is the structural precision of the output, not a certificate. Read the page. If the thinking is rigorous, the work will be.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ONE LAST THING & CTA -->
+        <section class="reveal" style="text-align: center; max-width: 800px; margin: 0 auto; padding-bottom: 120px;">
+            <h2>One Last Thing</h2>
+            <div style="font-size: 1.4rem; font-weight: 300; margin-top: 40px; line-height: 1.8;">
+                <p>A single thing happens. Your mind turns it into ten. That tax runs every day, whether you're watching it or not.</p>
+                <p>The free review costs nothing but 20 minutes of honest writing. You walk away with either a map worth keeping or an early goodbye.</p>
+            </div>
+            
+            <div style="margin-top: 60px; display: flex; flex-direction: column; align-items: center;">
+                <a href="apply.html" class="cta-button" style="transform: scale(1.1); margin-top: 0;">Apply for a Private Review</a>
+                <p style="margin-top: 24px; margin-bottom: 0;" class="section-label centered-label">Free. Async. Structured.</p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Lenis Smooth Scrolling Script -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+    <script>
+        // Initialize Lenis Smooth Scroll
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        })
+
+        function raf(time) {
+            lenis.raf(time)
+            requestAnimationFrame(raf)
+        }
+        requestAnimationFrame(raf)
+
+        // Intersection Observer for scroll animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal').forEach((el) => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
