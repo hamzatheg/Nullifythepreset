@@ -3,274 +3,558 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Private Review Application</title>
+<title>Private Review · Application</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
 
 <style>
-html.lenis { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto; }
-.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
-.lenis.lenis-stopped { overflow: hidden; }
-.lenis.lenis-scrolling iframe { pointer-events: none; }
-</style>
-<script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
-
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-  --bg: #000000;
-  --surface: #0a0a0a;
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.4);
-  --border: #222222;
-  --border-focus: rgba(255, 255, 255, 0.25);
-  --card-bg: rgba(255, 255, 255, 0.02);
-  --border-card: rgba(255, 255, 255, 0.05);
-  --accent: #ffffff;
-  --accent-text: #000000;
-  --error: #D85A30;
-  --error-bg: #2A1612;
-}
-body {
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  font-size: 1.0625rem;
-  background-color: var(--bg);
-  background-image: radial-gradient(circle at 50% 0%, rgba(20, 20, 19, 1) 0%, rgba(0, 0, 0, 1) 70vh);
-  background-attachment: fixed;
-  color: var(--text-primary);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
+:root{
+  --bg:#08070A;
+  --bg-warm:#0E0B0F;
+  --ink:#F2EFE5;
+  --ink-soft:#D6D2C7;
+  --ink-muted:#8A857A;
+  --ink-faint:rgba(242,239,229,0.45);
+  --rule:rgba(242,239,229,0.07);
+  --rule-strong:rgba(242,239,229,0.18);
+  --accent:#B23A48;
+  --serif:'Crimson Pro', serif;
+  --sans:'Inter', -apple-system, sans-serif;
+  --mono:'JetBrains Mono', 'Courier New', monospace;
+  --error:#D85A30;
+  --error-bg:rgba(216,90,48,0.08);
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.02;
-  pointer-events: none;
-  z-index: 9999;
-}
-.container { max-width: 680px; margin: 0 auto; padding: 64px 24px 120px; position: relative; z-index: 1;}
-.back-btn { 
-  display: inline-flex; align-items: center; gap: 8px;
-  color: var(--text-secondary); text-decoration: none; 
-  font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;
-  margin-bottom: 56px; transition: color 0.3s ease; 
-}
-.back-btn:hover { color: var(--text-primary); }
-.header { margin-bottom: 56px; text-align: center; }
-.header h1 { 
-  font-family: 'Crimson Pro', serif; font-size: 40px; font-weight: 500; margin-bottom: 16px; letter-spacing: 0.01em; 
-  color: var(--text-primary);
-}
-.header p { color: var(--text-secondary); font-size: 16px; }
+*{margin:0;padding:0;box-sizing:border-box;}
 
-.form-card { 
-  background: var(--card-bg); 
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  border-radius: 16px; border: 1px solid var(--border-card); padding: 64px; 
-  box-shadow: 0 24px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.02);
+html.lenis,html.lenis body{height:auto;}
+.lenis.lenis-smooth{scroll-behavior:auto !important;}
+.lenis.lenis-stopped{overflow:hidden;}
+
+html{background:var(--bg);}
+
+body{
+  font-family:var(--sans);
+  font-weight:400;
+  font-size:1.0625rem;
+  background:var(--bg);
+  color:var(--ink-soft);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:"ss01","cv11","kern";
+  overflow-x:hidden;
 }
 
-.question-group { margin-bottom: 48px; }
-.question-label { 
-  display: block; font-weight: 500; font-size: 12px; 
-  text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-secondary); margin-bottom: 8px; 
+/* Stage layers */
+.stage{
+  position:fixed; inset:0; z-index:0; pointer-events:none;
 }
-.question-hint { font-size: 14px; color: var(--text-secondary); margin-bottom: 16px; }
-
-/* Enhanced Form Elements styling */
-.textarea-field, .input-field { 
-  width: 100%; padding: 16px; font-family: 'Inter', sans-serif; font-size: 15px; 
-  background: #000000; border: 1px solid var(--border); border-radius: 8px; 
-  color: var(--text-primary); transition: all 0.3s ease; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
-  line-height: 1.5;
+.stage::before{
+  content:""; position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(178,58,72,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 100% 80% at 50% 100%, rgba(20,16,22,0.6) 0%, transparent 60%),
+    linear-gradient(180deg, var(--bg-warm) 0%, var(--bg) 30%, var(--bg) 70%, #060508 100%);
 }
-
-.textarea-field { min-height: 160px; resize: vertical; }
-
-/* The animated elegant pulsing focus glow */
-.textarea-field:focus, .input-field:focus { 
-  outline: none; 
-  background: #040404; 
-  border-color: rgba(255,255,255,0.35);
-  box-shadow: 0 0 0 3px rgba(255,255,255,0.05);
-  transition: all 0.2s ease;
+.stage::after{
+  content:""; position:absolute; top:-30vh; left:50%;
+  width:140vw; height:140vw; transform:translateX(-50%);
+  background:conic-gradient(
+    from 200deg at 50% 50%,
+    transparent 0deg,
+    rgba(242,239,229,0.025) 60deg,
+    transparent 120deg,
+    rgba(178,58,72,0.04) 200deg,
+    transparent 260deg,
+    rgba(242,239,229,0.02) 320deg,
+    transparent 360deg
+  );
+  opacity:0.55;
+  animation:spin 80s linear infinite;
 }
+@keyframes spin{ to { transform:translateX(-50%) rotate(360deg);} }
 
-.submit-section { border-top: 1px solid var(--border-card); padding-top: 40px; display: flex; flex-direction: column; gap: 24px; }
-.consent-checkbox { display: flex; gap: 16px; align-items: flex-start; font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
-
-.consent-checkbox input[type="checkbox"] {
-  appearance: none; -webkit-appearance: none;
-  width: 20px; height: 20px; border: 1px solid var(--border);
-  border-radius: 4px; background: #000000; cursor: pointer;
-  position: relative; transition: all 0.2s;
-  margin-top: 2px; flex-shrink: 0;
-}
-.consent-checkbox input[type="checkbox"]:checked {
-  background: var(--accent); border-color: var(--accent);
-}
-.consent-checkbox input[type="checkbox"]:checked::after {
-  content: ""; position: absolute; left: 6px; top: 2px; width: 5px; height: 10px;
-  border: solid var(--accent-text); border-width: 0 2px 2px 0; transform: rotate(45deg);
+.grain{
+  position:fixed; inset:0; z-index:9998; pointer-events:none;
+  opacity:0.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
 }
 
-.submit-button { 
-  padding: 16px; font-size: 15px; font-weight: 600; font-family: 'Inter', sans-serif;
-  color: var(--accent-text); background: var(--accent); border: none; border-radius: 100px; 
-  cursor: pointer; 
-  transition: transform 0.15s ease-out, box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s;
-  box-shadow: 0 4px 12px rgba(255,255,255,0.05);
+/* Top bar */
+.topbar{
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:22px 40px;
+  display:flex; justify-content:space-between; align-items:center;
+  font-family:var(--mono); font-size:11px; font-weight:400;
+  letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--ink-faint);
+  backdrop-filter:blur(12px) saturate(140%);
+  -webkit-backdrop-filter:blur(12px) saturate(140%);
+  background:linear-gradient(180deg, rgba(8,7,10,0.75) 0%, rgba(8,7,10,0.0) 100%);
 }
-.submit-button:hover { 
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+.topbar .mark{ display:flex; align-items:center; gap:12px; color:var(--ink); }
+.topbar .mark .glyph{
+  width:14px; height:14px; border:1px solid var(--ink); border-radius:50%; position:relative;
+}
+.topbar .mark .glyph::after{
+  content:""; position:absolute; inset:3px; border-radius:50%; background:var(--accent);
+}
+.topbar a{ color:inherit; text-decoration:none; display:inline-flex; align-items:center; gap:8px; transition: color 0.3s ease; }
+.topbar a:hover{ color:var(--ink); }
+@media (max-width:700px){
+  .topbar{ padding:16px 20px; font-size:10px;}
+  .topbar .mark span:not(.glyph){ display:none; }
 }
 
-.error-message { background: var(--error-bg); border-left: 3px solid var(--error); padding: 16px; color: var(--error); font-size: 14px; display: none; }
-.error-message.show { display: block; }
+/* Container */
+.container{
+  position:relative; z-index:2;
+  max-width:760px; margin:0 auto;
+  padding:140px 28px 120px;
+}
 
-.success-state { display: none; text-align: center; padding: 10vh 24px; min-height: 60vh; justify-content: center; align-items: center; flex-direction: column; }
-.success-state.show { display: flex; }
-.success-state h2 { font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; margin-bottom: 24px; color: var(--text-primary); }
-.success-state p { color: var(--text-secondary); font-size: 20px; line-height: 1.6; max-width: 500px; margin: 0 auto; }
+/* Header */
+.header{ margin-bottom:64px; text-align:center; }
+.header .label{
+  font-family:var(--mono); font-size:0.7rem; letter-spacing:0.22em;
+  color:var(--ink-muted); text-transform:uppercase;
+  display:inline-flex; align-items:center; gap:14px;
+  margin-bottom:24px;
+}
+.header .label::before, .header .label::after{
+  content:""; width:28px; height:1px; background:currentColor; opacity:0.5;
+}
+.header h1{
+  font-family:var(--serif);
+  font-size:clamp(2.4rem, 5vw, 3.4rem);
+  font-weight:400;
+  line-height:1.05;
+  letter-spacing:-0.02em;
+  color:var(--ink);
+  margin-bottom:18px;
+  text-wrap:balance;
+}
+.header h1 em{ font-style:italic; color:var(--ink); }
+.header p{
+  color:var(--ink-soft);
+  font-size:1.05rem;
+  max-width:520px;
+  margin:0 auto;
+}
 
-@media (max-width: 600px) {
-  .form-card { padding: 32px 24px; }
-  .header h1 { font-size: 32px; }
+/* Form card */
+.form-card{
+  position:relative;
+  background:linear-gradient(180deg, rgba(242,239,229,0.025) 0%, rgba(242,239,229,0.005) 100%);
+  border:1px solid var(--rule);
+  border-radius:6px;
+  padding:64px;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  box-shadow:
+    0 24px 80px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.03);
+  overflow:hidden;
+}
+.form-card::before{
+  content:"";
+  position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg, transparent, rgba(242,239,229,0.35), transparent);
+}
+
+/* Question groups */
+.q{ margin-bottom:44px; position:relative; }
+.q-head{
+  display:flex; align-items:baseline; gap:14px;
+  margin-bottom:6px;
+}
+.q-num{
+  font-family:var(--mono);
+  font-size:0.7rem;
+  letter-spacing:0.18em;
+  color:var(--ink-muted);
+  text-transform:uppercase;
+  flex-shrink:0;
+}
+.q-label{
+  font-family:var(--serif);
+  font-size:1.25rem;
+  font-weight:400;
+  font-style:italic;
+  color:var(--ink);
+  line-height:1.3;
+}
+.q-hint{
+  font-size:0.92rem;
+  color:var(--ink-muted);
+  margin-bottom:14px;
+  margin-left:32px;
+}
+
+/* Inputs */
+.field{
+  width:100%;
+  padding:16px 18px;
+  font-family:var(--sans);
+  font-size:0.98rem;
+  background:rgba(0,0,0,0.4);
+  border:1px solid var(--rule);
+  border-radius:4px;
+  color:var(--ink);
+  transition:border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  line-height:1.5;
+  resize:vertical;
+}
+textarea.field{ min-height:140px; }
+.field:hover{ border-color:var(--rule-strong); }
+.field:focus{
+  outline:none;
+  background:rgba(0,0,0,0.55);
+  border-color:rgba(242,239,229,0.35);
+  box-shadow:
+    0 0 0 3px rgba(242,239,229,0.04),
+    0 0 24px -8px rgba(178,58,72,0.3);
+}
+.field::placeholder{ color:var(--ink-muted); }
+
+/* Submit section */
+.submit-section{
+  border-top:1px solid var(--rule);
+  padding-top:36px;
+  margin-top:8px;
+  display:flex; flex-direction:column; gap:24px;
+}
+.consent{
+  display:flex; gap:14px; align-items:flex-start;
+  font-size:0.88rem; color:var(--ink-muted); line-height:1.55;
+}
+.consent input[type="checkbox"]{
+  appearance:none; -webkit-appearance:none;
+  width:18px; height:18px; flex-shrink:0;
+  border:1px solid var(--rule-strong); border-radius:3px;
+  background:rgba(0,0,0,0.5); cursor:pointer;
+  position:relative; transition:all 0.2s; margin-top:3px;
+}
+.consent input[type="checkbox"]:checked{ background:var(--ink); border-color:var(--ink); }
+.consent input[type="checkbox"]:checked::after{
+  content:""; position:absolute; left:5px; top:1px;
+  width:5px; height:10px;
+  border:solid #08070A; border-width:0 2px 2px 0;
+  transform:rotate(45deg);
+}
+
+.submit-btn{
+  position:relative;
+  display:inline-flex; align-items:center; justify-content:center; gap:14px;
+  padding:18px 32px;
+  font-family:var(--sans);
+  font-size:0.95rem; font-weight:500; letter-spacing:0.02em;
+  color:#08070A; background:var(--ink);
+  border:none; border-radius:999px;
+  cursor:pointer;
+  transition:transform 0.4s cubic-bezier(0.2,0.85,0.2,1), box-shadow 0.4s ease;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.3) inset,
+    0 12px 40px -12px rgba(242,239,229,0.25),
+    0 0 0 1px rgba(242,239,229,0.1);
+  overflow:hidden;
+}
+.submit-btn::after{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%),
+    rgba(178,58,72,0.4) 0%, transparent 50%);
+  opacity:0; transition:opacity 0.4s ease;
+}
+.submit-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.4) inset,
+    0 18px 60px -10px rgba(242,239,229,0.35),
+    0 0 0 1px rgba(242,239,229,0.2);
+}
+.submit-btn:hover::after{ opacity:1; }
+.submit-btn:disabled{ opacity:0.6; cursor:not-allowed; }
+.submit-btn .arrow{ transition:transform 0.4s cubic-bezier(0.2,0.85,0.2,1); }
+.submit-btn:hover .arrow{ transform:translateX(4px); }
+
+.error-message{
+  background:var(--error-bg);
+  border-left:2px solid var(--error);
+  padding:14px 18px;
+  color:var(--error);
+  font-size:0.9rem;
+  display:none;
+  border-radius:0 4px 4px 0;
+}
+.error-message.show{ display:block; }
+
+/* Success state */
+.success-state{
+  display:none; text-align:center;
+  padding:8vh 24px;
+  min-height:60vh;
+  flex-direction:column; justify-content:center; align-items:center;
+}
+.success-state.show{ display:flex; }
+.success-state .glyph{
+  width:64px; height:64px;
+  margin:0 auto 32px;
+  border:1px solid var(--rule-strong);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+}
+.success-state .glyph::before{
+  content:""; position:absolute; inset:8px;
+  border:1px solid var(--rule-strong); border-radius:50%;
+}
+.success-state .glyph::after{
+  content:""; width:12px; height:12px; background:var(--accent); border-radius:50%;
+}
+.success-state h2{
+  font-family:var(--serif);
+  font-size:clamp(2.2rem,4vw,3rem);
+  font-weight:400; font-style:italic;
+  color:var(--ink);
+  margin-bottom:24px;
+  letter-spacing:-0.01em;
+}
+.success-state p{
+  color:var(--ink-soft);
+  font-size:1.05rem;
+  max-width:480px;
+  margin:0 auto;
+}
+
+/* Footer note */
+.foot-note{
+  margin-top:40px;
+  text-align:center;
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:0.22em;
+  color:var(--ink-muted);
+  text-transform:uppercase;
+}
+.foot-note span{ margin:0 10px; opacity:0.6; }
+
+@media (max-width:700px){
+  .container{ padding:120px 20px 80px; }
+  .form-card{ padding:36px 24px; }
+  .q-label{ font-size:1.1rem; }
+}
+
+/* Custom cursor */
+.cursor-dot,.cursor-ring{
+  position:fixed; top:0; left:0; pointer-events:none; z-index:10001;
+  border-radius:50%; mix-blend-mode:difference;
+  transform:translate(-50%,-50%); will-change:transform;
+}
+.cursor-dot{ width:5px; height:5px; background:var(--ink); }
+.cursor-ring{
+  width:30px; height:30px;
+  border:1px solid rgba(242,239,229,0.5);
+  transition:width 0.25s ease, height 0.25s ease, border-color 0.25s ease;
+}
+.cursor-ring.hover{ width:56px; height:56px; border-color:rgba(242,239,229,0.9); }
+@media (hover:none),(max-width:800px){
+  .cursor-dot,.cursor-ring{ display:none; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:0.001ms !important;
+    transition-duration:0.001ms !important;
+  }
+  .stage::after{ display:none; }
 }
 </style>
 </head>
 <body>
+
+<div class="stage" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<header class="topbar">
+  <div class="mark">
+    <span class="glyph"></span>
+    <span>Nullify the Preset</span>
+  </div>
+  <a href="index.html">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back
+  </a>
+</header>
+
 <div class="container">
-  <a href="index.html" class="back-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back</a>
   <div class="header">
-    <h1>Apply for a private review</h1>
+    <span class="label">The Application</span>
+    <h1>Apply for a <em>private review</em></h1>
     <p>Four focused questions. Your answers stay private and are reviewed personally.</p>
   </div>
+
   <div class="form-card">
     <form id="applicationForm" action="https://api.web3forms.com/submit" method="POST">
       <input type="hidden" name="access_key" value="08f08761-cdd8-4b3d-8187-a20ee032c22c">
       <input type="hidden" name="subject" value="New Private Review Application">
       <input type="hidden" name="from_name" value="Private Review System">
       <input type="hidden" name="replyto" value="@">
-      <div class="question-group">
-        <label class="question-label">1. What keeps happening?</label>
-        <p class="question-hint">Describe the pattern. What's the trigger, and what does your mind do with it?</p>
-        <textarea class="textarea-field" name="pattern" required></textarea>
+
+      <div class="q">
+        <div class="q-head">
+          <span class="q-num">01</span>
+          <span class="q-label">What keeps happening?</span>
+        </div>
+        <p class="q-hint">Describe the pattern. What's the trigger, and what does your mind do with it?</p>
+        <textarea class="field" name="pattern" required></textarea>
       </div>
-      <div class="question-group">
-        <label class="question-label">2. Give me one recent example</label>
-        <p class="question-hint">Walk me through a specific instance from the last 7 days.</p>
-        <textarea class="textarea-field" name="example" required></textarea>
+
+      <div class="q">
+        <div class="q-head">
+          <span class="q-num">02</span>
+          <span class="q-label">Give me one recent example.</span>
+        </div>
+        <p class="q-hint">Walk me through a specific instance from the last 7 days.</p>
+        <textarea class="field" name="example" required></textarea>
       </div>
-      <div class="question-group">
-        <label class="question-label">3. What is this costing you?</label>
-        <p class="question-hint">Time, bandwidth, output. Be concrete.</p>
-        <textarea class="textarea-field" name="cost" required></textarea>
+
+      <div class="q">
+        <div class="q-head">
+          <span class="q-num">03</span>
+          <span class="q-label">What is this costing you?</span>
+        </div>
+        <p class="q-hint">Time, bandwidth, output. Be concrete.</p>
+        <textarea class="field" name="cost" required></textarea>
       </div>
-      <div class="question-group">
-        <label class="question-label">4. The Failed Solutions</label>
-        <p class="question-hint">What have you tried, and why did the pattern survive those attempts?</p>
-        <textarea class="textarea-field" name="diagnosis" required></textarea>
+
+      <div class="q">
+        <div class="q-head">
+          <span class="q-num">04</span>
+          <span class="q-label">The failed solutions.</span>
+        </div>
+        <p class="q-hint">What have you tried, and why did the pattern survive those attempts?</p>
+        <textarea class="field" name="diagnosis" required></textarea>
       </div>
-      <div class="question-group">
-        <label class="question-label">Signal username or email</label>
-        <input type="text" class="input-field" name="contact" required>
+
+      <div class="q">
+        <div class="q-head">
+          <span class="q-num">—</span>
+          <span class="q-label" style="font-style:normal; font-family:var(--sans); font-size:0.85rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-muted);">Signal username or email</span>
+        </div>
+        <input type="text" class="field" name="contact" required>
       </div>
-      <div class="question-group">
-        <label class="question-label">Your current Timezone</label>
-        <input type="text" class="input-field" name="timezone" required>
+
+      <div class="q">
+        <div class="q-head">
+          <span class="q-num">—</span>
+          <span class="q-label" style="font-style:normal; font-family:var(--sans); font-size:0.85rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-muted);">Your current timezone</span>
+        </div>
+        <input type="text" class="field" name="timezone" required>
       </div>
+
       <div class="submit-section">
         <div class="error-message" id="errorMessage">Please fill in all required fields.</div>
-        <div class="consent-checkbox">
+        <div class="consent">
           <input type="checkbox" required id="consent">
           <label for="consent">I understand this is not therapy or medical advice. I am seeking a written pattern analysis for personal use only.</label>
         </div>
-        <button type="submit" class="submit-button" id="submitButton">Submit application</button>
+        <button type="submit" class="submit-btn" id="submitButton">
+          <span>Submit application</span>
+          <span class="arrow">→</span>
+        </button>
       </div>
     </form>
   </div>
+
+  <div class="foot-note">
+    <span>Private</span><span>·</span><span>Async</span><span>·</span><span>Reviewed Personally</span>
+  </div>
+
   <div class="success-state" id="successState">
+    <div class="glyph"></div>
     <h2>Application received.</h2>
     <p>I am now reviewing your data. Your diagnostic summary will be delivered via Signal within 24 hours.</p>
   </div>
 </div>
-<script>
-  // --- LENIS SMOOTH SCROLL ---
-  const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    direction: 'vertical',
-    gestureDirection: 'vertical',
-    smooth: true,
-  });
 
-  function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-  }
+<script>
+  // Lenis
+  const lenis = new Lenis({
+    duration:1.2,
+    easing:(t)=>Math.min(1,1.001-Math.pow(2,-10*t)),
+    direction:'vertical',
+    smooth:true,
+  });
+  function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
   requestAnimationFrame(raf);
 
-  // --- MAGNETIC BUTTONS SETUP ---
-  const ctaButtons = document.querySelectorAll('.submit-button');
-  ctaButtons.forEach(btn => {
-    btn.addEventListener('mousemove', (e) => {
-      const rect = btn.getBoundingClientRect();
-      const x = (e.clientX - rect.left - rect.width / 2) * 0.2; 
-      const y = (e.clientY - rect.top - rect.height / 2) * 0.2;
-      btn.style.transform = `translate(${x}px, ${y}px) scale(1.02)`;
-    });
-    btn.addEventListener('mouseleave', () => {
-      btn.style.transform = `translate(0px, 0px) scale(1)`;
+  // Cursor
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mx = innerWidth/2, my = innerHeight/2, rx=mx, ry=my;
+  addEventListener('mousemove', (e)=>{
+    mx=e.clientX; my=e.clientY;
+    dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+  });
+  function ringLoop(){
+    rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
+    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+    requestAnimationFrame(ringLoop);
+  }
+  ringLoop();
+  document.querySelectorAll('a, button, input, textarea, [data-magnetic]').forEach(el=>{
+    el.addEventListener('mouseenter', ()=>ring.classList.add('hover'));
+    el.addEventListener('mouseleave', ()=>ring.classList.remove('hover'));
+  });
+
+  // Submit btn radial
+  document.querySelectorAll('.submit-btn').forEach(btn=>{
+    btn.addEventListener('mousemove', (e)=>{
+      const r = btn.getBoundingClientRect();
+      btn.style.setProperty('--mx', ((e.clientX-r.left)/r.width)*100 + '%');
+      btn.style.setProperty('--my', ((e.clientY-r.top)/r.height)*100 + '%');
     });
   });
 
-  // --- FORM SUBMIT LOGIC ---
+  // Form submit
   const form = document.getElementById('applicationForm');
   const formCard = document.querySelector('.form-card');
   const successState = document.getElementById('successState');
 
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', async (e)=>{
     e.preventDefault();
     const formData = new FormData(form);
-    const object = Object.fromEntries(formData);
-    const json = JSON.stringify(object);
-    
+    const json = JSON.stringify(Object.fromEntries(formData));
     const submitButton = document.getElementById('submitButton');
     submitButton.disabled = true;
-    submitButton.textContent = 'Submitting...';
-    
+    submitButton.querySelector('span').textContent = 'Submitting…';
+
     try {
       const response = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-          },
-          body: json
+        method:'POST',
+        headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
+        body:json
       });
-      
       const result = await response.json();
-      
-      if(response.ok) {
-          document.querySelector('.header').style.display = 'none';
-          document.querySelector('.back-btn').style.display = 'none';
-          formCard.style.display = 'none';
-          successState.classList.add('show');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (response.ok){
+        document.querySelector('.header').style.display='none';
+        document.querySelector('.foot-note').style.display='none';
+        formCard.style.display='none';
+        successState.classList.add('show');
+        window.scrollTo({ top:0, behavior:'smooth' });
       } else {
-          throw new Error(result.message || 'Server rejected the request');
+        throw new Error(result.message || 'Server rejected the request');
       }
-    } catch (error) {
+    } catch (error){
       console.error(error);
       submitButton.disabled = false;
-      submitButton.textContent = 'Submit application';
+      submitButton.querySelector('span').textContent = 'Submit application';
       const errorMsg = document.getElementById('errorMessage');
       errorMsg.textContent = "Error: " + error.message;
       errorMsg.classList.add('show');
