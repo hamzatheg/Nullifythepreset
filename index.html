@@ -2,29 +2,58 @@
 <html lang="en" class="lenis">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0A100D">
     <title>Private Review · The Loop That Runs Your Day</title>
+    <meta name="description" content="A diagnostic for the mind that multiplies. Free, async, structurally precise.">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,200;0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+
     <style>
+        /* ─────────────────────────── TOKENS ─────────────────────────── */
         :root {
-            --bg: #08070A;
-            --bg-warm: #0E0B0F;
-            --ink: #F2EFE5;
-            --ink-soft: #D6D2C7;
-            --ink-muted: #8A857A;
-            --ink-faint: rgba(242, 239, 229, 0.45);
-            --rule: rgba(242, 239, 229, 0.07);
-            --rule-strong: rgba(242, 239, 229, 0.18);
-            --accent: #B23A48;        /* oxblood — used very sparingly */
-            --accent-soft: rgba(178, 58, 72, 0.18);
-            --serif: 'Crimson Pro', 'Times New Roman', serif;
-            --sans: 'Inter', -apple-system, sans-serif;
-            --mono: 'JetBrains Mono', 'Courier New', monospace;
+            /* Dark-green tech palette */
+            --bg:           #0A100D;
+            --bg-elev:      #0F1814;
+            --bg-deeper:    #07100B;
+
+            /* Warm whites and grays */
+            --ink:          #EBE5D6;        /* warm white */
+            --ink-soft:     #C9C3B1;        /* warm light */
+            --ink-muted:    #8B8676;        /* warm gray */
+            --ink-faint:    rgba(235, 229, 214, 0.42);
+
+            /* Greens — accent palette */
+            --moss:         #3F5D4E;
+            --moss-light:   #6E8E7B;
+            --sage:         #94A892;
+            --moss-glow:    rgba(110, 142, 123, 0.18);
+            --moss-deep:    rgba(63, 93, 78, 0.12);
+
+            /* Rules */
+            --rule:         rgba(235, 229, 214, 0.07);
+            --rule-strong:  rgba(235, 229, 214, 0.16);
+            --rule-green:   rgba(110, 142, 123, 0.22);
+
+            /* Type stacks */
+            --serif:        'IBM Plex Serif', 'Times New Roman', serif;
+            --sans:         'Manrope', system-ui, -apple-system, sans-serif;
+            --mono:         'JetBrains Mono', 'Courier New', monospace;
+
+            /* Fluid spacing */
+            --pad-x:        clamp(20px, 4vw, 56px);
+            --pad-y:        clamp(72px, 11vw, 140px);
+            --gap-card:     clamp(16px, 2vw, 24px);
+            --rad:          6px;
+
+            /* Container reference */
+            --max-w:        1240px;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        /* ─────────────────────────── BASE ─────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         html.lenis, html.lenis body { height: auto; }
         .lenis.lenis-smooth { scroll-behavior: auto !important; }
@@ -32,100 +61,82 @@
         .lenis.lenis-stopped { overflow: hidden; }
         .lenis.lenis-smooth iframe { pointer-events: none; }
 
-        html { background: var(--bg); }
+        html { background: var(--bg); -webkit-text-size-adjust: 100%; }
 
         body {
             background: var(--bg);
             color: var(--ink-soft);
             font-family: var(--sans);
-            font-size: 1.0625rem;
+            font-size: clamp(0.95rem, 0.42vw + 0.86rem, 1.05rem);
             font-weight: 400;
-            line-height: 1.7;
+            line-height: 1.65;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             overflow-x: hidden;
-            font-feature-settings: "ss01", "cv11", "kern";
+            font-feature-settings: "ss01", "kern", "calt";
+            min-height: 100svh;
         }
 
-        /* ───────── Living background layers ───────── */
+        img, svg, canvas, video { display: block; max-width: 100%; }
+
+        /* ─────────────────────────── STAGE ─────────────────────────── */
         .stage {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
+            position: fixed; inset: 0; pointer-events: none; z-index: 0;
         }
-
-        /* Warm vignette */
         .stage::before {
-            content: "";
-            position: absolute; inset: 0;
+            content: ""; position: absolute; inset: 0;
             background:
-              radial-gradient(ellipse 80% 50% at 50% 0%, rgba(178, 58, 72, 0.06) 0%, transparent 70%),
-              radial-gradient(ellipse 100% 80% at 50% 100%, rgba(20, 16, 22, 0.6) 0%, transparent 60%),
-              linear-gradient(180deg, var(--bg-warm) 0%, var(--bg) 30%, var(--bg) 70%, #060508 100%);
+              radial-gradient(ellipse 70% 45% at 50% 0%, rgba(110, 142, 123, 0.10) 0%, transparent 65%),
+              radial-gradient(ellipse 100% 80% at 50% 100%, rgba(7, 16, 11, 0.65) 0%, transparent 60%),
+              linear-gradient(180deg, var(--bg-elev) 0%, var(--bg) 35%, var(--bg) 65%, var(--bg-deeper) 100%);
         }
-
-        /* Slow conic glow */
         .stage::after {
-            content: "";
-            position: absolute;
+            content: ""; position: absolute;
             top: -30vh; left: 50%;
-            width: 140vw; height: 140vw;
+            width: 140vmax; height: 140vmax;
             transform: translateX(-50%);
             background: conic-gradient(
                 from 200deg at 50% 50%,
                 transparent 0deg,
-                rgba(242, 239, 229, 0.025) 60deg,
+                rgba(235, 229, 214, 0.022) 60deg,
                 transparent 120deg,
-                rgba(178, 58, 72, 0.04) 200deg,
+                rgba(110, 142, 123, 0.05) 200deg,
                 transparent 260deg,
-                rgba(242, 239, 229, 0.02) 320deg,
+                rgba(235, 229, 214, 0.018) 320deg,
                 transparent 360deg
             );
-            opacity: 0.6;
-            animation: spin 80s linear infinite;
+            opacity: 0.55;
+            animation: spin 90s linear infinite;
         }
         @keyframes spin { to { transform: translateX(-50%) rotate(360deg); } }
 
-        canvas.flowfield {
-            position: fixed;
-            inset: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 1;
-            pointer-events: none;
-            opacity: 0.55;
+        canvas.cinematic {
+            position: fixed; inset: 0;
+            width: 100vw; height: 100svh;
+            z-index: 1; pointer-events: none;
+            opacity: 0.85;
             mix-blend-mode: screen;
         }
 
-        /* Grain */
         .grain {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 9998;
-            opacity: 0.025;
+            position: fixed; inset: 0; pointer-events: none; z-index: 9998;
+            opacity: 0.022;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
             mix-blend-mode: overlay;
         }
 
-        /* Top hairline scroll progress */
         .progress {
-            position: fixed;
-            top: 0; left: 0;
-            height: 1px;
-            width: 0%;
-            background: linear-gradient(90deg, transparent, var(--ink-faint), var(--accent));
+            position: fixed; top: 0; left: 0;
+            height: 1px; width: 0%;
+            background: linear-gradient(90deg, transparent, var(--ink-faint), var(--moss-light));
             z-index: 10000;
             transition: width 0.1s linear;
         }
 
-        /* Custom cursor */
+        /* ─────────────────────────── CURSOR ─────────────────────────── */
         .cursor-dot, .cursor-ring {
-            position: fixed;
-            top: 0; left: 0;
-            pointer-events: none;
-            z-index: 10001;
+            position: fixed; top: 0; left: 0;
+            pointer-events: none; z-index: 10001;
             border-radius: 50%;
             mix-blend-mode: difference;
             transform: translate(-50%, -50%);
@@ -137,191 +148,197 @@
         }
         .cursor-ring {
             width: 30px; height: 30px;
-            border: 1px solid rgba(242, 239, 229, 0.5);
+            border: 1px solid rgba(235, 229, 214, 0.5);
             transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease;
         }
         .cursor-ring.hover {
             width: 56px; height: 56px;
-            border-color: rgba(242, 239, 229, 0.9);
+            border-color: rgba(235, 229, 214, 0.9);
         }
         @media (hover: none), (max-width: 800px) {
             .cursor-dot, .cursor-ring { display: none; }
         }
 
-        /* ───────── Top brand bar ───────── */
+        /* ─────────────────────────── TOPBAR ─────────────────────────── */
         .topbar {
-            position: fixed;
-            top: 0; left: 0; right: 0;
+            position: fixed; top: 0; left: 0; right: 0;
             z-index: 100;
-            padding: 22px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: clamp(14px, 1.6vw, 22px) var(--pad-x);
+            display: flex; justify-content: space-between; align-items: center;
             font-family: var(--mono);
-            font-size: 11px;
+            font-size: clamp(10px, 0.7vw, 11px);
             font-weight: 400;
-            letter-spacing: 0.18em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
             color: var(--ink-faint);
-            backdrop-filter: blur(12px) saturate(140%);
-            -webkit-backdrop-filter: blur(12px) saturate(140%);
-            background: linear-gradient(180deg, rgba(8,7,10,0.75) 0%, rgba(8,7,10,0.0) 100%);
+            background: transparent;
+            border-bottom: 1px solid transparent;
+            transition: background 0.5s ease, backdrop-filter 0.5s ease, border-color 0.5s ease, padding 0.4s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .topbar.scrolled {
+            backdrop-filter: blur(18px) saturate(150%);
+            -webkit-backdrop-filter: blur(18px) saturate(150%);
+            background: rgba(10, 16, 13, 0.72);
+            border-bottom-color: var(--rule);
         }
         .topbar .mark {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: var(--ink);
+            display: inline-flex; align-items: center; gap: 12px;
+            color: var(--ink); text-decoration: none;
         }
         .topbar .mark .glyph {
             width: 14px; height: 14px;
             border: 1px solid var(--ink);
             border-radius: 50%;
             position: relative;
+            flex-shrink: 0;
         }
         .topbar .mark .glyph::after {
             content: "";
-            position: absolute;
-            inset: 3px;
+            position: absolute; inset: 3px;
             border-radius: 50%;
-            background: var(--accent);
+            background: var(--moss-light);
+            box-shadow: 0 0 8px var(--moss-glow);
         }
-        .topbar .meta { display: flex; gap: 28px; }
-        .topbar .meta span::before {
-            content: "·";
-            margin-right: 28px;
-            opacity: 0.4;
+        .topbar .meta {
+            display: inline-flex; align-items: center; gap: clamp(14px, 2vw, 28px);
         }
-        .topbar .meta span:first-child::before { content: ""; margin: 0; }
+        .topbar .meta a {
+            color: inherit; text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .topbar .meta a:hover { color: var(--ink); }
 
-        @media (max-width: 700px) {
-            .topbar { padding: 16px 20px; font-size: 10px; }
-            .topbar .meta span:not(:last-child) { display: none; }
-            .topbar .meta span::before { display: none; }
+        @media (max-width: 560px) {
+            .topbar .mark span:not(.glyph) { font-size: 10px; }
+            .topbar .meta .meta-tag { display: none; }
         }
 
-        /* ───────── Typography ───────── */
+        /* ─────────────────────────── TYPOGRAPHY ─────────────────────────── */
         h1, h2, h3, h4, h5, h6 {
             font-family: var(--serif);
             color: var(--ink);
-            font-weight: 400;
+            font-weight: 300;
+            letter-spacing: -0.02em;
         }
 
         h1 {
-            font-size: clamp(3.5rem, 8.5vw, 7.5rem);
+            font-size: clamp(2.6rem, 8.8vw, 7rem);
             line-height: 0.96;
-            letter-spacing: -0.035em;
+            letter-spacing: -0.04em;
+            font-weight: 300;
             text-wrap: balance;
-            font-weight: 400;
         }
 
         h2 {
-            font-size: clamp(2.4rem, 5.2vw, 3.8rem);
+            font-size: clamp(2rem, 5.4vw, 3.6rem);
             line-height: 1.05;
-            letter-spacing: -0.022em;
-            font-weight: 400;
+            letter-spacing: -0.025em;
+            font-weight: 300;
             text-wrap: balance;
         }
 
         h3 {
-            font-size: 1.4rem;
+            font-family: var(--serif);
+            font-size: clamp(1.15rem, 1.8vw, 1.4rem);
             line-height: 1.25;
-            margin-bottom: 1rem;
             color: var(--ink);
             font-weight: 400;
             letter-spacing: -0.005em;
         }
 
-        p { margin-bottom: 1.6rem; }
-        p:last-child { margin-bottom: 0; }
-
         em, i {
             font-family: var(--serif);
             font-style: italic;
             color: var(--ink);
-            font-weight: 400;
+            font-weight: 300;
         }
 
-        strong {
-            color: var(--ink);
-            font-weight: 500;
-        }
+        strong { color: var(--ink); font-weight: 500; }
 
+        p {
+            margin-bottom: 1.4rem;
+            font-size: clamp(0.95rem, 0.4vw + 0.86rem, 1.05rem);
+            color: var(--ink-soft);
+            line-height: 1.7;
+        }
+        p:last-child { margin-bottom: 0; }
+
+        a { color: inherit; }
+
+        /* ─────────────────────────── LABELS ─────────────────────────── */
         .label {
             font-family: var(--mono);
-            font-size: 0.7rem;
+            font-size: clamp(10px, 0.65vw, 11px);
             letter-spacing: 0.22em;
             color: var(--ink-muted);
             text-transform: uppercase;
             font-weight: 400;
-            display: inline-flex;
-            align-items: center;
+            display: inline-flex; align-items: center;
             gap: 14px;
+            line-height: 1;
         }
         .label::before {
             content: "";
-            width: 28px;
-            height: 1px;
+            width: 28px; height: 1px;
             background: currentColor;
             opacity: 0.5;
+            flex-shrink: 0;
         }
         .label.center::after {
             content: "";
-            width: 28px;
-            height: 1px;
+            width: 28px; height: 1px;
             background: currentColor;
             opacity: 0.5;
+            flex-shrink: 0;
         }
         .label.bare::before { display: none; }
 
-        .mono { font-family: var(--mono); font-size: 0.85em; letter-spacing: 0.04em; }
-
-        /* ───────── Layout ───────── */
+        /* ─────────────────────────── LAYOUT ─────────────────────────── */
         .wrap {
-            position: relative;
-            z-index: 2;
-            max-width: 1240px;
+            position: relative; z-index: 2;
+            max-width: var(--max-w);
             margin: 0 auto;
-            padding: 0 40px;
+            padding: 0 var(--pad-x);
+            container-type: inline-size;
+            container-name: wrap;
         }
 
-        section {
-            padding: 120px 0;
-            position: relative;
-        }
+        section { padding: var(--pad-y) 0; position: relative; }
 
         .split {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 56px;
+            gap: clamp(36px, 6vw, 60px);
             align-items: start;
-        }
-        @media (min-width: 980px) {
-            .split {
-                grid-template-columns: 4fr 6fr;
-                gap: 100px;
-            }
-            .split-left {
-                position: sticky;
-                top: 120px;
-            }
+            container-type: inline-size;
+            container-name: split;
         }
 
-        /* ───────── Hero ───────── */
+        @container wrap (min-width: 980px) {
+            .split {
+                grid-template-columns: 4fr 6fr;
+                gap: clamp(60px, 6vw, 100px);
+            }
+            .split-left { position: sticky; top: 120px; }
+        }
+
+        .sec-head { margin-bottom: clamp(40px, 6vw, 64px); }
+        .sec-head .label { margin-bottom: clamp(14px, 1.6vw, 22px); }
+
+        /* ─────────────────────────── HERO ─────────────────────────── */
         .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            min-height: 100svh;
+            display: flex; flex-direction: column; align-items: center;
             justify-content: center;
-            align-items: center;
             text-align: center;
-            padding-top: 18vh;
-            padding-bottom: 8vh;
+            padding-top: clamp(120px, 18vh, 22vh);
+            padding-bottom: clamp(60px, 8vh, 80px);
             position: relative;
         }
 
         .hero h1 {
-            margin: 28px 0 0;
+            margin-top: clamp(20px, 3vw, 32px);
             position: relative;
         }
 
@@ -332,30 +349,24 @@
             animation: word-rise 1.1s cubic-bezier(0.2, 0.85, 0.2, 1) forwards;
         }
         .hero h1 .word.delim { display: inline-block; width: 0.32em; }
-
-        @keyframes word-rise {
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes word-rise { to { opacity: 1; transform: translateY(0); } }
 
         .hero h1 em {
-            font-family: var(--serif);
-            font-style: italic;
-            font-weight: 400;
             position: relative;
-            color: var(--ink);
         }
         .hero h1 em::before {
             content: "";
             position: absolute;
             top: 50%; left: -8%;
             width: 116%; height: 0.95em;
-            border: 1px solid var(--accent);
+            border: 1px solid var(--moss-light);
             border-radius: 50%;
             transform: translateY(-48%) rotate(-3deg) scaleX(0);
             transform-origin: 30% 50%;
             opacity: 0;
             animation: orbit-draw 1.4s 1.2s cubic-bezier(0.2, 0.85, 0.2, 1) forwards;
             pointer-events: none;
+            box-shadow: 0 0 16px var(--moss-glow);
         }
         @keyframes orbit-draw {
             to { transform: translateY(-48%) rotate(-3deg) scaleX(1); opacity: 0.85; }
@@ -363,35 +374,35 @@
 
         .hero-brief {
             max-width: 640px;
-            margin: 56px auto 0;
-            font-size: 1.15rem;
+            margin: clamp(36px, 6vw, 56px) auto 0;
+            font-size: clamp(1rem, 1.2vw + 0.8rem, 1.18rem);
             line-height: 1.7;
             color: var(--ink-soft);
             opacity: 0;
             animation: fade-in 1s 1.6s forwards;
         }
-        .hero-brief p { margin-bottom: 0.9rem; }
-        .hero-brief p.snap { color: var(--ink); margin-top: 28px; font-size: 1.2rem; }
-
+        .hero-brief p { margin-bottom: 0.8rem; font-size: inherit; }
+        .hero-brief p.snap {
+            color: var(--ink); margin-top: 28px;
+            font-size: clamp(1.05rem, 1.4vw + 0.8rem, 1.25rem);
+        }
         @keyframes fade-in { to { opacity: 1; } }
 
         .scroll-cue {
-            margin-top: 80px;
+            margin-top: clamp(48px, 8vh, 80px);
             position: relative;
             height: 60px;
             opacity: 0;
             animation: fade-in 1s 2.2s forwards;
         }
         .scroll-cue::before {
-            content: "";
-            position: absolute;
+            content: ""; position: absolute;
             top: 0; left: 50%;
             width: 1px; height: 60px;
             background: linear-gradient(180deg, transparent, var(--ink-faint));
         }
         .scroll-cue::after {
-            content: "";
-            position: absolute;
+            content: ""; position: absolute;
             top: 0; left: 50%;
             transform: translateX(-50%);
             width: 1px; height: 20px;
@@ -404,38 +415,31 @@
             100% { transform: translate(-50%, 60px); opacity: 0; }
         }
 
-        /* ───────── CTA ───────── */
+        /* ─────────────────────────── CTA ─────────────────────────── */
         .cta {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            display: inline-flex; align-items: center; justify-content: center;
             gap: 14px;
             background: var(--ink);
-            color: #0A0908;
-            padding: 20px 36px 20px 40px;
+            color: #0A100D;
+            padding: clamp(15px, 1.4vw, 19px) clamp(28px, 3vw, 36px);
             border-radius: 999px;
-            font-weight: 500;
-            font-size: 0.95rem;
-            letter-spacing: 0.02em;
             font-family: var(--sans);
+            font-weight: 600;
+            font-size: clamp(0.9rem, 0.4vw + 0.8rem, 0.98rem);
+            letter-spacing: 0.01em;
             text-decoration: none;
+            position: relative; overflow: hidden;
             transition: transform 0.4s cubic-bezier(0.2, 0.85, 0.2, 1),
-                        box-shadow 0.4s ease,
-                        background 0.4s ease,
-                        color 0.4s ease;
+                        box-shadow 0.4s ease;
             box-shadow:
               0 1px 0 rgba(255,255,255,0.3) inset,
-              0 12px 40px -12px rgba(242, 239, 229, 0.25),
-              0 0 0 1px rgba(242, 239, 229, 0.1);
-            position: relative;
-            overflow: hidden;
+              0 12px 40px -12px rgba(235, 229, 214, 0.22),
+              0 0 0 1px rgba(235, 229, 214, 0.1);
         }
         .cta::after {
-            content: "";
-            position: absolute;
-            inset: 0;
+            content: ""; position: absolute; inset: 0;
             background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%),
-                rgba(178, 58, 72, 0.35) 0%, transparent 50%);
+                rgba(110, 142, 123, 0.45) 0%, transparent 50%);
             opacity: 0;
             transition: opacity 0.4s ease;
         }
@@ -443,47 +447,44 @@
             transform: translateY(-2px);
             box-shadow:
               0 1px 0 rgba(255,255,255,0.4) inset,
-              0 18px 60px -10px rgba(242, 239, 229, 0.35),
-              0 0 0 1px rgba(242, 239, 229, 0.2);
+              0 18px 60px -10px rgba(235, 229, 214, 0.32),
+              0 0 0 1px rgba(235, 229, 214, 0.2);
         }
         .cta:hover::after { opacity: 1; }
-        .cta .arrow {
-            display: inline-block;
-            transition: transform 0.4s cubic-bezier(0.2, 0.85, 0.2, 1);
-        }
+        .cta .arrow { display: inline-block; transition: transform 0.4s cubic-bezier(0.2, 0.85, 0.2, 1); }
         .cta:hover .arrow { transform: translateX(4px); }
 
         .cta-cluster {
-            margin-top: 56px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            margin-top: clamp(32px, 5vw, 56px);
+            display: flex; flex-direction: column; align-items: center;
             gap: 18px;
         }
 
-        /* ───────── Cards ───────── */
-        .card {
+        /* ─────────────────────────── PANELS (was: cards) ─────────────────────────── */
+        .panel {
             position: relative;
-            background:
-              linear-gradient(180deg, rgba(242, 239, 229, 0.025) 0%, rgba(242, 239, 229, 0.005) 100%);
+            background: linear-gradient(180deg, rgba(235, 229, 214, 0.025) 0%, rgba(235, 229, 214, 0.005) 100%);
             border: 1px solid var(--rule);
-            padding: 44px;
-            border-radius: 4px;
+            padding: clamp(28px, 3.4vw, 44px);
+            border-radius: var(--rad);
             overflow: hidden;
-            transition: border-color 0.4s ease, transform 0.4s ease;
+            box-shadow:
+              0 24px 48px -28px rgba(0, 0, 0, 0.55),
+              0 1px 0 rgba(235, 229, 214, 0.04) inset;
+            transition: border-color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
+            container-type: inline-size;
         }
-        .card::before {
+        .panel::before {
             content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: 4px;
+            position: absolute; inset: 0;
+            border-radius: var(--rad);
             padding: 1px;
             background: conic-gradient(
                 from var(--card-angle, 0deg) at var(--mx, 50%) var(--my, 50%),
                 transparent 0deg,
-                rgba(242, 239, 229, 0.0) 60deg,
-                rgba(242, 239, 229, 0.35) 120deg,
-                rgba(242, 239, 229, 0.0) 180deg,
+                rgba(235, 229, 214, 0.0) 60deg,
+                rgba(110, 142, 123, 0.45) 120deg,
+                rgba(235, 229, 214, 0.0) 180deg,
                 transparent 360deg
             );
             -webkit-mask:
@@ -498,52 +499,84 @@
             transition: opacity 0.4s ease;
             pointer-events: none;
         }
-        .card:hover { border-color: var(--rule-strong); }
-        .card:hover::before { opacity: 1; }
+        .panel:hover { border-color: var(--rule-strong); }
+        .panel:hover::before { opacity: 1; }
 
-        .card .num {
+        .panel .num {
             font-family: var(--mono);
-            font-size: 0.72rem;
-            letter-spacing: 0.18em;
+            font-size: clamp(10px, 0.7vw, 11px);
+            letter-spacing: 0.22em;
             color: var(--ink-muted);
-            display: block;
-            margin-bottom: 24px;
+            display: inline-flex; align-items: center;
+            margin-bottom: clamp(18px, 2.2vw, 26px);
             text-transform: uppercase;
         }
-        .card .num::before {
+        .panel .num::before {
             content: "";
             display: inline-block;
-            width: 18px;
-            height: 1px;
+            width: 18px; height: 1px;
             background: var(--ink-muted);
-            vertical-align: middle;
             margin-right: 10px;
         }
 
+        .panel .icon-block {
+            display: flex; align-items: center; gap: 14px;
+            margin-bottom: clamp(20px, 2.4vw, 28px);
+        }
+        .icon {
+            width: clamp(20px, 2vw, 24px);
+            height: clamp(20px, 2vw, 24px);
+            stroke: var(--ink);
+            stroke-width: 1.25;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            flex-shrink: 0;
+        }
+        .icon-tile {
+            width: clamp(40px, 4.4vw, 52px);
+            height: clamp(40px, 4.4vw, 52px);
+            border-radius: 50%;
+            border: 1px solid var(--rule-green);
+            background: radial-gradient(circle at 50% 30%, rgba(110, 142, 123, 0.18), transparent 70%);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .icon-tile .icon {
+            width: clamp(18px, 1.8vw, 22px);
+            height: clamp(18px, 1.8vw, 22px);
+            stroke: var(--moss-light);
+        }
+
+        /* ─────────────────────────── GRIDS via CONTAINER QUERIES ─────────────────────────── */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 22px;
+            gap: var(--gap-card);
+            container-type: inline-size;
+            container-name: g2;
         }
-        @media (min-width: 800px) {
+        @container wrap (min-width: 760px) {
             .grid-2 { grid-template-columns: 1fr 1fr; }
         }
 
         .grid-4 {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 22px;
+            gap: var(--gap-card);
+            container-type: inline-size;
+            container-name: g4;
         }
-        @media (min-width: 720px) { .grid-4 { grid-template-columns: 1fr 1fr; } }
+        @container wrap (min-width: 640px) {
+            .grid-4 { grid-template-columns: 1fr 1fr; }
+        }
 
-        ul.clean {
-            list-style: none;
-            padding: 0;
-        }
+        /* ─────────────────────────── LISTS ─────────────────────────── */
+        ul.clean { list-style: none; padding: 0; }
         ul.clean li {
             position: relative;
             padding-left: 28px;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
             line-height: 1.6;
         }
         ul.clean li::before {
@@ -554,37 +587,49 @@
             background: var(--rule-strong);
         }
 
-        /* ───────── Cost equation ───────── */
+        /* ─────────────────────────── COST EQUATION ─────────────────────────── */
         .cost-eq {
-            margin-top: 80px;
-            display: flex;
-            align-items: stretch;
-            justify-content: center;
+            margin-top: clamp(48px, 7vw, 80px);
+            display: grid;
+            grid-template-columns: 1fr;
             gap: 12px;
-            font-family: var(--sans);
+            justify-items: center;
+            container-type: inline-size;
+            container-name: cost;
+        }
+        @container wrap (min-width: 760px) {
+            .cost-eq {
+                grid-template-columns: 1fr auto 1fr auto 1fr auto 1.1fr;
+                gap: 12px;
+                align-items: stretch;
+            }
         }
         .cost-eq .eq {
-            padding: 26px 28px;
+            padding: clamp(18px, 2vw, 26px) clamp(20px, 2.4vw, 28px);
             border: 1px solid var(--rule);
-            border-radius: 4px;
+            border-radius: var(--rad);
             text-align: center;
             min-width: 150px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            background: rgba(242, 239, 229, 0.018);
+            width: 100%;
+            max-width: 280px;
+            display: flex; flex-direction: column; justify-content: center;
+            background: rgba(235, 229, 214, 0.018);
+        }
+        @container wrap (min-width: 760px) {
+            .cost-eq .eq { max-width: none; min-width: 0; }
         }
         .cost-eq .eq .big {
             font-family: var(--serif);
-            font-size: 1.6rem;
+            font-size: clamp(1.3rem, 1.8vw, 1.6rem);
             color: var(--ink);
             line-height: 1.1;
             margin-bottom: 4px;
+            font-weight: 300;
         }
         .cost-eq .eq .small {
             font-family: var(--mono);
-            font-size: 0.72rem;
-            letter-spacing: 0.12em;
+            font-size: 0.7rem;
+            letter-spacing: 0.14em;
             color: var(--ink-muted);
             text-transform: uppercase;
         }
@@ -592,159 +637,171 @@
             display: flex; align-items: center; justify-content: center;
             color: var(--ink-faint);
             font-family: var(--serif);
-            font-size: 1.6rem;
             font-style: italic;
+            font-size: 1.5rem;
+            font-weight: 300;
             min-width: 24px;
+            min-height: 24px;
+            transform: rotate(90deg);
         }
-        .cost-eq .result { border-color: var(--rule-strong); background: rgba(242, 239, 229, 0.04); }
-        .cost-eq .result .big { color: var(--ink); }
-        .cost-eq .result .small { color: var(--ink-soft); }
-
-        @media (max-width: 800px) {
-            .cost-eq { flex-direction: column; align-items: center; gap: 10px; }
-            .cost-eq .eq { width: 100%; max-width: 280px; }
-            .cost-eq .op { transform: rotate(90deg); min-height: 24px; }
+        @container wrap (min-width: 760px) {
+            .cost-eq .op { transform: none; }
+        }
+        .cost-eq .result {
+            border-color: var(--rule-green);
+            background:
+              radial-gradient(circle at 50% 0%, rgba(110, 142, 123, 0.12), transparent 70%),
+              rgba(235, 229, 214, 0.04);
         }
 
-        /* ───────── Outcome rows ───────── */
+        /* ─────────────────────────── PIERCE QUOTE ─────────────────────────── */
+        .pierce {
+            font-family: var(--serif);
+            font-size: clamp(1.4rem, 3vw, 2.2rem);
+            font-style: italic;
+            line-height: 1.3;
+            color: var(--ink);
+            font-weight: 300;
+            padding: clamp(24px, 3vw, 32px) clamp(28px, 3.4vw, 40px);
+            border-left: 1px solid var(--moss-light);
+            position: relative;
+            margin: clamp(28px, 4vw, 40px) 0;
+            text-wrap: balance;
+        }
+        .pierce::before {
+            content: ""; position: absolute;
+            top: 0; left: -1px;
+            width: 1px; height: 40%;
+            background: linear-gradient(180deg, var(--moss-light), transparent);
+        }
+
+        .warn {
+            border-color: var(--rule-green);
+            background:
+              radial-gradient(circle at 0% 0%, rgba(110, 142, 123, 0.08), transparent 50%),
+              linear-gradient(180deg, rgba(235, 229, 214, 0.018) 0%, rgba(235, 229, 214, 0.005) 100%);
+        }
+        .warn p { color: var(--ink); }
+
+        /* ─────────────────────────── OUTCOMES ─────────────────────────── */
         .outcomes {
             border: 1px solid var(--rule);
-            border-radius: 4px;
+            border-radius: var(--rad);
             overflow: hidden;
+            box-shadow: 0 24px 48px -28px rgba(0, 0, 0, 0.55);
+            container-type: inline-size;
         }
         .outcome {
-            padding: 30px 36px;
+            padding: clamp(24px, 3vw, 32px) clamp(22px, 3vw, 36px);
             border-bottom: 1px solid var(--rule);
             display: grid;
-            grid-template-columns: 56px 1fr;
-            gap: 20px;
+            grid-template-columns: clamp(40px, 5vw, 56px) auto 1fr;
+            gap: clamp(14px, 2vw, 22px);
             align-items: start;
-            background: rgba(242, 239, 229, 0.012);
+            background: rgba(235, 229, 214, 0.012);
             transition: background 0.4s ease;
         }
         .outcome:last-child { border-bottom: none; }
-        .outcome:hover { background: rgba(242, 239, 229, 0.04); }
+        .outcome:hover { background: rgba(235, 229, 214, 0.04); }
         .outcome .idx {
             font-family: var(--mono);
-            font-size: 0.78rem;
-            letter-spacing: 0.15em;
+            font-size: clamp(11px, 0.85vw, 13px);
+            letter-spacing: 0.16em;
             color: var(--ink-muted);
-            padding-top: 4px;
+            padding-top: 6px;
+        }
+        .outcome .icon-tile {
+            width: clamp(36px, 4vw, 46px);
+            height: clamp(36px, 4vw, 46px);
         }
         .outcome strong {
             display: block;
             font-family: var(--serif);
             font-style: italic;
             font-weight: 400;
-            font-size: 1.4rem;
+            font-size: clamp(1.2rem, 1.6vw, 1.35rem);
             color: var(--ink);
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
-        /* ───────── Pull quote / piercing ───────── */
-        .pierce {
-            font-family: var(--serif);
-            font-size: clamp(1.6rem, 3vw, 2.4rem);
-            font-style: italic;
-            line-height: 1.3;
-            color: var(--ink);
-            font-weight: 300;
-            padding: 32px 40px;
-            border-left: 1px solid var(--accent);
-            position: relative;
-            margin: 36px 0;
-            text-wrap: balance;
-        }
-        .pierce::before {
-            content: "";
-            position: absolute;
-            top: 0; left: -1px;
-            width: 1px; height: 40%;
-            background: linear-gradient(180deg, var(--accent), transparent);
-        }
-
-        .warn {
-            border-color: var(--accent-soft);
-            background: linear-gradient(180deg, rgba(178, 58, 72, 0.05) 0%, rgba(178, 58, 72, 0.0) 100%);
-        }
-        .warn p { color: var(--ink); }
-
-        /* ───────── Vault ───────── */
+        /* ─────────────────────────── VAULT ─────────────────────────── */
         .vault {
             position: relative;
-            padding: 56px 48px;
-            border: 1px solid var(--rule-strong);
-            border-radius: 6px;
+            padding: clamp(36px, 5vw, 56px) clamp(28px, 4vw, 48px);
+            border: 1px solid var(--rule-green);
+            border-radius: var(--rad);
             background:
-              radial-gradient(circle at 100% 0%, rgba(178, 58, 72, 0.08) 0%, transparent 40%),
-              linear-gradient(180deg, rgba(242, 239, 229, 0.04) 0%, rgba(242, 239, 229, 0.01) 100%);
+              radial-gradient(circle at 100% 0%, rgba(110, 142, 123, 0.10) 0%, transparent 45%),
+              linear-gradient(180deg, rgba(235, 229, 214, 0.04) 0%, rgba(235, 229, 214, 0.01) 100%);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             overflow: hidden;
             margin-bottom: 18px;
+            box-shadow: 0 32px 72px -32px rgba(0, 0, 0, 0.6);
         }
         .vault::before {
-            content: "";
-            position: absolute;
+            content: ""; position: absolute;
             top: 0; left: 0; right: 0; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(242, 239, 229, 0.4), transparent);
+            background: linear-gradient(90deg, transparent, rgba(110, 142, 123, 0.55), transparent);
         }
         .vault .price-line {
-            color: var(--ink); font-size: 1.05rem; margin-bottom: 12px;
+            color: var(--ink); font-size: clamp(0.95rem, 1.1vw, 1.05rem); margin-bottom: 12px;
         }
         .vault .price {
             font-family: var(--serif);
-            font-size: clamp(2.6rem, 4vw, 3.2rem);
+            font-size: clamp(2.2rem, 4vw, 3rem);
             color: var(--ink);
             line-height: 1;
             margin-bottom: 8px;
-            font-weight: 400;
+            font-weight: 300;
+            letter-spacing: -0.02em;
         }
         .vault .price small {
             font-family: var(--sans);
-            font-size: 0.95rem;
+            font-size: clamp(0.85rem, 1vw, 0.95rem);
             color: var(--ink-soft);
-            font-weight: 300;
+            font-weight: 400;
             letter-spacing: 0;
         }
-        .vault hr { border: none; height: 1px; background: var(--rule); margin: 28px 0; }
-        .vault .ctx {
-            font-size: 0.92rem; color: var(--ink-muted); margin-top: 0;
-        }
+        .vault hr { border: none; height: 1px; background: var(--rule); margin: clamp(20px, 2.6vw, 28px) 0; }
+        .vault .ctx { font-size: 0.9rem; color: var(--ink-muted); margin-top: 0; }
 
-        /* ───────── Marquee ───────── */
+        /* ─────────────────────────── MARQUEE ─────────────────────────── */
         .marquee {
             position: relative;
             overflow: hidden;
-            padding: 24px 0;
+            padding: clamp(20px, 2.4vw, 30px) 0;
             border-top: 1px solid var(--rule);
             border-bottom: 1px solid var(--rule);
-            background: rgba(242, 239, 229, 0.012);
-            margin: 0;
+            background: rgba(235, 229, 214, 0.012);
         }
         .marquee-track {
             display: flex;
-            gap: 64px;
+            gap: clamp(36px, 5vw, 64px);
             white-space: nowrap;
             animation: marquee 60s linear infinite;
             font-family: var(--serif);
             font-style: italic;
-            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-size: clamp(1.3rem, 3vw, 2.4rem);
             color: var(--ink);
             font-weight: 300;
             width: max-content;
+            align-items: center;
         }
         .marquee-track .dot {
-            color: var(--accent);
-            font-style: normal;
-            font-family: var(--sans);
+            width: clamp(5px, 0.6vw, 7px);
+            height: clamp(5px, 0.6vw, 7px);
+            border-radius: 50%;
+            background: var(--moss-light);
+            box-shadow: 0 0 8px var(--moss-glow);
+            display: inline-block;
         }
         @keyframes marquee {
             from { transform: translateX(0); }
             to   { transform: translateX(-50%); }
         }
 
-        /* ───────── Reveal ───────── */
+        /* ─────────────────────────── REVEAL ─────────────────────────── */
         .reveal {
             opacity: 0;
             transform: translateY(28px);
@@ -752,47 +809,54 @@
                         transform 1.1s cubic-bezier(0.2, 0.85, 0.2, 1);
             will-change: opacity, transform;
         }
-        .reveal.in {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .reveal.in { opacity: 1; transform: translateY(0); }
 
-        /* SVG keyframes */
         @keyframes drawLine { to { stroke-dashoffset: 0; } }
-        @keyframes fadeIn   { to { opacity: 1; } }
-        @keyframes crossFade { to { opacity: 0.6; } }
-
+        @keyframes fadeIn { to { opacity: 1; } }
         .reveal.in .svg-fade { animation: fadeIn 0.9s forwards; }
         .reveal.in .svg-path { animation: drawLine 2.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-        .reveal.in .svg-cross { animation: crossFade 0.4s forwards; }
 
-        /* ───────── Section header pattern ───────── */
-        .sec-head {
-            margin-bottom: 64px;
+        /* ─────────────────────────── MULTIPLICATION VISUAL ─────────────────────────── */
+        .mult {
+            position: relative;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: clamp(40px, 6vw, 80px) 0;
+            container-type: inline-size;
+            container-name: mult;
         }
-        .sec-head .label { margin-bottom: 20px; }
-
-        .qa-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 22px;
+        .mult-vertical, .mult-horizontal {
+            width: 100%;
+            display: flex; justify-content: center; align-items: center;
         }
-        @media (min-width: 800px) { .qa-grid { grid-template-columns: 1fr 1fr; gap: 26px; } }
-        .qa-grid .card { padding: 36px; }
-        .qa-grid h3 { font-style: italic; font-size: 1.25rem; }
+        /* Default: vertical for narrow */
+        .mult-horizontal { display: none; }
+        .mult-vertical svg { width: 100%; max-width: 320px; height: auto; overflow: visible; }
 
-        /* ───────── Divider ornament ───────── */
+        @container mult (min-width: 720px) {
+            .mult-horizontal { display: flex; }
+            .mult-vertical { display: none; }
+            .mult-horizontal svg { width: 100%; height: auto; overflow: visible; }
+        }
+
+        /* ─────────────────────────── CLOSED LOOP ─────────────────────────── */
+        .closed-loop {
+            display: flex; justify-content: center; align-items: center;
+            margin-bottom: clamp(40px, 5vw, 56px);
+            container-type: inline-size;
+        }
+        .closed-loop svg { width: 100%; max-width: 420px; height: auto; overflow: visible; }
+
+        /* ─────────────────────────── ORNAMENT ─────────────────────────── */
         .ornament {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 80px 0;
+            display: flex; align-items: center; justify-content: center;
+            margin: clamp(56px, 8vw, 80px) 0;
             gap: 20px;
-            opacity: 0.6;
+            opacity: 0.7;
         }
         .ornament .line {
-            flex: 1;
-            height: 1px;
+            flex: 1; height: 1px;
             background: linear-gradient(90deg, transparent, var(--rule-strong), transparent);
             max-width: 220px;
         }
@@ -806,83 +870,76 @@
             content: "";
             position: absolute;
             inset: 2px;
-            background: var(--accent);
+            background: var(--moss-light);
             border-radius: 50%;
+            box-shadow: 0 0 8px var(--moss-glow);
         }
 
-        /* ───────── Footer ───────── */
+        /* ─────────────────────────── FOOTER ─────────────────────────── */
         footer {
-            position: relative;
-            z-index: 2;
-            padding: 80px 40px 60px;
+            position: relative; z-index: 2;
+            padding: clamp(60px, 9vw, 90px) var(--pad-x) clamp(40px, 6vw, 60px);
             text-align: center;
             border-top: 1px solid var(--rule);
             margin-top: 40px;
+            container-type: inline-size;
         }
         footer .sig {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
+            display: inline-flex; flex-direction: column; align-items: center;
             gap: 16px;
         }
         footer .sig svg { opacity: 0.85; }
         footer .meta {
-            margin-top: 28px;
+            margin-top: clamp(20px, 3vw, 28px);
             font-family: var(--mono);
             font-size: 10px;
             color: var(--ink-muted);
             letter-spacing: 0.22em;
             text-transform: uppercase;
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
         }
-        footer .meta span { margin: 0 12px; opacity: 0.6; }
+        footer .meta .sep { opacity: 0.45; }
 
-        /* ───────── Mobile ───────── */
-        @media (max-width: 700px) {
-            .wrap { padding: 0 22px; }
-            section { padding: 88px 0; }
-            .hero { padding-top: 22vh; min-height: 92vh; }
-            .hero-brief { font-size: 1.05rem; }
-            .card { padding: 32px 26px; }
-            .vault { padding: 40px 28px; }
-            .pierce { padding: 22px 24px; font-size: 1.25rem; }
-            .outcome { grid-template-columns: 40px 1fr; padding: 24px 22px; }
-            .ornament { margin: 56px 0; }
-            footer { padding: 60px 22px 50px; }
-        }
-        @media (min-width: 601px) { .mobile-only { display: none !important; } }
-        @media (max-width: 600px) { .desktop-only { display: none !important; } }
-
+        /* ─────────────────────────── REDUCED MOTION ─────────────────────────── */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
                 animation-duration: 0.001ms !important;
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.001ms !important;
             }
-            .stage::after, canvas.flowfield { display: none; }
+            .stage::after, canvas.cinematic { display: none; }
         }
+
+        /* ─────────────────────────── UTIL ─────────────────────────── */
+        .cluster-center { display: flex; flex-direction: column; align-items: center; }
+        .max-prose { max-width: 640px; }
+        .nowrap { white-space: nowrap; }
+        .text-ink { color: var(--ink); }
+        .accent-quiet { color: var(--moss-light); }
     </style>
 </head>
 <body>
+
     <div class="stage" aria-hidden="true"></div>
-    <canvas class="flowfield" aria-hidden="true"></canvas>
+    <canvas class="cinematic" id="cinematicCanvas" aria-hidden="true"></canvas>
     <div class="grain" aria-hidden="true"></div>
     <div class="progress" id="progress"></div>
     <div class="cursor-ring" id="cursorRing"></div>
     <div class="cursor-dot" id="cursorDot"></div>
 
-    <header class="topbar">
-        <div class="mark">
+    <header class="topbar" id="topbar">
+        <a class="mark" href="#top">
             <span class="glyph"></span>
             <span>Nullify the Preset</span>
-        </div>
-        <div class="meta">
-            <span>Private Review</span>
-            <span>Async</span>
-            <span>By Application</span>
-        </div>
+        </a>
+        <nav class="meta">
+            <span class="meta-tag">Private Review</span>
+            <span class="meta-tag">Async</span>
+            <a href="apply.html">Apply</a>
+        </nav>
     </header>
 
-    <main class="wrap">
+    <main class="wrap" id="top">
 
         <!-- HERO -->
         <section class="hero">
@@ -912,7 +969,7 @@
                 <div class="cta-cluster">
                     <a href="apply.html" class="cta" data-magnetic>
                         <span>Apply for a Private Review</span>
-                        <span class="arrow">→</span>
+                        <svg class="icon" style="width:16px; height:16px; stroke: currentColor; stroke-width:2;" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                     </a>
                     <span class="label center bare">Free · Async · Structured</span>
                 </div>
@@ -921,37 +978,77 @@
             <div class="scroll-cue" aria-hidden="true"></div>
         </section>
 
-        <!-- THEMATIC VISUAL: Mental Multiplication -->
-        <div class="reveal desktop-only" style="display:flex; justify-content:center; align-items:center; width:100%; max-width:1100px; margin:0 auto; padding: 60px 20px;">
-            <svg width="100%" height="auto" viewBox="8 0 800 260" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
-                <text x="415" y="40" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11px" fill="var(--ink-muted)" letter-spacing="0.22em" class="svg-fade" style="animation-delay:0.2s; opacity:0;">MENTAL · MULTIPLICATION</text>
+        <!-- MENTAL MULTIPLICATION VISUAL — single, container-query responsive -->
+        <div class="reveal mult" aria-hidden="true">
 
-                <g class="svg-fade" style="animation-delay:0.6s; opacity:0;">
-                    <path d="M 120 150 L 140 150 L 145 135 L 155 165 L 160 150 L 175 150" fill="none" stroke="var(--ink-muted)" stroke-width="1.2" stroke-linejoin="round"/>
-                    <circle cx="180" cy="150" r="3.5" fill="var(--ink)"/>
-                    <text x="150" y="210" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11px" fill="var(--ink-muted)" letter-spacing="0.22em">TRIGGER</text>
-                </g>
+            <!-- HORIZONTAL (wide viewports) -->
+            <div class="mult-horizontal">
+                <svg viewBox="0 0 800 260" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+                    <text x="400" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5" class="svg-fade" style="animation-delay:0.2s; opacity:0;">MENTAL · MULTIPLICATION</text>
 
-                <g class="svg-fade" style="animation-delay:2.6s; opacity:0;">
-                    <circle cx="650" cy="150" r="16" fill="none" stroke="var(--ink-muted)" stroke-width="1.2"/>
-                    <circle cx="650" cy="150" r="6" fill="none" stroke="var(--ink)" stroke-width="1.2"/>
-                    <line x1="650" y1="120" x2="650" y2="130" stroke="var(--ink-muted)" stroke-width="1.2"/>
-                    <line x1="650" y1="170" x2="650" y2="180" stroke="var(--ink-muted)" stroke-width="1.2"/>
-                    <line x1="620" y1="150" x2="630" y2="150" stroke="var(--ink-muted)" stroke-width="1.2"/>
-                    <line x1="670" y1="150" x2="680" y2="150" stroke="var(--ink-muted)" stroke-width="1.2"/>
-                    <text x="650" y="210" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11px" fill="var(--ink-muted)" letter-spacing="0.22em">TIME · TAX</text>
-                </g>
+                    <!-- Trigger -->
+                    <g class="svg-fade" style="animation-delay:0.6s; opacity:0;">
+                        <path d="M 120 150 L 140 150 L 145 135 L 155 165 L 160 150 L 175 150" fill="none" stroke="#8B8676" stroke-width="1.2" stroke-linejoin="round"/>
+                        <circle cx="180" cy="150" r="3.5" fill="#EBE5D6"/>
+                        <text x="150" y="210" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5">TRIGGER</text>
+                    </g>
 
-                <g fill="none" stroke="var(--rule-strong)" stroke-width="1.2">
-                    <path d="M 180 150 C 240 150, 260 70, 415 70 S 590 150, 650 150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.0s; opacity:0.3;"/>
-                    <path d="M 180 150 C 240 150, 260 95, 415 95 S 590 150, 650 150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.1s; opacity:0.5;"/>
-                    <path d="M 180 150 C 240 150, 260 120, 415 120 S 590 150, 650 150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.2s; opacity:0.7;"/>
-                    <line x1="180" y1="150" x2="650" y2="150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.3s; opacity:0.9;" stroke="var(--ink-soft)"/>
-                    <path d="M 180 150 C 240 150, 260 180, 415 180 S 590 150, 650 150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.2s; opacity:0.7;"/>
-                    <path d="M 180 150 C 240 150, 260 205, 415 205 S 590 150, 650 150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.1s; opacity:0.5;"/>
-                    <path d="M 180 150 C 240 150, 260 230, 415 230 S 590 150, 650 150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.0s; opacity:0.3;"/>
-                </g>
-            </svg>
+                    <!-- Time Tax -->
+                    <g class="svg-fade" style="animation-delay:2.6s; opacity:0;">
+                        <circle cx="640" cy="150" r="16" fill="none" stroke="#8B8676" stroke-width="1.2"/>
+                        <circle cx="640" cy="150" r="6" fill="none" stroke="#EBE5D6" stroke-width="1.2"/>
+                        <line x1="640" y1="120" x2="640" y2="130" stroke="#8B8676" stroke-width="1.2"/>
+                        <line x1="640" y1="170" x2="640" y2="180" stroke="#8B8676" stroke-width="1.2"/>
+                        <line x1="610" y1="150" x2="620" y2="150" stroke="#8B8676" stroke-width="1.2"/>
+                        <line x1="660" y1="150" x2="670" y2="150" stroke="#8B8676" stroke-width="1.2"/>
+                        <text x="640" y="210" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5">TIME · TAX</text>
+                    </g>
+
+                    <g fill="none" stroke="rgba(235,229,214,0.16)" stroke-width="1.2">
+                        <path d="M 180 150 C 240 150, 260 70, 410 70 S 580 150, 640 150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.0s; opacity:0.3;"/>
+                        <path d="M 180 150 C 240 150, 260 95, 410 95 S 580 150, 640 150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.1s; opacity:0.5;"/>
+                        <path d="M 180 150 C 240 150, 260 120, 410 120 S 580 150, 640 150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.2s; opacity:0.7;"/>
+                        <line x1="180" y1="150" x2="640" y2="150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.3s; opacity:0.9;" stroke="#C9C3B1"/>
+                        <path d="M 180 150 C 240 150, 260 180, 410 180 S 580 150, 640 150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.2s; opacity:0.7;"/>
+                        <path d="M 180 150 C 240 150, 260 205, 410 205 S 580 150, 640 150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.1s; opacity:0.5;"/>
+                        <path d="M 180 150 C 240 150, 260 230, 410 230 S 580 150, 640 150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.0s; opacity:0.3;"/>
+                    </g>
+                </svg>
+            </div>
+
+            <!-- VERTICAL (narrow viewports) -->
+            <div class="mult-vertical">
+                <svg viewBox="0 0 300 520" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+                    <text x="150" y="22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5" class="svg-fade" style="animation-delay:0.2s; opacity:0;">MENTAL · MULTIPLICATION</text>
+
+                    <!-- Top: Trigger -->
+                    <g class="svg-fade" style="animation-delay:0.6s; opacity:0;">
+                        <circle cx="150" cy="70" r="4" fill="#EBE5D6"/>
+                        <text x="150" y="50" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5">TRIGGER</text>
+                    </g>
+
+                    <!-- Bottom: Time Tax -->
+                    <g class="svg-fade" style="animation-delay:2.6s; opacity:0;">
+                        <circle cx="150" cy="450" r="16" fill="none" stroke="#8B8676" stroke-width="1.2"/>
+                        <circle cx="150" cy="450" r="6" fill="none" stroke="#EBE5D6" stroke-width="1.2"/>
+                        <line x1="150" y1="420" x2="150" y2="430" stroke="#8B8676" stroke-width="1.2"/>
+                        <line x1="150" y1="470" x2="150" y2="480" stroke="#8B8676" stroke-width="1.2"/>
+                        <line x1="120" y1="450" x2="130" y2="450" stroke="#8B8676" stroke-width="1.2"/>
+                        <line x1="170" y1="450" x2="180" y2="450" stroke="#8B8676" stroke-width="1.2"/>
+                        <text x="150" y="500" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5">TIME · TAX</text>
+                    </g>
+
+                    <g fill="none" stroke="rgba(235,229,214,0.16)" stroke-width="1.2">
+                        <path d="M 150 70 C 150 130, 60 150, 60 260 S 150 390, 150 450" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.0s; opacity:0.3;"/>
+                        <path d="M 150 70 C 150 130, 90 150, 90 260 S 150 390, 150 450" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.1s; opacity:0.5;"/>
+                        <path d="M 150 70 C 150 130, 115 150, 115 260 S 150 390, 150 450" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.2s; opacity:0.7;"/>
+                        <line x1="150" y1="70" x2="150" y2="450" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.3s; opacity:0.9;" stroke="#C9C3B1"/>
+                        <path d="M 150 70 C 150 130, 185 150, 185 260 S 150 390, 150 450" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.2s; opacity:0.7;"/>
+                        <path d="M 150 70 C 150 130, 210 150, 210 260 S 150 390, 150 450" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.1s; opacity:0.5;"/>
+                        <path d="M 150 70 C 150 130, 240 150, 240 260 S 150 390, 150 450" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.0s; opacity:0.3;"/>
+                    </g>
+                </svg>
+            </div>
         </div>
 
         <!-- WHAT IT COSTS YOU -->
@@ -962,45 +1059,57 @@
             </div>
 
             <div class="grid-2">
-                <div class="card">
-                    <span class="num">[ Time Tax ]</span>
+                <article class="panel">
+                    <div class="icon-block">
+                        <span class="icon-tile">
+                            <!-- Lucide: hourglass -->
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
+                        </span>
+                        <h3>Time tax</h3>
+                    </div>
                     <ul class="clean">
                         <li>A rumination episode runs <strong>20 to 40 minutes</strong>.</li>
                         <li>A self-aware professional hits <strong>three to five of them</strong> on a normal workday.</li>
                         <li>That's <strong>7 to 15 hours a week</strong>. A full workweek a month.</li>
                     </ul>
-                    <p style="color: var(--ink); margin-top: 24px;"><strong>Gone to internal friction, not to real work.</strong></p>
-                </div>
+                    <p style="color: var(--ink); margin-top: 22px;"><strong>Gone to internal friction, not to real work.</strong></p>
+                </article>
 
-                <div class="card">
-                    <span class="num">[ The Second Bill ]</span>
+                <article class="panel">
+                    <div class="icon-block">
+                        <span class="icon-tile">
+                            <!-- Lucide: receipt -->
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8H8"/><path d="M16 12H8"/><path d="M13 16H8"/></svg>
+                        </span>
+                        <h3>The second bill</h3>
+                    </div>
                     <p style="color: var(--ink);">Then the second bill arrives.</p>
-                    <ul class="clean" style="margin-top: 18px;">
+                    <ul class="clean" style="margin-top: 16px;">
                         <li>You stop trusting your own timing.</li>
                         <li>Small decisions take the bandwidth of big ones.</li>
                         <li>You dread the ordinary.</li>
                     </ul>
-                </div>
+                </article>
             </div>
 
             <div class="cost-eq">
-                <div class="eq" data-count data-from="20" data-to="40" data-suffix=" min">
-                    <div class="big"><span class="count">20–40</span></div>
+                <div class="eq">
+                    <div class="big">20–40 min</div>
                     <div class="small">/ episode</div>
                 </div>
                 <div class="op">×</div>
                 <div class="eq">
-                    <div class="big"><span>3–5</span></div>
+                    <div class="big">3–5</div>
                     <div class="small">/ day</div>
                 </div>
                 <div class="op">×</div>
                 <div class="eq">
-                    <div class="big"><span>5</span></div>
+                    <div class="big">5</div>
                     <div class="small">workdays</div>
                 </div>
                 <div class="op">=</div>
                 <div class="eq result">
-                    <div class="big"><span>7–15 hrs</span></div>
+                    <div class="big">7–15 hrs</div>
                     <div class="small">/ week lost</div>
                 </div>
             </div>
@@ -1010,23 +1119,23 @@
         <section class="reveal split">
             <div class="split-left">
                 <span class="label">The Mechanism</span>
-                <h2 style="margin-top:18px;">Why it doesn't stop<br>on its own</h2>
+                <h2 style="margin-top: 18px;">Why it doesn't stop<br>on its own</h2>
             </div>
             <div>
-                <div style="display:flex; justify-content:center; align-items:center; margin-bottom: 56px;">
-                    <svg width="100%" style="max-width: 420px; overflow: visible;" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+                <div class="closed-loop">
+                    <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                             <g id="ln">
-                                <circle cx="160" cy="40" r="6" fill="var(--bg)"/>
-                                <circle cx="160" cy="40" r="4.5" fill="none" stroke="var(--ink-muted)" stroke-width="1.2"/>
-                                <circle cx="160" cy="40" r="1.8" fill="var(--ink)"/>
+                                <circle cx="160" cy="40" r="6" fill="#0A100D"/>
+                                <circle cx="160" cy="40" r="4.5" fill="none" stroke="#8B8676" stroke-width="1.2"/>
+                                <circle cx="160" cy="40" r="1.8" fill="#EBE5D6"/>
                             </g>
                             <g id="la">
-                                <path d="M 154 35 L 160 40 L 154 45" fill="none" stroke="var(--ink-muted)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M 154 35 L 160 40 L 154 45" fill="none" stroke="#8B8676" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
                             </g>
                         </defs>
 
-                        <circle cx="160" cy="160" r="120" fill="none" stroke="var(--rule-strong)" stroke-width="1.2" class="svg-path" stroke-dasharray="754" stroke-dashoffset="754" style="animation-delay:0s;"/>
+                        <circle cx="160" cy="160" r="120" fill="none" stroke="rgba(235,229,214,0.16)" stroke-width="1.2" class="svg-path" stroke-dasharray="754" stroke-dashoffset="754" style="animation-delay:0s;"/>
 
                         <g class="svg-fade" style="animation-delay:1.5s; opacity:0;">
                             <use href="#ln" transform="rotate(0 160 160)"/>
@@ -1048,7 +1157,7 @@
                             <use href="#la" transform="rotate(350 160 160)"/>
                         </g>
 
-                        <g font-family="JetBrains Mono, monospace" font-size="9px" fill="var(--ink-muted)" font-weight="300" letter-spacing="0.18em" class="svg-fade" style="animation-delay:2.0s; opacity:0;">
+                        <g font-family="JetBrains Mono, monospace" font-size="9" fill="#8B8676" font-weight="300" letter-spacing="1.6" class="svg-fade" style="animation-delay:2.0s; opacity:0;">
                             <text x="90" y="100" text-anchor="middle">TRIGGER</text>
                             <text x="230" y="100" text-anchor="middle">SELF-PROTECTION</text>
                             <text x="230" y="220" text-anchor="middle">RATIONALIZATION</text>
@@ -1056,23 +1165,23 @@
                         </g>
 
                         <g class="svg-fade" style="animation-delay:1.0s; opacity:0;">
-                            <circle cx="160" cy="160" r="32" fill="none" stroke="var(--rule-strong)" stroke-width="1.2" opacity="0.5"/>
-                            <circle cx="160" cy="160" r="18" fill="none" stroke="var(--rule-strong)" stroke-width="1.2"/>
-                            <circle cx="160" cy="160" r="5" fill="var(--accent)"/>
+                            <circle cx="160" cy="160" r="32" fill="none" stroke="rgba(235,229,214,0.16)" stroke-width="1.2" opacity="0.5"/>
+                            <circle cx="160" cy="160" r="18" fill="none" stroke="rgba(235,229,214,0.16)" stroke-width="1.2"/>
+                            <circle cx="160" cy="160" r="5" fill="#6E8E7B"/>
                         </g>
                     </svg>
                 </div>
 
                 <p class="pierce">The outside world hits once.<br><strong>Your mind hits again, and again.</strong></p>
 
-                <ul class="clean" style="margin-top: 24px;">
+                <ul class="clean" style="margin-top: 22px;">
                     <li><strong>Not truth-seeking.</strong> The spiral isn't aimed at truth. It's aimed at self-protection. Protection first, rationalization after.</li>
                     <li><strong>False thinking.</strong> The loop feels like thinking. It's actually defense.</li>
                     <li><strong>Why advice fails.</strong> Defense systems don't disarm themselves.</li>
                 </ul>
 
-                <div class="card warn" style="margin-top: 32px; padding: 28px 32px;">
-                    <p style="margin:0;">They recruit whatever you throw at them, including <em>"stop overthinking,"</em> as fresh ammunition.</p>
+                <div class="panel warn" style="margin-top: 28px; padding: clamp(22px, 2.6vw, 30px);">
+                    <p style="margin: 0;">They recruit whatever you throw at them, including <em>"stop overthinking,"</em> as fresh ammunition.</p>
                 </div>
             </div>
         </section>
@@ -1081,12 +1190,16 @@
         <section class="reveal split">
             <div class="split-left">
                 <span class="label">After the Loop</span>
-                <h2 style="margin-top:18px;">What changes when<br>it breaks</h2>
+                <h2 style="margin-top: 18px;">What changes when<br>it breaks</h2>
             </div>
             <div>
-                <div class="outcomes" style="margin-bottom: 32px;">
+                <div class="outcomes" style="margin-bottom: 28px;">
                     <div class="outcome">
                         <span class="idx">01</span>
+                        <span class="icon-tile">
+                            <!-- Lucide: reply -->
+                            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
+                        </span>
                         <div>
                             <strong>Reply</strong>
                             <span>to the message in ten minutes. Close the tab.</span>
@@ -1094,6 +1207,10 @@
                     </div>
                     <div class="outcome">
                         <span class="idx">02</span>
+                        <span class="icon-tile">
+                            <!-- Lucide: check -->
+                            <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                        </span>
                         <div>
                             <strong>Decide</strong>
                             <span>on the outcome in one evening instead of three days.</span>
@@ -1101,6 +1218,10 @@
                     </div>
                     <div class="outcome">
                         <span class="idx">03</span>
+                        <span class="icon-tile">
+                            <!-- Lucide: eye -->
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </span>
                         <div>
                             <strong>Observe</strong>
                             <span>a stressor arrive, watch it land, and watch it resolve where it started — instead of spawning five more.</span>
@@ -1108,27 +1229,27 @@
                     </div>
                 </div>
                 <p>You keep your intelligence, your standards, your sensitivity.</p>
-                <p style="color: var(--ink); font-size: 1.15rem;"><em>You just stop paying interest on them.</em></p>
+                <p style="color: var(--ink); font-size: clamp(1.05rem, 1.4vw, 1.18rem);"><em>You just stop paying interest on them.</em></p>
             </div>
         </section>
 
     </main>
 
-    <!-- Marquee separator -->
+    <!-- MARQUEE SEPARATOR -->
     <div class="marquee" aria-hidden="true">
         <div class="marquee-track">
-            <span>Apply</span><span class="dot">●</span>
-            <span>Review</span><span class="dot">●</span>
-            <span>Receive a Map</span><span class="dot">●</span>
-            <span>Decide</span><span class="dot">●</span>
-            <span>Apply</span><span class="dot">●</span>
-            <span>Review</span><span class="dot">●</span>
-            <span>Receive a Map</span><span class="dot">●</span>
-            <span>Decide</span><span class="dot">●</span>
-            <span>Apply</span><span class="dot">●</span>
-            <span>Review</span><span class="dot">●</span>
-            <span>Receive a Map</span><span class="dot">●</span>
-            <span>Decide</span><span class="dot">●</span>
+            <span>Apply</span><span class="dot"></span>
+            <span>Review</span><span class="dot"></span>
+            <span>Receive a Map</span><span class="dot"></span>
+            <span>Decide</span><span class="dot"></span>
+            <span>Apply</span><span class="dot"></span>
+            <span>Review</span><span class="dot"></span>
+            <span>Receive a Map</span><span class="dot"></span>
+            <span>Decide</span><span class="dot"></span>
+            <span>Apply</span><span class="dot"></span>
+            <span>Review</span><span class="dot"></span>
+            <span>Receive a Map</span><span class="dot"></span>
+            <span>Decide</span><span class="dot"></span>
         </div>
     </div>
 
@@ -1139,36 +1260,63 @@
             <div class="sec-head">
                 <span class="label">The Process</span>
                 <h2>The review, in four steps</h2>
-                <p style="font-size:1.15rem; margin-top: 16px; color: var(--ink-soft); max-width: 640px;">A purely asynchronous, structurally precise breakdown.</p>
+                <p style="margin-top: 14px; max-width: 640px;">A purely asynchronous, structurally precise breakdown.</p>
             </div>
 
             <div class="grid-4">
-                <div class="card">
-                    <span class="num">Step 01 · Apply</span>
-                    <h3>You Apply</h3>
+                <article class="panel">
+                    <span class="num">Step 01</span>
+                    <div class="icon-block">
+                        <span class="icon-tile">
+                            <!-- Lucide: file-edit -->
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M14 2v6h6"/><path d="M18.4 8.6 21 11.2l-7 7-3 .5.5-3 6.9-7.1Z"/></svg>
+                        </span>
+                        <h3>You apply</h3>
+                    </div>
                     <p>Four questions: what keeps happening, one recent example, what it's costing you, what you think is going on and what you've tried.</p>
-                </div>
-                <div class="card">
-                    <span class="num">Step 02 · Review</span>
-                    <h3>I Review</h3>
+                </article>
+
+                <article class="panel">
+                    <span class="num">Step 02</span>
+                    <div class="icon-block">
+                        <span class="icon-tile">
+                            <!-- Lucide: search-line -->
+                            <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        </span>
+                        <h3>I review</h3>
+                    </div>
                     <p>I read your answers looking for the multiplier — the part of your response that converts a one-unit trigger into a five-unit problem.</p>
-                </div>
-                <div class="card">
-                    <span class="num">Step 03 · Receive</span>
-                    <h3>You Receive a Map</h3>
+                </article>
+
+                <article class="panel">
+                    <span class="num">Step 03</span>
+                    <div class="icon-block">
+                        <span class="icon-tile">
+                            <!-- Lucide: map -->
+                            <svg class="icon" viewBox="0 0 24 24"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+                        </span>
+                        <h3>You receive a map</h3>
+                    </div>
                     <p>A concise breakdown of the likely core pattern, delivered to your private Signal vault. Yours to keep.</p>
-                </div>
-                <div class="card">
-                    <span class="num">Step 04 · Decide</span>
-                    <h3>We Decide</h3>
+                </article>
+
+                <article class="panel">
+                    <span class="num">Step 04</span>
+                    <div class="icon-block">
+                        <span class="icon-tile">
+                            <!-- Lucide: split / divide path -->
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h2l4 14h2"/><path d="M21 6h-2l-4 14h-2"/><path d="M11 10h2"/></svg>
+                        </span>
+                        <h3>We decide</h3>
+                    </div>
                     <p>If there's a real fit, you move into ongoing async work. If not, you walk away with the map. No follow-up, no pitch.</p>
-                </div>
+                </article>
             </div>
 
-            <div class="cta-cluster" style="margin-top: 80px;">
+            <div class="cta-cluster" style="margin-top: clamp(48px, 7vw, 80px);">
                 <a href="apply.html" class="cta" data-magnetic>
                     <span>Apply for a Private Review</span>
-                    <span class="arrow">→</span>
+                    <svg class="icon" style="width:16px; height:16px; stroke: currentColor; stroke-width:2;" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </a>
                 <span class="label center bare">Free · Async · Structured</span>
             </div>
@@ -1178,30 +1326,54 @@
         <section class="reveal split">
             <div class="split-left">
                 <span class="label">Operations</span>
-                <h2 style="margin-top:18px;">How we work<br>together</h2>
+                <h2 style="margin-top: 18px;">How we work<br>together</h2>
             </div>
             <div class="grid-2">
-                <div class="card">
-                    <span class="num">Channel</span>
-                    <p style="margin:0;">Private Signal channel. End-to-end encrypted. If you don't already use Signal, setup takes two minutes.</p>
-                </div>
-                <div class="card">
-                    <span class="num">Cadence</span>
-                    <p style="margin:0;">Async by design. You drop messages or voice notes whenever you want. No live chat, no rapid replies — those feed the exact reactive loops we're here to dismantle.</p>
-                </div>
-                <div class="card">
-                    <span class="num">Review Blocks (EST)</span>
+                <article class="panel">
+                    <div class="icon-block">
+                        <span class="icon-tile">
+                            <!-- Lucide: lock -->
+                            <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        </span>
+                        <h3>Channel</h3>
+                    </div>
+                    <p style="margin: 0;">Private Signal channel. End-to-end encrypted. If you don't already use Signal, setup takes two minutes.</p>
+                </article>
+                <article class="panel">
+                    <div class="icon-block">
+                        <span class="icon-tile">
+                            <!-- Lucide: audio-waveform -->
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M2 13a2 2 0 0 0 2-2V7a2 2 0 1 1 4 0v13a2 2 0 1 0 4 0V4a2 2 0 1 1 4 0v13a2 2 0 1 0 4 0v-4a2 2 0 0 1 2-2"/></svg>
+                        </span>
+                        <h3>Cadence</h3>
+                    </div>
+                    <p style="margin: 0;">Async by design. You drop messages or voice notes whenever you want. No live chat, no rapid replies — those feed the exact reactive loops we're here to dismantle.</p>
+                </article>
+                <article class="panel">
+                    <div class="icon-block">
+                        <span class="icon-tile">
+                            <!-- Lucide: clock -->
+                            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </span>
+                        <h3>Review blocks (EST)</h3>
+                    </div>
                     <p>Monday to Friday.</p>
-                    <ul class="clean" style="margin: 8px 0 12px;">
+                    <ul class="clean" style="margin: 6px 0 12px;">
                         <li><strong>Morning:</strong> 7:00 – 11:00 AM</li>
                         <li><strong>Afternoon:</strong> 1:30 – 3:30 PM</li>
                     </ul>
-                    <p style="margin:0;">Submissions return by the end of the active block, or the start of the next.</p>
-                </div>
-                <div class="card">
-                    <span class="num">Delivery Format</span>
-                    <p style="margin:0;">Every response arrives as a structured written breakdown: trigger, escalation, mechanism, action. Re-readable. Referenceable. Yours to keep.</p>
-                </div>
+                    <p style="margin: 0;">Submissions return by the end of the active block, or the start of the next.</p>
+                </article>
+                <article class="panel">
+                    <div class="icon-block">
+                        <span class="icon-tile">
+                            <!-- Lucide: file-text -->
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+                        </span>
+                        <h3>Delivery format</h3>
+                    </div>
+                    <p style="margin: 0;">Every response arrives as a structured written breakdown: trigger, escalation, mechanism, action. Re-readable. Referenceable. Yours to keep.</p>
+                </article>
             </div>
         </section>
 
@@ -1209,8 +1381,8 @@
         <section class="reveal split">
             <div class="split-left">
                 <span class="label">Investment</span>
-                <h2 style="margin-top:18px;">Pricing &amp; Terms</h2>
-                <p style="margin-top: 18px; font-size: 1.05rem; color: var(--ink-muted);">Free first review. Continue only if the map is useful.</p>
+                <h2 style="margin-top: 18px;">Pricing &amp; terms</h2>
+                <p style="margin-top: 16px; color: var(--ink-muted);">Free first review. Continue only if the map is useful.</p>
             </div>
             <div>
                 <div class="vault">
@@ -1221,12 +1393,18 @@
                         <li><strong>Includes —</strong> unlimited async access, pattern analysis across new situations, structured written feedback.</li>
                         <li><strong>Terms —</strong> month-to-month. Cancel anytime.</li>
                     </ul>
-                    <p class="ctx"><strong style="color: var(--ink-soft);">Context.</strong> One hour with a licensed therapist on the East Coast runs $200–$400. This is the cost of a single session for continuous access, all month.</p>
+                    <p class="ctx"><strong style="color: var(--ink-soft);">Context.</strong> One hour with a licensed therapist on the East Coast runs $200 – $400. This is the cost of a single session for continuous access, all month.</p>
                 </div>
 
-                <div class="card" style="border-color: var(--rule-strong); background: transparent;">
-                    <span class="label" style="color: var(--ink);">30-Day Guarantee</span>
-                    <p style="color: var(--ink); margin-top: 14px; margin-bottom: 0;">If your first month doesn't produce a clearer structural map than you started with, I refund it. One email.</p>
+                <div class="panel" style="border-color: var(--rule-strong); background: transparent;">
+                    <div class="icon-block">
+                        <span class="icon-tile">
+                            <!-- Lucide: shield-check -->
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><polyline points="9 12 11 14 15 10"/></svg>
+                        </span>
+                        <span class="label" style="color: var(--ink); align-self: center;">30-Day Guarantee</span>
+                    </div>
+                    <p style="color: var(--ink); margin: 0;">If your first month doesn't produce a clearer structural map than you started with, I refund it. One email.</p>
                 </div>
             </div>
         </section>
@@ -1244,39 +1422,39 @@
                 <h2>Straight answers</h2>
             </div>
 
-            <div class="qa-grid">
-                <div class="card">
-                    <h3>Is this therapy?</h3>
-                    <p style="margin:0;">No. Not clinical practice, not mental-health treatment, not a substitute for either. If you're in crisis or managing a diagnosed condition, you need a licensed clinician. I'll refer you out in the free review if that's the call.</p>
-                </div>
-                <div class="card">
-                    <h3>Why async, not calls?</h3>
-                    <p style="margin:0;">Calls hide the pattern. People rush, perform clarity, answer before the real answer surfaces. Writing slows the machinery down enough to photograph it.</p>
-                </div>
-                <div class="card">
-                    <h3>Who is this not for?</h3>
-                    <p style="margin:0;">Anyone who wants comfort more than a clear answer, or whose self-image must be protected at all costs. That instinct is often what keeps the loop alive.</p>
-                </div>
-                <div class="card">
-                    <h3>What qualifies you to do this?</h3>
-                    <p style="margin:0;">Pattern recognition isn't credentialed — it's practiced. This work sits outside clinical territory by design. What qualifies it is the structural precision of the output, not a certificate. Read the page. If the thinking is rigorous, the work will be.</p>
-                </div>
+            <div class="grid-2">
+                <article class="panel">
+                    <h3 style="font-style: italic; margin-bottom: 10px;">Is this therapy?</h3>
+                    <p style="margin: 0;">No. Not clinical practice, not mental-health treatment, not a substitute for either. If you're in crisis or managing a diagnosed condition, you need a licensed clinician. I'll refer you out in the free review if that's the call.</p>
+                </article>
+                <article class="panel">
+                    <h3 style="font-style: italic; margin-bottom: 10px;">Why async, not calls?</h3>
+                    <p style="margin: 0;">Calls hide the pattern. People rush, perform clarity, answer before the real answer surfaces. Writing slows the machinery down enough to photograph it.</p>
+                </article>
+                <article class="panel">
+                    <h3 style="font-style: italic; margin-bottom: 10px;">Who is this not for?</h3>
+                    <p style="margin: 0;">Anyone who wants comfort more than a clear answer, or whose self-image must be protected at all costs. That instinct is often what keeps the loop alive.</p>
+                </article>
+                <article class="panel">
+                    <h3 style="font-style: italic; margin-bottom: 10px;">What qualifies you to do this?</h3>
+                    <p style="margin: 0;">Pattern recognition isn't credentialed — it's practiced. This work sits outside clinical territory by design. What qualifies it is the structural precision of the output, not a certificate. Read the page. If the thinking is rigorous, the work will be.</p>
+                </article>
             </div>
         </section>
 
         <!-- ONE LAST THING -->
-        <section class="reveal" style="text-align:center; max-width: 760px; margin: 0 auto; padding-bottom: 120px;">
+        <section class="reveal" style="text-align: center; max-width: 760px; margin: 0 auto; padding-bottom: clamp(80px, 12vw, 120px);">
             <span class="label center bare" style="margin: 0 auto;">One Last Thing</span>
             <h2 style="margin-top: 22px;">A single thing happens.<br><em>Your mind turns it into ten.</em></h2>
-            <div style="font-size: 1.15rem; margin-top: 36px; line-height: 1.8; color: var(--ink-soft);">
+            <div style="margin-top: clamp(28px, 4vw, 40px);">
                 <p>That tax runs every day, whether you're watching it or not.</p>
                 <p>The free review costs nothing but 20 minutes of honest writing. You walk away with either a map worth keeping or an early goodbye.</p>
             </div>
 
-            <div class="cta-cluster" style="margin-top: 56px;">
-                <a href="apply.html" class="cta" data-magnetic style="transform: scale(1.06);">
+            <div class="cta-cluster" style="margin-top: clamp(36px, 5vw, 56px);">
+                <a href="apply.html" class="cta" data-magnetic style="transform: scale(1.04);">
                     <span>Apply for a Private Review</span>
-                    <span class="arrow">→</span>
+                    <svg class="icon" style="width:16px; height:16px; stroke: currentColor; stroke-width:2;" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </a>
                 <span class="label center bare">Free · Async · Structured</span>
             </div>
@@ -1287,44 +1465,56 @@
     <footer>
         <div class="sig">
             <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                <circle cx="24" cy="24" r="22" stroke="rgba(242,239,229,0.5)" stroke-width="1"/>
-                <circle cx="24" cy="24" r="10" stroke="rgba(242,239,229,0.4)" stroke-width="1"/>
-                <circle cx="24" cy="24" r="3" fill="#B23A48"/>
-                <line x1="24" y1="2" x2="24" y2="14" stroke="rgba(242,239,229,0.4)" stroke-width="1"/>
-                <line x1="24" y1="34" x2="24" y2="46" stroke="rgba(242,239,229,0.4)" stroke-width="1"/>
-                <line x1="2" y1="24" x2="14" y2="24" stroke="rgba(242,239,229,0.4)" stroke-width="1"/>
-                <line x1="34" y1="24" x2="46" y2="24" stroke="rgba(242,239,229,0.4)" stroke-width="1"/>
+                <circle cx="24" cy="24" r="22" stroke="rgba(235,229,214,0.5)" stroke-width="1"/>
+                <circle cx="24" cy="24" r="10" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
+                <circle cx="24" cy="24" r="3" fill="#6E8E7B"/>
+                <line x1="24" y1="2" x2="24" y2="14" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
+                <line x1="24" y1="34" x2="24" y2="46" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
+                <line x1="2" y1="24" x2="14" y2="24" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
+                <line x1="34" y1="24" x2="46" y2="24" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
             </svg>
             <span class="label center bare" style="margin: 0;">Nullify the Preset</span>
         </div>
         <div class="meta">
-            <span>Private</span><span>·</span><span>Async</span><span>·</span><span>By Application Only</span>
+            <span>Private</span><span class="sep">·</span><span>Async</span><span class="sep">·</span><span>By Application Only</span>
         </div>
     </footer>
 
-    <!-- Lenis -->
-    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+    <!-- Lenis (graceful: page works without it via native scroll) -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js" onerror="window.__noLenis=true"></script>
     <script>
-        // ── LENIS ─────────────────────────────────────────────
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            direction: 'vertical',
-            smooth: true,
-            mouseMultiplier: 1,
-            smoothTouch: false,
-            touchMultiplier: 2,
-        });
-        function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
-        requestAnimationFrame(raf);
+        // ── LENIS (defensive) ─────────────────────────────────
+        let lenis = null;
+        try {
+            if (typeof Lenis !== 'undefined' && !window.__noLenis) {
+                lenis = new Lenis({
+                    duration: 1.2,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                    direction: 'vertical',
+                    smooth: true,
+                    mouseMultiplier: 1,
+                    smoothTouch: false,
+                    touchMultiplier: 2,
+                });
+                function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
+                requestAnimationFrame(raf);
+            }
+        } catch (e) { lenis = null; }
 
-        // ── SCROLL PROGRESS ──────────────────────────────────
+        // ── PROGRESS + SCROLLED NAV ─────────────────────────────
         const progress = document.getElementById('progress');
-        lenis.on('scroll', () => {
+        const topbar = document.getElementById('topbar');
+        function onScroll(){
             const h = document.documentElement.scrollHeight - window.innerHeight;
-            const p = Math.max(0, Math.min(1, window.scrollY / h));
+            const y = window.scrollY;
+            const p = Math.max(0, Math.min(1, y / Math.max(h, 1)));
             progress.style.width = (p * 100) + '%';
-        });
+            if (y > 24) topbar.classList.add('scrolled');
+            else topbar.classList.remove('scrolled');
+        }
+        if (lenis) lenis.on('scroll', onScroll);
+        addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
 
         // ── REVEAL OBSERVER ──────────────────────────────────
         const obs = new IntersectionObserver((entries) => {
@@ -1335,8 +1525,11 @@
         // ── CUSTOM CURSOR ────────────────────────────────────
         const dot = document.getElementById('cursorDot');
         const ring = document.getElementById('cursorRing');
-        let mx = innerWidth / 2, my = innerHeight / 2;
+        // Position offscreen initially so they don't show at top-left
+        let mx = -100, my = -100;
         let rx = mx, ry = my;
+        dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+        ring.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
         addEventListener('mousemove', (e) => {
             mx = e.clientX; my = e.clientY;
             dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
@@ -1353,16 +1546,16 @@
             el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
         });
 
-        // ── CARD CONIC TRACKING ──────────────────────────────
-        document.querySelectorAll('.card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const r = card.getBoundingClientRect();
+        // ── PANEL CONIC TRACKING ─────────────────────────────
+        document.querySelectorAll('.panel').forEach(p => {
+            p.addEventListener('mousemove', (e) => {
+                const r = p.getBoundingClientRect();
                 const x = ((e.clientX - r.left) / r.width) * 100;
                 const y = ((e.clientY - r.top) / r.height) * 100;
-                const ang = Math.atan2(e.clientY - r.top - r.height/2, e.clientX - r.left - r.width/2) * 180/Math.PI;
-                card.style.setProperty('--mx', x + '%');
-                card.style.setProperty('--my', y + '%');
-                card.style.setProperty('--card-angle', ang + 'deg');
+                const ang = Math.atan2(e.clientY - r.top - r.height/2, e.clientX - r.left - r.width/2) * 180 / Math.PI;
+                p.style.setProperty('--mx', x + '%');
+                p.style.setProperty('--my', y + '%');
+                p.style.setProperty('--card-angle', ang + 'deg');
             });
         });
 
@@ -1375,74 +1568,142 @@
             });
         });
 
-        // ── FLOW FIELD CANVAS ────────────────────────────────
-        (function flowField(){
-            const c = document.querySelector('canvas.flowfield');
+        // ── SCROLL-MAPPED CINEMATIC CANVAS ──────────────────
+        // Visualizes "the loop": at scroll=0 a single point, multiplying outward,
+        // collapsing at scroll≈1 of hero height. Requestframe-driven, lerped.
+        (function cinematic(){
+            const c = document.getElementById('cinematicCanvas');
             const ctx = c.getContext('2d');
             const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
             if (reduced) { c.remove(); return; }
 
-            let W, H, particles;
-            const N = innerWidth < 700 ? 60 : 130;
+            let W = 0, H = 0, dpr = 1;
+            const N = innerWidth < 700 ? 90 : 180;
+            const points = [];
 
             function resize(){
-                const dpr = Math.min(devicePixelRatio || 1, 2);
-                W = c.width = innerWidth * dpr;
-                H = c.height = innerHeight * dpr;
-                c.style.width = innerWidth + 'px';
-                c.style.height = innerHeight + 'px';
-                ctx.scale(dpr, dpr);
+                dpr = Math.min(devicePixelRatio || 1, 2);
+                W = innerWidth; H = innerHeight;
+                c.width = W * dpr;
+                c.height = H * dpr;
+                c.style.width = W + 'px';
+                c.style.height = H + 'px';
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
             }
+
             function init(){
                 resize();
-                particles = Array.from({length: N}, () => ({
-                    x: Math.random() * innerWidth,
-                    y: Math.random() * innerHeight,
-                    vx: 0, vy: 0,
-                    life: Math.random() * 240,
-                }));
+                points.length = 0;
+                for (let i = 0; i < N; i++){
+                    const ang = Math.random() * Math.PI * 2;
+                    const r = Math.random();
+                    points.push({
+                        baseAng: ang,
+                        baseR: r,
+                        seed: Math.random() * 1000,
+                    });
+                }
             }
 
-            function noise(x, y, t){
-                // cheap pseudo-noise: layered sines
-                return Math.sin(x*0.0018 + t*0.00015) +
-                       Math.cos(y*0.0021 + t*0.00018) +
-                       Math.sin((x+y)*0.0009 + t*0.00012) * 0.6;
+            // scrollT = 0..1 of hero progression. Past hero, canvas fades out.
+            let target = 0, t = 0;
+            let canvasOpacity = 1, canvasOpacityT = 1;
+            function updateTarget(){
+                const heroH = innerHeight;
+                const y = window.scrollY;
+                target = Math.max(0, Math.min(1, y / heroH));
+                // Fade out canvas as we leave the hero.
+                const fadeStart = heroH * 0.55;
+                const fadeEnd = heroH * 0.95;
+                if (y < fadeStart) canvasOpacity = 1;
+                else if (y > fadeEnd) canvasOpacity = 0;
+                else canvasOpacity = 1 - (y - fadeStart) / (fadeEnd - fadeStart);
             }
+            updateTarget();
+            addEventListener('scroll', updateTarget, { passive: true });
+            addEventListener('resize', () => { init(); updateTarget(); });
 
-            function step(t){
-                ctx.fillStyle = 'rgba(8,7,10,0.06)';
-                ctx.fillRect(0, 0, innerWidth, innerHeight);
+            let phase = 0;
+            function frame(time){
+                t += (target - t) * 0.085;
+                canvasOpacityT += (canvasOpacity - canvasOpacityT) * 0.12;
+                c.style.opacity = (canvasOpacityT * 0.85).toFixed(3);
+                phase += 0.005;
 
-                for (const p of particles){
-                    const a = noise(p.x, p.y, t) * Math.PI;
-                    p.vx = p.vx * 0.92 + Math.cos(a) * 0.45;
-                    p.vy = p.vy * 0.92 + Math.sin(a) * 0.45;
-                    const nx = p.x + p.vx;
-                    const ny = p.y + p.vy;
+                // If essentially invisible, skip drawing for perf
+                if (canvasOpacityT < 0.01) {
+                    requestAnimationFrame(frame);
+                    return;
+                }
 
-                    ctx.strokeStyle = 'rgba(242, 239, 229, 0.10)';
-                    ctx.lineWidth = 0.7;
+                ctx.fillStyle = 'rgba(10, 16, 13, 0.10)';
+                ctx.fillRect(0, 0, W, H);
+
+                const cx = W / 2;
+                const cy = H * 0.55;
+                // diameter shrinks as t→1 ("collapses to bullseye")
+                const maxR = Math.min(W, H) * 0.42;
+
+                // gradient between thread (early) and dense web (mid) and tight ring (end)
+                const dispersion = 0.15 + (1 - Math.abs(0.5 - t) * 2) * 0.85; // peaks at t=0.5
+                const collapse = Math.pow(t, 1.6); // tightening at end
+
+                ctx.lineWidth = 0.7;
+                for (let i = 0; i < N; i++){
+                    const p = points[i];
+                    const wob = Math.sin(phase + p.seed * 6) * 0.18 + Math.cos(phase * 1.3 + p.seed * 4) * 0.12;
+                    const r = (p.baseR * dispersion + wob * 0.05 + 0.05) * maxR;
+                    // collapse pulls points toward bullseye
+                    const collapseR = r * (1 - collapse * 0.6);
+                    const ang = p.baseAng + phase * (0.2 + p.baseR * 0.5);
+                    const x = cx + Math.cos(ang) * collapseR;
+                    const y = cy + Math.sin(ang) * collapseR;
+
+                    // pair lines to neighbors for web feel
+                    const next = points[(i + 1) % N];
+                    const r2 = (next.baseR * dispersion + 0.05) * maxR * (1 - collapse * 0.6);
+                    const a2 = next.baseAng + phase * (0.2 + next.baseR * 0.5);
+                    const x2 = cx + Math.cos(a2) * r2;
+                    const y2 = cy + Math.sin(a2) * r2;
+
+                    const alpha = 0.04 + (1 - t) * 0.10;
+                    ctx.strokeStyle = `rgba(235, 229, 214, ${alpha})`;
                     ctx.beginPath();
-                    ctx.moveTo(p.x, p.y);
-                    ctx.lineTo(nx, ny);
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(x2, y2);
                     ctx.stroke();
 
-                    p.x = nx; p.y = ny;
-                    p.life--;
-                    if (p.life < 0 || p.x < -20 || p.y < -20 || p.x > innerWidth + 20 || p.y > innerHeight + 20){
-                        p.x = Math.random() * innerWidth;
-                        p.y = Math.random() * innerHeight;
-                        p.vx = p.vy = 0;
-                        p.life = 180 + Math.random() * 240;
+                    // green threads — sparse
+                    if (i % 9 === 0){
+                        ctx.strokeStyle = `rgba(110, 142, 123, ${0.05 + t * 0.10})`;
+                        ctx.beginPath();
+                        ctx.moveTo(cx, cy);
+                        ctx.lineTo(x, y);
+                        ctx.stroke();
                     }
                 }
-                requestAnimationFrame(step);
+
+                // bullseye core that grows as scroll progresses
+                if (t > 0.05){
+                    const coreA = Math.min(t * 1.4, 1);
+                    ctx.strokeStyle = `rgba(110, 142, 123, ${coreA * 0.4})`;
+                    ctx.lineWidth = 1;
+                    for (let k = 0; k < 3; k++){
+                        ctx.beginPath();
+                        ctx.arc(cx, cy, 6 + k * 8, 0, Math.PI * 2);
+                        ctx.stroke();
+                    }
+                    ctx.fillStyle = `rgba(110, 142, 123, ${coreA * 0.5})`;
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                requestAnimationFrame(frame);
             }
 
             init();
-            addEventListener('resize', () => { ctx.setTransform(1,0,0,1,0,0); init(); });
-            requestAnimationFrame(step);
+            requestAnimationFrame(frame);
         })();
     </script>
 </body>
