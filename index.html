@@ -822,9 +822,20 @@
             width: 100%;
             max-width: 1100px;
             margin: 0 auto;
-            padding: clamp(40px, 6vw, 80px) 0;
+            padding: clamp(72px, 10vw, 100px) 0 clamp(56px, 8vw, 80px);
             container-type: inline-size;
             container-name: mult;
+        }
+        .mult-label {
+            display: block;
+            text-align: center;
+            font-family: var(--mono);
+            font-size: clamp(10px, 0.7vw, 11px);
+            letter-spacing: 0.22em;
+            color: var(--ink-muted);
+            text-transform: uppercase;
+            font-weight: 400;
+            margin-bottom: clamp(44px, 6.5vw, 56px);
         }
         .mult-vertical, .mult-horizontal {
             width: 100%;
@@ -832,12 +843,13 @@
         }
         /* Default: vertical for narrow */
         .mult-horizontal { display: none; }
-        .mult-vertical svg { width: 100%; max-width: 320px; height: auto; overflow: visible; }
+        .mult-vertical svg { width: 100%; max-width: 280px; height: auto; overflow: visible; }
 
         @container mult (min-width: 720px) {
             .mult-horizontal { display: flex; }
             .mult-vertical { display: none; }
             .mult-horizontal svg { width: 100%; height: auto; overflow: visible; }
+            .mult-label { margin-bottom: clamp(20px, 2.4vw, 28px); }
         }
 
         /* ─────────────────────────── CLOSED LOOP ─────────────────────────── */
@@ -980,72 +992,69 @@
 
         <!-- MENTAL MULTIPLICATION VISUAL — single, container-query responsive -->
         <div class="reveal mult" aria-hidden="true">
+            <span class="mult-label">Mental · Multiplication</span>
 
             <!-- HORIZONTAL (wide viewports) -->
             <div class="mult-horizontal">
-                <svg viewBox="0 0 800 260" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-                    <text x="400" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5" class="svg-fade" style="animation-delay:0.2s; opacity:0;">MENTAL · MULTIPLICATION</text>
-
+                <svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
                     <!-- Trigger -->
                     <g class="svg-fade" style="animation-delay:0.6s; opacity:0;">
-                        <path d="M 120 150 L 140 150 L 145 135 L 155 165 L 160 150 L 175 150" fill="none" stroke="#8B8676" stroke-width="1.2" stroke-linejoin="round"/>
-                        <circle cx="180" cy="150" r="3.5" fill="#EBE5D6"/>
-                        <text x="150" y="210" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5">TRIGGER</text>
+                        <path d="M 120 110 L 140 110 L 145 95 L 155 125 L 160 110 L 175 110" fill="none" stroke="#8B8676" stroke-width="1.2" stroke-linejoin="round"/>
+                        <circle cx="180" cy="110" r="3.5" fill="#EBE5D6"/>
+                        <text x="150" y="170" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5">TRIGGER</text>
                     </g>
 
                     <!-- Time Tax -->
                     <g class="svg-fade" style="animation-delay:2.6s; opacity:0;">
-                        <circle cx="640" cy="150" r="16" fill="none" stroke="#8B8676" stroke-width="1.2"/>
-                        <circle cx="640" cy="150" r="6" fill="none" stroke="#EBE5D6" stroke-width="1.2"/>
-                        <line x1="640" y1="120" x2="640" y2="130" stroke="#8B8676" stroke-width="1.2"/>
-                        <line x1="640" y1="170" x2="640" y2="180" stroke="#8B8676" stroke-width="1.2"/>
-                        <line x1="610" y1="150" x2="620" y2="150" stroke="#8B8676" stroke-width="1.2"/>
-                        <line x1="660" y1="150" x2="670" y2="150" stroke="#8B8676" stroke-width="1.2"/>
-                        <text x="640" y="210" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5">TIME · TAX</text>
+                        <circle cx="640" cy="110" r="16" fill="none" stroke="#8B8676" stroke-width="1.2"/>
+                        <circle cx="640" cy="110" r="6" fill="none" stroke="#EBE5D6" stroke-width="1.2"/>
+                        <line x1="640" y1="80" x2="640" y2="90" stroke="#8B8676" stroke-width="1.2"/>
+                        <line x1="640" y1="130" x2="640" y2="140" stroke="#8B8676" stroke-width="1.2"/>
+                        <line x1="610" y1="110" x2="620" y2="110" stroke="#8B8676" stroke-width="1.2"/>
+                        <line x1="660" y1="110" x2="670" y2="110" stroke="#8B8676" stroke-width="1.2"/>
+                        <text x="640" y="170" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5">TIME · TAX</text>
                     </g>
 
                     <g fill="none" stroke="rgba(235,229,214,0.16)" stroke-width="1.2">
-                        <path d="M 180 150 C 240 150, 260 70, 410 70 S 580 150, 640 150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.0s; opacity:0.3;"/>
-                        <path d="M 180 150 C 240 150, 260 95, 410 95 S 580 150, 640 150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.1s; opacity:0.5;"/>
-                        <path d="M 180 150 C 240 150, 260 120, 410 120 S 580 150, 640 150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.2s; opacity:0.7;"/>
-                        <line x1="180" y1="150" x2="640" y2="150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.3s; opacity:0.9;" stroke="#C9C3B1"/>
-                        <path d="M 180 150 C 240 150, 260 180, 410 180 S 580 150, 640 150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.2s; opacity:0.7;"/>
-                        <path d="M 180 150 C 240 150, 260 205, 410 205 S 580 150, 640 150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.1s; opacity:0.5;"/>
-                        <path d="M 180 150 C 240 150, 260 230, 410 230 S 580 150, 640 150" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.0s; opacity:0.3;"/>
+                        <path d="M 180 110 C 240 110, 260 30, 410 30 S 580 110, 640 110" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.0s; opacity:0.3;"/>
+                        <path d="M 180 110 C 240 110, 260 55, 410 55 S 580 110, 640 110" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.1s; opacity:0.5;"/>
+                        <path d="M 180 110 C 240 110, 260 80, 410 80 S 580 110, 640 110" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.2s; opacity:0.7;"/>
+                        <line x1="180" y1="110" x2="640" y2="110" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.3s; opacity:0.9;" stroke="#C9C3B1"/>
+                        <path d="M 180 110 C 240 110, 260 140, 410 140 S 580 110, 640 110" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.2s; opacity:0.7;"/>
+                        <path d="M 180 110 C 240 110, 260 165, 410 165 S 580 110, 640 110" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.1s; opacity:0.5;"/>
+                        <path d="M 180 110 C 240 110, 260 190, 410 190 S 580 110, 640 110" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.0s; opacity:0.3;"/>
                     </g>
                 </svg>
             </div>
 
             <!-- VERTICAL (narrow viewports) -->
             <div class="mult-vertical">
-                <svg viewBox="0 0 300 520" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-                    <text x="150" y="22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5" class="svg-fade" style="animation-delay:0.2s; opacity:0;">MENTAL · MULTIPLICATION</text>
-
+                <svg viewBox="0 0 300 470" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
                     <!-- Top: Trigger -->
                     <g class="svg-fade" style="animation-delay:0.6s; opacity:0;">
-                        <circle cx="150" cy="70" r="4" fill="#EBE5D6"/>
-                        <text x="150" y="50" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5">TRIGGER</text>
+                        <circle cx="150" cy="40" r="4" fill="#EBE5D6"/>
+                        <text x="150" y="20" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5">TRIGGER</text>
                     </g>
 
                     <!-- Bottom: Time Tax -->
                     <g class="svg-fade" style="animation-delay:2.6s; opacity:0;">
-                        <circle cx="150" cy="450" r="16" fill="none" stroke="#8B8676" stroke-width="1.2"/>
-                        <circle cx="150" cy="450" r="6" fill="none" stroke="#EBE5D6" stroke-width="1.2"/>
-                        <line x1="150" y1="420" x2="150" y2="430" stroke="#8B8676" stroke-width="1.2"/>
-                        <line x1="150" y1="470" x2="150" y2="480" stroke="#8B8676" stroke-width="1.2"/>
-                        <line x1="120" y1="450" x2="130" y2="450" stroke="#8B8676" stroke-width="1.2"/>
-                        <line x1="170" y1="450" x2="180" y2="450" stroke="#8B8676" stroke-width="1.2"/>
-                        <text x="150" y="500" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5">TIME · TAX</text>
+                        <circle cx="150" cy="420" r="16" fill="none" stroke="#8B8676" stroke-width="1.2"/>
+                        <circle cx="150" cy="420" r="6" fill="none" stroke="#EBE5D6" stroke-width="1.2"/>
+                        <line x1="150" y1="390" x2="150" y2="400" stroke="#8B8676" stroke-width="1.2"/>
+                        <line x1="150" y1="440" x2="150" y2="450" stroke="#8B8676" stroke-width="1.2"/>
+                        <line x1="120" y1="420" x2="130" y2="420" stroke="#8B8676" stroke-width="1.2"/>
+                        <line x1="170" y1="420" x2="180" y2="420" stroke="#8B8676" stroke-width="1.2"/>
+                        <text x="150" y="466" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5">TIME · TAX</text>
                     </g>
 
                     <g fill="none" stroke="rgba(235,229,214,0.16)" stroke-width="1.2">
-                        <path d="M 150 70 C 150 130, 60 150, 60 260 S 150 390, 150 450" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.0s; opacity:0.3;"/>
-                        <path d="M 150 70 C 150 130, 90 150, 90 260 S 150 390, 150 450" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.1s; opacity:0.5;"/>
-                        <path d="M 150 70 C 150 130, 115 150, 115 260 S 150 390, 150 450" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.2s; opacity:0.7;"/>
-                        <line x1="150" y1="70" x2="150" y2="450" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.3s; opacity:0.9;" stroke="#C9C3B1"/>
-                        <path d="M 150 70 C 150 130, 185 150, 185 260 S 150 390, 150 450" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.2s; opacity:0.7;"/>
-                        <path d="M 150 70 C 150 130, 210 150, 210 260 S 150 390, 150 450" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.1s; opacity:0.5;"/>
-                        <path d="M 150 70 C 150 130, 240 150, 240 260 S 150 390, 150 450" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.0s; opacity:0.3;"/>
+                        <path d="M 150 40 C 150 110, 60 130, 60 230 S 150 360, 150 420" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.0s; opacity:0.3;"/>
+                        <path d="M 150 40 C 150 110, 90 130, 90 230 S 150 360, 150 420" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.1s; opacity:0.5;"/>
+                        <path d="M 150 40 C 150 110, 115 130, 115 230 S 150 360, 150 420" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.2s; opacity:0.7;"/>
+                        <line x1="150" y1="40" x2="150" y2="420" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.3s; opacity:0.9;" stroke="#C9C3B1"/>
+                        <path d="M 150 40 C 150 110, 185 130, 185 230 S 150 360, 150 420" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.2s; opacity:0.7;"/>
+                        <path d="M 150 40 C 150 110, 210 130, 210 230 S 150 360, 150 420" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.1s; opacity:0.5;"/>
+                        <path d="M 150 40 C 150 110, 240 130, 240 230 S 150 360, 150 420" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.0s; opacity:0.3;"/>
                     </g>
                 </svg>
             </div>
