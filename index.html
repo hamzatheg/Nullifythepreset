@@ -829,6 +829,19 @@
             margin-bottom: clamp(24px, 3vw, 32px);
             text-wrap: balance;
         }
+        .mult-cascade {
+            display: block;
+            width: 100%;
+            max-width: clamp(260px, 38vw, 380px);
+            margin: clamp(32px, 4.5vw, 52px) auto clamp(36px, 5vw, 56px);
+            opacity: 0.95;
+        }
+        .mult-cascade svg {
+            width: 100%;
+            height: auto;
+            overflow: visible;
+            display: block;
+        }
         .mult .lede {
             font-family: var(--sans);
             color: var(--ink-soft);
@@ -988,6 +1001,44 @@
         <section class="mult reveal">
             <span class="label center">The Shape of It</span>
             <h2>One trigger does not stay one trigger.</h2>
+
+            <div class="mult-cascade" aria-hidden="true">
+                <svg viewBox="0 0 320 320" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Branches: 9 paths from trigger fanning to a row of endpoints -->
+                    <g fill="none" stroke-linecap="round">
+                        <path d="M 160 52 C 160 130, 56 200, 30 282" stroke="rgba(235,229,214,0.10)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:0.85s;"/>
+                        <path d="M 160 52 C 160 130, 88 200, 66 282" stroke="rgba(235,229,214,0.13)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:0.95s;"/>
+                        <path d="M 160 52 C 160 130, 118 200, 102 282" stroke="rgba(235,229,214,0.16)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:1.05s;"/>
+                        <path d="M 160 52 C 160 130, 146 200, 138 282" stroke="rgba(235,229,214,0.20)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:1.15s;"/>
+                        <line x1="160" y1="52" x2="160" y2="282" stroke="rgba(235,229,214,0.30)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:1.25s;"/>
+                        <path d="M 160 52 C 160 130, 174 200, 182 282" stroke="rgba(235,229,214,0.20)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:1.15s;"/>
+                        <path d="M 160 52 C 160 130, 202 200, 218 282" stroke="rgba(235,229,214,0.16)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:1.05s;"/>
+                        <path d="M 160 52 C 160 130, 232 200, 254 282" stroke="rgba(235,229,214,0.13)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:0.95s;"/>
+                        <path d="M 160 52 C 160 130, 264 200, 290 282" stroke="rgba(235,229,214,0.10)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:0.85s;"/>
+                    </g>
+
+                    <!-- Trigger (apex): halo ring + inner moss core + bright center -->
+                    <g class="svg-fade" style="animation-delay:0.3s; opacity:0;">
+                        <circle cx="160" cy="38" r="18" fill="none" stroke="rgba(110,142,123,0.32)" stroke-width="1"/>
+                        <circle cx="160" cy="38" r="11" fill="rgba(110,142,123,0.10)" stroke="rgba(110,142,123,0.55)" stroke-width="1"/>
+                        <circle cx="160" cy="38" r="4.5" fill="#EBE5D6"/>
+                    </g>
+
+                    <!-- Endpoints (echoes): center brighter, outer fainter -->
+                    <g class="svg-fade" style="animation-delay:2.0s; opacity:0;">
+                        <circle cx="30"  cy="282" r="2.2" fill="#6E6A5C"/>
+                        <circle cx="66"  cy="282" r="2.4" fill="#7D7869"/>
+                        <circle cx="102" cy="282" r="2.6" fill="#8B8676"/>
+                        <circle cx="138" cy="282" r="2.8" fill="#A19B8A"/>
+                        <circle cx="160" cy="282" r="3.6" fill="#C9C3B1"/>
+                        <circle cx="182" cy="282" r="2.8" fill="#A19B8A"/>
+                        <circle cx="218" cy="282" r="2.6" fill="#8B8676"/>
+                        <circle cx="254" cy="282" r="2.4" fill="#7D7869"/>
+                        <circle cx="290" cy="282" r="2.2" fill="#6E6A5C"/>
+                    </g>
+                </svg>
+            </div>
+
             <p class="lede">It rehearses through the day, through the week, through every adjacent decision. By Sunday you've paid for it thirty times in attention you can't refund.</p>
             <hr class="hairline" aria-hidden="true" />
         </section>
