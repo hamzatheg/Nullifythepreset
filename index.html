@@ -110,14 +110,6 @@
         }
         @keyframes spin { to { transform: translateX(-50%) rotate(360deg); } }
 
-        canvas.cinematic {
-            position: fixed; inset: 0;
-            width: 100vw; height: 100svh;
-            z-index: 1; pointer-events: none;
-            opacity: 0.85;
-            mix-blend-mode: screen;
-        }
-
         .grain {
             position: fixed; inset: 0; pointer-events: none; z-index: 9998;
             opacity: 0.022;
@@ -215,7 +207,7 @@
         }
 
         /* ─────────────────────────── TYPOGRAPHY ─────────────────────────── */
-        h1, h2, h3, h4, h5, h6 {
+        h1, h2 {
             font-family: var(--serif);
             color: var(--ink);
             font-weight: 300;
@@ -238,13 +230,16 @@
             text-wrap: balance;
         }
 
-        h3 {
-            font-family: var(--serif);
-            font-size: clamp(1.15rem, 1.8vw, 1.4rem);
-            line-height: 1.25;
+        h3, h4, h5, h6 {
+            font-family: var(--sans);
             color: var(--ink);
-            font-weight: 400;
+            font-weight: 600;
             letter-spacing: -0.005em;
+        }
+
+        h3 {
+            font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+            line-height: 1.3;
         }
 
         em, i {
@@ -716,12 +711,13 @@
         }
         .outcome strong {
             display: block;
-            font-family: var(--serif);
-            font-style: italic;
-            font-weight: 400;
-            font-size: clamp(1.2rem, 1.6vw, 1.35rem);
+            font-family: var(--sans);
+            font-style: normal;
+            font-weight: 600;
+            font-size: clamp(1.1rem, 1.4vw, 1.25rem);
             color: var(--ink);
             margin-bottom: 4px;
+            letter-spacing: -0.005em;
         }
 
         /* ─────────────────────────── VAULT ─────────────────────────── */
@@ -780,11 +776,12 @@
             gap: clamp(36px, 5vw, 64px);
             white-space: nowrap;
             animation: marquee 60s linear infinite;
-            font-family: var(--serif);
-            font-style: italic;
-            font-size: clamp(1.3rem, 3vw, 2.4rem);
+            font-family: var(--sans);
+            font-style: normal;
+            font-size: clamp(1.2rem, 2.6vw, 2.1rem);
             color: var(--ink);
-            font-weight: 300;
+            font-weight: 500;
+            letter-spacing: -0.01em;
             width: max-content;
             align-items: center;
         }
@@ -820,36 +817,34 @@
         .mult {
             position: relative;
             width: 100%;
-            max-width: 1100px;
+            max-width: 720px;
             margin: 0 auto;
-            padding: clamp(72px, 10vw, 100px) 0 clamp(56px, 8vw, 80px);
-            container-type: inline-size;
-            container-name: mult;
-        }
-        .mult-label {
-            display: block;
+            padding: clamp(96px, 12vw, 140px) 0;
             text-align: center;
-            font-family: var(--mono);
-            font-size: clamp(10px, 0.7vw, 11px);
-            letter-spacing: 0.22em;
-            color: var(--ink-muted);
-            text-transform: uppercase;
-            font-weight: 400;
-            margin-bottom: clamp(44px, 6.5vw, 56px);
         }
-        .mult-vertical, .mult-horizontal {
-            width: 100%;
-            display: flex; justify-content: center; align-items: center;
+        .mult .label {
+            margin-bottom: clamp(20px, 2.4vw, 28px);
         }
-        /* Default: vertical for narrow */
-        .mult-horizontal { display: none; }
-        .mult-vertical svg { width: 100%; max-width: 280px; height: auto; overflow: visible; }
-
-        @container mult (min-width: 720px) {
-            .mult-horizontal { display: flex; }
-            .mult-vertical { display: none; }
-            .mult-horizontal svg { width: 100%; height: auto; overflow: visible; }
-            .mult-label { margin-bottom: clamp(20px, 2.4vw, 28px); }
+        .mult h2 {
+            margin-bottom: clamp(24px, 3vw, 32px);
+            text-wrap: balance;
+        }
+        .mult .lede {
+            font-family: var(--sans);
+            color: var(--ink-soft);
+            font-size: clamp(1rem, 0.5vw + 0.9rem, 1.12rem);
+            line-height: 1.7;
+            max-width: 52ch;
+            margin: 0 auto;
+            text-align: left;
+        }
+        .mult .hairline {
+            width: 64px;
+            height: 1px;
+            border: 0;
+            background: linear-gradient(90deg, transparent, var(--moss-light), transparent);
+            margin: clamp(40px, 5vw, 56px) auto 0;
+            opacity: 0.6;
         }
 
         /* ─────────────────────────── CLOSED LOOP ─────────────────────────── */
@@ -919,7 +914,7 @@
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.001ms !important;
             }
-            .stage::after, canvas.cinematic { display: none; }
+            .stage::after { display: none; }
         }
 
         /* ─────────────────────────── UTIL ─────────────────────────── */
@@ -933,7 +928,6 @@
 <body>
 
     <div class="stage" aria-hidden="true"></div>
-    <canvas class="cinematic" id="cinematicCanvas" aria-hidden="true"></canvas>
     <div class="grain" aria-hidden="true"></div>
     <div class="progress" id="progress"></div>
     <div class="cursor-ring" id="cursorRing"></div>
@@ -990,75 +984,13 @@
             <div class="scroll-cue" aria-hidden="true"></div>
         </section>
 
-        <!-- MENTAL MULTIPLICATION VISUAL — single, container-query responsive -->
-        <div class="reveal mult" aria-hidden="true">
-            <span class="mult-label">Mental · Multiplication</span>
-
-            <!-- HORIZONTAL (wide viewports) -->
-            <div class="mult-horizontal">
-                <svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-                    <!-- Trigger -->
-                    <g class="svg-fade" style="animation-delay:0.6s; opacity:0;">
-                        <path d="M 120 110 L 140 110 L 145 95 L 155 125 L 160 110 L 175 110" fill="none" stroke="#8B8676" stroke-width="1.2" stroke-linejoin="round"/>
-                        <circle cx="180" cy="110" r="3.5" fill="#EBE5D6"/>
-                        <text x="150" y="170" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5">TRIGGER</text>
-                    </g>
-
-                    <!-- Time Tax -->
-                    <g class="svg-fade" style="animation-delay:2.6s; opacity:0;">
-                        <circle cx="640" cy="110" r="16" fill="none" stroke="#8B8676" stroke-width="1.2"/>
-                        <circle cx="640" cy="110" r="6" fill="none" stroke="#EBE5D6" stroke-width="1.2"/>
-                        <line x1="640" y1="80" x2="640" y2="90" stroke="#8B8676" stroke-width="1.2"/>
-                        <line x1="640" y1="130" x2="640" y2="140" stroke="#8B8676" stroke-width="1.2"/>
-                        <line x1="610" y1="110" x2="620" y2="110" stroke="#8B8676" stroke-width="1.2"/>
-                        <line x1="660" y1="110" x2="670" y2="110" stroke="#8B8676" stroke-width="1.2"/>
-                        <text x="640" y="170" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5">TIME · TAX</text>
-                    </g>
-
-                    <g fill="none" stroke="rgba(235,229,214,0.16)" stroke-width="1.2">
-                        <path d="M 180 110 C 240 110, 260 30, 410 30 S 580 110, 640 110" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.0s; opacity:0.3;"/>
-                        <path d="M 180 110 C 240 110, 260 55, 410 55 S 580 110, 640 110" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.1s; opacity:0.5;"/>
-                        <path d="M 180 110 C 240 110, 260 80, 410 80 S 580 110, 640 110" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.2s; opacity:0.7;"/>
-                        <line x1="180" y1="110" x2="640" y2="110" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.3s; opacity:0.9;" stroke="#C9C3B1"/>
-                        <path d="M 180 110 C 240 110, 260 140, 410 140 S 580 110, 640 110" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.2s; opacity:0.7;"/>
-                        <path d="M 180 110 C 240 110, 260 165, 410 165 S 580 110, 640 110" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.1s; opacity:0.5;"/>
-                        <path d="M 180 110 C 240 110, 260 190, 410 190 S 580 110, 640 110" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.0s; opacity:0.3;"/>
-                    </g>
-                </svg>
-            </div>
-
-            <!-- VERTICAL (narrow viewports) -->
-            <div class="mult-vertical">
-                <svg viewBox="0 0 300 470" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-                    <!-- Top: Trigger -->
-                    <g class="svg-fade" style="animation-delay:0.6s; opacity:0;">
-                        <circle cx="150" cy="40" r="4" fill="#EBE5D6"/>
-                        <text x="150" y="20" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5">TRIGGER</text>
-                    </g>
-
-                    <!-- Bottom: Time Tax -->
-                    <g class="svg-fade" style="animation-delay:2.6s; opacity:0;">
-                        <circle cx="150" cy="420" r="16" fill="none" stroke="#8B8676" stroke-width="1.2"/>
-                        <circle cx="150" cy="420" r="6" fill="none" stroke="#EBE5D6" stroke-width="1.2"/>
-                        <line x1="150" y1="390" x2="150" y2="400" stroke="#8B8676" stroke-width="1.2"/>
-                        <line x1="150" y1="440" x2="150" y2="450" stroke="#8B8676" stroke-width="1.2"/>
-                        <line x1="120" y1="420" x2="130" y2="420" stroke="#8B8676" stroke-width="1.2"/>
-                        <line x1="170" y1="420" x2="180" y2="420" stroke="#8B8676" stroke-width="1.2"/>
-                        <text x="150" y="466" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="300" font-size="11" fill="#8B8676" letter-spacing="2.5">TIME · TAX</text>
-                    </g>
-
-                    <g fill="none" stroke="rgba(235,229,214,0.16)" stroke-width="1.2">
-                        <path d="M 150 40 C 150 110, 60 130, 60 230 S 150 360, 150 420" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.0s; opacity:0.3;"/>
-                        <path d="M 150 40 C 150 110, 90 130, 90 230 S 150 360, 150 420" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.1s; opacity:0.5;"/>
-                        <path d="M 150 40 C 150 110, 115 130, 115 230 S 150 360, 150 420" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.2s; opacity:0.7;"/>
-                        <line x1="150" y1="40" x2="150" y2="420" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.3s; opacity:0.9;" stroke="#C9C3B1"/>
-                        <path d="M 150 40 C 150 110, 185 130, 185 230 S 150 360, 150 420" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.2s; opacity:0.7;"/>
-                        <path d="M 150 40 C 150 110, 210 130, 210 230 S 150 360, 150 420" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.1s; opacity:0.5;"/>
-                        <path d="M 150 40 C 150 110, 240 130, 240 230 S 150 360, 150 420" class="svg-path" stroke-dasharray="600" stroke-dashoffset="600" style="animation-delay:1.0s; opacity:0.3;"/>
-                    </g>
-                </svg>
-            </div>
-        </div>
+        <!-- THE SHAPE OF IT — bridge from hero to cost -->
+        <section class="mult reveal">
+            <span class="label center">The Shape of It</span>
+            <h2>One trigger does not stay one trigger.</h2>
+            <p class="lede">It rehearses through the day, through the week, through every adjacent decision. By Sunday you've paid for it thirty times in attention you can't refund.</p>
+            <hr class="hairline" aria-hidden="true" />
+        </section>
 
         <!-- WHAT IT COSTS YOU -->
         <section class="reveal">
@@ -1433,19 +1365,19 @@
 
             <div class="grid-2">
                 <article class="panel">
-                    <h3 style="font-style: italic; margin-bottom: 10px;">Is this therapy?</h3>
+                    <h3 style="margin-bottom: 10px;">Is this therapy?</h3>
                     <p style="margin: 0;">No. Not clinical practice, not mental-health treatment, not a substitute for either. If you're in crisis or managing a diagnosed condition, you need a licensed clinician. I'll refer you out in the free review if that's the call.</p>
                 </article>
                 <article class="panel">
-                    <h3 style="font-style: italic; margin-bottom: 10px;">Why async, not calls?</h3>
+                    <h3 style="margin-bottom: 10px;">Why async, not calls?</h3>
                     <p style="margin: 0;">Calls hide the pattern. People rush, perform clarity, answer before the real answer surfaces. Writing slows the machinery down enough to photograph it.</p>
                 </article>
                 <article class="panel">
-                    <h3 style="font-style: italic; margin-bottom: 10px;">Who is this not for?</h3>
+                    <h3 style="margin-bottom: 10px;">Who is this not for?</h3>
                     <p style="margin: 0;">Anyone who wants comfort more than a clear answer, or whose self-image must be protected at all costs. That instinct is often what keeps the loop alive.</p>
                 </article>
                 <article class="panel">
-                    <h3 style="font-style: italic; margin-bottom: 10px;">What qualifies you to do this?</h3>
+                    <h3 style="margin-bottom: 10px;">What qualifies you to do this?</h3>
                     <p style="margin: 0;">Pattern recognition isn't credentialed — it's practiced. This work sits outside clinical territory by design. What qualifies it is the structural precision of the output, not a certificate. Read the page. If the thinking is rigorous, the work will be.</p>
                 </article>
             </div>
@@ -1577,143 +1509,6 @@
             });
         });
 
-        // ── SCROLL-MAPPED CINEMATIC CANVAS ──────────────────
-        // Visualizes "the loop": at scroll=0 a single point, multiplying outward,
-        // collapsing at scroll≈1 of hero height. Requestframe-driven, lerped.
-        (function cinematic(){
-            const c = document.getElementById('cinematicCanvas');
-            const ctx = c.getContext('2d');
-            const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-            if (reduced) { c.remove(); return; }
-
-            let W = 0, H = 0, dpr = 1;
-            const N = innerWidth < 700 ? 90 : 180;
-            const points = [];
-
-            function resize(){
-                dpr = Math.min(devicePixelRatio || 1, 2);
-                W = innerWidth; H = innerHeight;
-                c.width = W * dpr;
-                c.height = H * dpr;
-                c.style.width = W + 'px';
-                c.style.height = H + 'px';
-                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            }
-
-            function init(){
-                resize();
-                points.length = 0;
-                for (let i = 0; i < N; i++){
-                    const ang = Math.random() * Math.PI * 2;
-                    const r = Math.random();
-                    points.push({
-                        baseAng: ang,
-                        baseR: r,
-                        seed: Math.random() * 1000,
-                    });
-                }
-            }
-
-            // scrollT = 0..1 of hero progression. Past hero, canvas fades out.
-            let target = 0, t = 0;
-            let canvasOpacity = 1, canvasOpacityT = 1;
-            function updateTarget(){
-                const heroH = innerHeight;
-                const y = window.scrollY;
-                target = Math.max(0, Math.min(1, y / heroH));
-                // Fade out canvas as we leave the hero.
-                const fadeStart = heroH * 0.55;
-                const fadeEnd = heroH * 0.95;
-                if (y < fadeStart) canvasOpacity = 1;
-                else if (y > fadeEnd) canvasOpacity = 0;
-                else canvasOpacity = 1 - (y - fadeStart) / (fadeEnd - fadeStart);
-            }
-            updateTarget();
-            addEventListener('scroll', updateTarget, { passive: true });
-            addEventListener('resize', () => { init(); updateTarget(); });
-
-            let phase = 0;
-            function frame(time){
-                t += (target - t) * 0.085;
-                canvasOpacityT += (canvasOpacity - canvasOpacityT) * 0.12;
-                c.style.opacity = (canvasOpacityT * 0.85).toFixed(3);
-                phase += 0.005;
-
-                // If essentially invisible, skip drawing for perf
-                if (canvasOpacityT < 0.01) {
-                    requestAnimationFrame(frame);
-                    return;
-                }
-
-                ctx.fillStyle = 'rgba(10, 16, 13, 0.10)';
-                ctx.fillRect(0, 0, W, H);
-
-                const cx = W / 2;
-                const cy = H * 0.55;
-                // diameter shrinks as t→1 ("collapses to bullseye")
-                const maxR = Math.min(W, H) * 0.42;
-
-                // gradient between thread (early) and dense web (mid) and tight ring (end)
-                const dispersion = 0.15 + (1 - Math.abs(0.5 - t) * 2) * 0.85; // peaks at t=0.5
-                const collapse = Math.pow(t, 1.6); // tightening at end
-
-                ctx.lineWidth = 0.7;
-                for (let i = 0; i < N; i++){
-                    const p = points[i];
-                    const wob = Math.sin(phase + p.seed * 6) * 0.18 + Math.cos(phase * 1.3 + p.seed * 4) * 0.12;
-                    const r = (p.baseR * dispersion + wob * 0.05 + 0.05) * maxR;
-                    // collapse pulls points toward bullseye
-                    const collapseR = r * (1 - collapse * 0.6);
-                    const ang = p.baseAng + phase * (0.2 + p.baseR * 0.5);
-                    const x = cx + Math.cos(ang) * collapseR;
-                    const y = cy + Math.sin(ang) * collapseR;
-
-                    // pair lines to neighbors for web feel
-                    const next = points[(i + 1) % N];
-                    const r2 = (next.baseR * dispersion + 0.05) * maxR * (1 - collapse * 0.6);
-                    const a2 = next.baseAng + phase * (0.2 + next.baseR * 0.5);
-                    const x2 = cx + Math.cos(a2) * r2;
-                    const y2 = cy + Math.sin(a2) * r2;
-
-                    const alpha = 0.04 + (1 - t) * 0.10;
-                    ctx.strokeStyle = `rgba(235, 229, 214, ${alpha})`;
-                    ctx.beginPath();
-                    ctx.moveTo(x, y);
-                    ctx.lineTo(x2, y2);
-                    ctx.stroke();
-
-                    // green threads — sparse
-                    if (i % 9 === 0){
-                        ctx.strokeStyle = `rgba(110, 142, 123, ${0.05 + t * 0.10})`;
-                        ctx.beginPath();
-                        ctx.moveTo(cx, cy);
-                        ctx.lineTo(x, y);
-                        ctx.stroke();
-                    }
-                }
-
-                // bullseye core that grows as scroll progresses
-                if (t > 0.05){
-                    const coreA = Math.min(t * 1.4, 1);
-                    ctx.strokeStyle = `rgba(110, 142, 123, ${coreA * 0.4})`;
-                    ctx.lineWidth = 1;
-                    for (let k = 0; k < 3; k++){
-                        ctx.beginPath();
-                        ctx.arc(cx, cy, 6 + k * 8, 0, Math.PI * 2);
-                        ctx.stroke();
-                    }
-                    ctx.fillStyle = `rgba(110, 142, 123, ${coreA * 0.5})`;
-                    ctx.beginPath();
-                    ctx.arc(cx, cy, 3, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-
-                requestAnimationFrame(frame);
-            }
-
-            init();
-            requestAnimationFrame(frame);
-        })();
     </script>
 </body>
 </html>
