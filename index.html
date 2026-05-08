@@ -859,6 +859,49 @@
             margin: clamp(40px, 5vw, 56px) auto 0;
             opacity: 0.6;
         }
+        @container wrap (min-width: 880px) {
+            .mult {
+                max-width: 1040px;
+                display: grid;
+                grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+                column-gap: clamp(56px, 6vw, 88px);
+                row-gap: 0;
+                align-items: start;
+                text-align: left;
+                padding: clamp(72px, 8vw, 100px) 0;
+            }
+            .mult > .label {
+                grid-column: 2;
+                grid-row: 1;
+                margin-bottom: clamp(14px, 1.8vw, 22px);
+            }
+            .mult > h2 {
+                grid-column: 2;
+                grid-row: 2;
+                margin-bottom: clamp(20px, 2.4vw, 28px);
+            }
+            .mult-cascade {
+                grid-column: 1;
+                grid-row: 1 / 5;
+                align-self: center;
+                justify-self: center;
+                margin: 0;
+                max-width: 100%;
+            }
+            .mult > .lede {
+                grid-column: 2;
+                grid-row: 3;
+                margin: 0;
+                text-align: left;
+                max-width: 52ch;
+            }
+            .mult > .hairline {
+                grid-column: 2;
+                grid-row: 4;
+                margin: clamp(28px, 3.5vw, 40px) 0 0;
+            }
+            .mult .label.center::after { display: none; }
+        }
 
         /* ─────────────────────────── CLOSED LOOP ─────────────────────────── */
         .closed-loop {
