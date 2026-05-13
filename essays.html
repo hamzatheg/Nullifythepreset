@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en" class="lenis">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0A100D">
+<title>Essays — Nullify the Preset</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,200;0,300;0,400;1,300;1,400&family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js" onerror="window.__noLenis=true"></script>
+
+<style>
+:root{
+  --bg:           #0A100D;
+  --bg-elev:      #0F1814;
+  --bg-deeper:    #07100B;
+  --ink:          #EBE5D6;
+  --ink-soft:     #C9C3B1;
+  --ink-muted:    #8B8676;
+  --ink-faint:    rgba(235, 229, 214, 0.42);
+  --moss:         #3F5D4E;
+  --moss-light:   #6E8E7B;
+  --moss-glow:    rgba(110, 142, 123, 0.18);
+  --rule:         rgba(235, 229, 214, 0.07);
+  --rule-strong:  rgba(235, 229, 214, 0.16);
+  --rule-green:   rgba(110, 142, 123, 0.22);
+  --serif:        'IBM Plex Serif', 'Times New Roman', serif;
+  --sans:         'Manrope', system-ui, sans-serif;
+  --mono:         'JetBrains Mono', monospace;
+
+  --pad-x: clamp(20px, 4vw, 56px);
+  --rad: 6px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+
+body{
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: clamp(0.95rem, 0.42vw + 0.86rem, 1.05rem);
+  background: var(--bg);
+  color: var(--ink-soft);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01", "kern", "calt";
+  overflow-x: hidden;
+  min-height: 100svh;
+}
+
+/* Stage */
+.stage{ position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.stage::before{
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 0%, rgba(110, 142, 123, 0.10) 0%, transparent 65%),
+    radial-gradient(ellipse 100% 80% at 50% 100%, rgba(7, 16, 11, 0.65) 0%, transparent 60%),
+    linear-gradient(180deg, var(--bg-elev) 0%, var(--bg) 35%, var(--bg) 65%, var(--bg-deeper) 100%);
+}
+.stage::after{
+  content: ""; position: absolute;
+  top: -30vh; left: 50%;
+  width: 140vmax; height: 140vmax;
+  transform: translateX(-50%);
+  background: conic-gradient(
+    from 200deg at 50% 50%,
+    transparent 0deg,
+    rgba(235, 229, 214, 0.022) 60deg,
+    transparent 120deg,
+    rgba(110, 142, 123, 0.05) 200deg,
+    transparent 260deg,
+    rgba(235, 229, 214, 0.018) 320deg,
+    transparent 360deg
+  );
+  opacity: 0.55;
+  animation: spin 90s linear infinite;
+}
+@keyframes spin { to { transform: translateX(-50%) rotate(360deg); } }
+
+.grain{
+  position: fixed; inset: 0; z-index: 9998; pointer-events: none;
+  opacity: 0.022;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* Topbar */
+.topbar{
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: clamp(14px, 1.6vw, 22px) var(--pad-x);
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono);
+  font-size: clamp(10px, 0.7vw, 11px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.5s ease, backdrop-filter 0.5s ease, border-color 0.5s ease;
+}
+.topbar.scrolled{
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  background: rgba(10, 16, 13, 0.72);
+  border-bottom-color: var(--rule);
+}
+.topbar .mark{
+  display: inline-flex; align-items: center; gap: 12px;
+  color: var(--ink); text-decoration: none;
+}
+.topbar .mark .glyph{
+  width: 14px; height: 14px;
+  border: 1px solid var(--ink); border-radius: 50%;
+  position: relative; flex-shrink: 0;
+}
+.topbar .mark .glyph::after{
+  content: ""; position: absolute; inset: 3px;
+  border-radius: 50%; background: var(--moss-light);
+  box-shadow: 0 0 8px var(--moss-glow);
+}
+.topbar a.back{
+  color: inherit; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: color 0.3s ease;
+}
+.topbar a.back:hover{ color: var(--ink); }
+
+@media (max-width: 560px){
+  .topbar .mark span:not(.glyph){ font-size: 10px; }
+}
+
+/* Catalog wrap */
+.essays-wrap{
+  position: relative; z-index: 2;
+  max-width: 760px; margin: 0 auto;
+  padding: clamp(120px, 18vh, 160px) var(--pad-x) clamp(80px, 12vw, 120px);
+  container-type: inline-size;
+}
+
+.essays-header{ margin-bottom: clamp(56px, 7vw, 80px); text-align: center; }
+.essays-header .label{
+  font-family: var(--mono);
+  font-size: clamp(10px, 0.65vw, 11px);
+  letter-spacing: 0.22em;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 14px;
+  margin-bottom: clamp(18px, 2.4vw, 24px);
+}
+.essays-header .label::before,
+.essays-header .label::after{
+  content: ""; width: 28px; height: 1px;
+  background: currentColor; opacity: 0.5;
+}
+.essays-header h1{
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(2.6rem, 8vw, 5rem);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+
+/* Catalog list */
+.essays-list{ border-top: 1px solid var(--rule); }
+
+.essay-row{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(24px, 3vw, 40px);
+  align-items: baseline;
+  padding: clamp(20px, 2.4vw, 28px) 0;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.essay-row:hover{ color: var(--ink); transform: translateX(-4px); }
+.essay-row:focus-visible{ outline: 1px solid var(--moss-light); outline-offset: 6px; }
+.essay-row .essay-idx{
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--ink-muted);
+}
+.essay-row .essay-title{
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(1.15rem, 1.8vw, 1.4rem);
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+/* Reading view */
+.essay-view{
+  position: relative; z-index: 2;
+  max-width: 64ch; margin: 0 auto;
+  padding: clamp(120px, 18vh, 160px) var(--pad-x) clamp(80px, 12vw, 120px);
+}
+.back-to-catalog{
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono);
+  font-size: clamp(10px, 0.7vw, 11px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  text-decoration: none;
+  margin-bottom: clamp(36px, 5vw, 56px);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.back-to-catalog:hover{ color: var(--ink); transform: translateX(-4px); }
+.essay-view .label{
+  font-family: var(--mono);
+  font-size: clamp(10px, 0.65vw, 11px);
+  letter-spacing: 0.22em;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: clamp(14px, 1.8vw, 18px);
+}
+.essay-view h1{
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: clamp(40px, 5vw, 56px);
+  text-wrap: balance;
+}
+.essay-body p{
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  max-width: 60ch;
+  margin: 0 0 1.1em;
+}
+.essay-body p:last-child{ margin-bottom: 0; }
+
+[hidden]{ display: none !important; }
+
+/* Custom cursor */
+.cursor-dot, .cursor-ring{
+  position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10001;
+  border-radius: 50%; mix-blend-mode: difference;
+  transform: translate(-50%, -50%); will-change: transform;
+}
+.cursor-dot{ width: 5px; height: 5px; background: var(--ink); }
+.cursor-ring{
+  width: 30px; height: 30px;
+  border: 1px solid rgba(235, 229, 214, 0.5);
+  transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease;
+}
+.cursor-ring.hover{ width: 56px; height: 56px; border-color: rgba(235, 229, 214, 0.9); }
+@media (hover: none), (max-width: 800px){
+  .cursor-dot, .cursor-ring{ display: none; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+  .stage::after{ display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="stage" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<header class="topbar" id="topbar">
+  <a class="mark" href="index.html">
+    <span class="glyph"></span>
+    <span>Nullify the Preset</span>
+  </a>
+  <a href="index.html" class="back">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back
+  </a>
+</header>
+
+<main class="essays-wrap" id="catalog">
+  <div class="essays-header">
+    <span class="label">The Archive</span>
+    <h1>Essays.</h1>
+  </div>
+  <div class="essays-list">
+    <a class="essay-row" href="#essay-01"><span class="essay-idx">01</span><span class="essay-title">Placeholder title — essay 01.</span></a>
+    <a class="essay-row" href="#essay-02"><span class="essay-idx">02</span><span class="essay-title">Placeholder title — essay 02.</span></a>
+    <a class="essay-row" href="#essay-03"><span class="essay-idx">03</span><span class="essay-title">Placeholder title — essay 03.</span></a>
+    <a class="essay-row" href="#essay-04"><span class="essay-idx">04</span><span class="essay-title">Placeholder title — essay 04.</span></a>
+    <a class="essay-row" href="#essay-05"><span class="essay-idx">05</span><span class="essay-title">Placeholder title — essay 05.</span></a>
+    <a class="essay-row" href="#essay-06"><span class="essay-idx">06</span><span class="essay-title">Placeholder title — essay 06.</span></a>
+    <a class="essay-row" href="#essay-07"><span class="essay-idx">07</span><span class="essay-title">Placeholder title — essay 07.</span></a>
+    <a class="essay-row" href="#essay-08"><span class="essay-idx">08</span><span class="essay-title">Placeholder title — essay 08.</span></a>
+    <a class="essay-row" href="#essay-09"><span class="essay-idx">09</span><span class="essay-title">Placeholder title — essay 09.</span></a>
+    <a class="essay-row" href="#essay-10"><span class="essay-idx">10</span><span class="essay-title">Placeholder title — essay 10.</span></a>
+    <a class="essay-row" href="#essay-11"><span class="essay-idx">11</span><span class="essay-title">Placeholder title — essay 11.</span></a>
+    <a class="essay-row" href="#essay-12"><span class="essay-idx">12</span><span class="essay-title">Placeholder title — essay 12.</span></a>
+    <a class="essay-row" href="#essay-13"><span class="essay-idx">13</span><span class="essay-title">Placeholder title — essay 13.</span></a>
+    <a class="essay-row" href="#essay-14"><span class="essay-idx">14</span><span class="essay-title">Placeholder title — essay 14.</span></a>
+    <a class="essay-row" href="#essay-15"><span class="essay-idx">15</span><span class="essay-title">Placeholder title — essay 15.</span></a>
+    <a class="essay-row" href="#essay-16"><span class="essay-idx">16</span><span class="essay-title">Placeholder title — essay 16.</span></a>
+    <a class="essay-row" href="#essay-17"><span class="essay-idx">17</span><span class="essay-title">Placeholder title — essay 17.</span></a>
+    <a class="essay-row" href="#essay-18"><span class="essay-idx">18</span><span class="essay-title">Placeholder title — essay 18.</span></a>
+    <a class="essay-row" href="#essay-19"><span class="essay-idx">19</span><span class="essay-title">Placeholder title — essay 19.</span></a>
+    <a class="essay-row" href="#essay-20"><span class="essay-idx">20</span><span class="essay-title">Placeholder title — essay 20.</span></a>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-01" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 01</span>
+  <h1>Placeholder title — essay 01.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-02" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 02</span>
+  <h1>Placeholder title — essay 02.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-03" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 03</span>
+  <h1>Placeholder title — essay 03.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-04" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 04</span>
+  <h1>Placeholder title — essay 04.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-05" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 05</span>
+  <h1>Placeholder title — essay 05.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-06" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 06</span>
+  <h1>Placeholder title — essay 06.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-07" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 07</span>
+  <h1>Placeholder title — essay 07.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-08" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 08</span>
+  <h1>Placeholder title — essay 08.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-09" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 09</span>
+  <h1>Placeholder title — essay 09.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-10" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 10</span>
+  <h1>Placeholder title — essay 10.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-11" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 11</span>
+  <h1>Placeholder title — essay 11.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-12" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 12</span>
+  <h1>Placeholder title — essay 12.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-13" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 13</span>
+  <h1>Placeholder title — essay 13.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-14" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 14</span>
+  <h1>Placeholder title — essay 14.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-15" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 15</span>
+  <h1>Placeholder title — essay 15.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-16" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 16</span>
+  <h1>Placeholder title — essay 16.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-17" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 17</span>
+  <h1>Placeholder title — essay 17.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-18" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 18</span>
+  <h1>Placeholder title — essay 18.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-19" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 19</span>
+  <h1>Placeholder title — essay 19.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<main class="essay-view" id="essay-20" hidden>
+  <a class="back-to-catalog" href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to essays</a>
+  <span class="label">Essay 20</span>
+  <h1>Placeholder title — essay 20.</h1>
+  <div class="essay-body">
+    <p>Placeholder paragraph one. Body copy to be authored. The chassis is ready; the writing slots in here when the author is ready to publish.</p>
+    <p>Placeholder paragraph two. Body copy to be authored. Each essay sits at roughly 250 to 300 words across three or four paragraphs of this shape.</p>
+    <p>Placeholder paragraph three. Body copy to be authored. Replace this text with the finished essay; the layout will breathe accordingly.</p>
+  </div>
+</main>
+
+<script>
+  // Lenis smooth scroll
+  let lenis = null;
+  try {
+    if (typeof Lenis !== 'undefined' && !window.__noLenis) {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        direction: 'vertical',
+        smooth: true,
+      });
+      function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  } catch (e) { lenis = null; }
+
+  // Topbar scrolled state
+  const topbar = document.getElementById('topbar');
+  function onScroll(){
+    if (window.scrollY > 24) topbar.classList.add('scrolled');
+    else topbar.classList.remove('scrolled');
+  }
+  if (lenis) lenis.on('scroll', onScroll);
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Custom cursor
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mx = -100, my = -100, rx = mx, ry = my;
+  dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+  ring.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+  addEventListener('mousemove', (e) => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+  });
+  function ringLoop(){
+    rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
+    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+    requestAnimationFrame(ringLoop);
+  }
+  ringLoop();
+  document.querySelectorAll('a, button, [data-magnetic]').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+  });
+
+  // View-swap controller
+  (function () {
+    const catalog = document.getElementById('catalog');
+    const essays  = document.querySelectorAll('.essay-view');
+    const base    = document.title;
+
+    function show() {
+      const hash = window.location.hash;
+      const match = hash.startsWith('#essay-')
+        ? document.getElementById(hash.slice(1))
+        : null;
+      if (match) {
+        catalog.hidden = true;
+        essays.forEach(e => { e.hidden = (e !== match); });
+        const t = match.querySelector('h1') ? match.querySelector('h1').textContent : '';
+        document.title = t ? (t + ' — Nullify the Preset') : base;
+      } else {
+        catalog.hidden = false;
+        essays.forEach(e => { e.hidden = true; });
+        document.title = base;
+      }
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+    show();
+    window.addEventListener('hashchange', show);
+  })();
+</script>
+</body>
+</html>
