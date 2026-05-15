@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#08090F">
+<meta name="theme-color" content="#0A100D">
 <title>Essays — Nullify the Preset</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,29 +14,25 @@
 
 <style>
 :root{
-  --bg:           #08090F;
-  --bg-elev:      #0D0F18;
-  --bg-deeper:    #05060B;
-  --ink:          #ECECF1;
-  --ink-soft:     #B8B9C6;
-  --ink-muted:    #7A7C8C;
-  --ink-faint:    rgba(236, 236, 241, 0.42);
-  --navy-deep:    #1B2A55;
-  --navy:         #2B4FCC;
-  --navy-bright:  #5C7BFF;
-  --navy-glow:    rgba(92, 123, 255, 0.22);
-  --navy-soft:    rgba(43, 79, 204, 0.14);
-  --rule:         rgba(236, 236, 241, 0.06);
-  --rule-strong:  rgba(236, 236, 241, 0.14);
-  --rule-navy:    rgba(92, 123, 255, 0.22);
+  --bg:           #0A100D;
+  --bg-elev:      #0F1814;
+  --bg-deeper:    #07100B;
+  --ink:          #EBE5D6;
+  --ink-soft:     #C9C3B1;
+  --ink-muted:    #8B8676;
+  --ink-faint:    rgba(235, 229, 214, 0.42);
+  --moss:         #3F5D4E;
+  --moss-light:   #6E8E7B;
+  --moss-glow:    rgba(110, 142, 123, 0.18);
+  --rule:         rgba(235, 229, 214, 0.07);
+  --rule-strong:  rgba(235, 229, 214, 0.16);
+  --rule-green:   rgba(110, 142, 123, 0.22);
   --serif:        'IBM Plex Serif', 'Times New Roman', serif;
   --sans:         'Manrope', system-ui, sans-serif;
   --mono:         'JetBrains Mono', monospace;
 
-  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
-
   --pad-x: clamp(20px, 4vw, 56px);
-  --rad: 8px;
+  --rad: 6px;
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -65,8 +61,8 @@ body{
 .stage::before{
   content: ""; position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse 70% 45% at 50% 0%, rgba(43, 79, 204, 0.10) 0%, transparent 65%),
-    radial-gradient(ellipse 100% 80% at 50% 100%, rgba(5, 6, 11, 0.7) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 45% at 50% 0%, rgba(110, 142, 123, 0.10) 0%, transparent 65%),
+    radial-gradient(ellipse 100% 80% at 50% 100%, rgba(7, 16, 11, 0.65) 0%, transparent 60%),
     linear-gradient(180deg, var(--bg-elev) 0%, var(--bg) 35%, var(--bg) 65%, var(--bg-deeper) 100%);
 }
 .stage::after{
@@ -77,17 +73,16 @@ body{
   background: conic-gradient(
     from 200deg at 50% 50%,
     transparent 0deg,
-    rgba(236, 236, 241, 0.018) 60deg,
+    rgba(235, 229, 214, 0.022) 60deg,
     transparent 120deg,
-    rgba(92, 123, 255, 0.045) 200deg,
+    rgba(110, 142, 123, 0.05) 200deg,
     transparent 260deg,
-    rgba(236, 236, 241, 0.014) 320deg,
+    rgba(235, 229, 214, 0.018) 320deg,
     transparent 360deg
   );
-  opacity: 0.6;
-  animation: spin 110s linear infinite;
+  opacity: 0.55;
+  animation: spin 90s linear infinite;
 }
-@media (max-width: 800px){ .stage::after{ animation: none; } }
 @keyframes spin { to { transform: translateX(-50%) rotate(360deg); } }
 
 .grain{
@@ -114,15 +109,8 @@ body{
 .topbar.scrolled{
   backdrop-filter: blur(18px) saturate(150%);
   -webkit-backdrop-filter: blur(18px) saturate(150%);
-  background: rgba(8, 9, 15, 0.72);
+  background: rgba(10, 16, 13, 0.72);
   border-bottom-color: var(--rule);
-}
-@media (max-width: 560px){
-  .topbar.scrolled{
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    background: rgba(8, 9, 15, 0.92);
-  }
 }
 .topbar .mark{
   display: inline-flex; align-items: center; gap: 12px;
@@ -135,8 +123,8 @@ body{
 }
 .topbar .mark .glyph::after{
   content: ""; position: absolute; inset: 3px;
-  border-radius: 50%; background: var(--navy-bright);
-  box-shadow: 0 0 8px var(--navy-glow);
+  border-radius: 50%; background: var(--moss-light);
+  box-shadow: 0 0 8px var(--moss-glow);
 }
 .topbar a.back{
   color: inherit; text-decoration: none;
@@ -196,7 +184,7 @@ body{
   transition: color 0.3s ease, transform 0.3s ease;
 }
 .essay-row:hover{ color: var(--ink); transform: translateX(-4px); }
-.essay-row:focus-visible{ outline: 1px solid var(--navy-bright); outline-offset: 6px; }
+.essay-row:focus-visible{ outline: 1px solid var(--moss-light); outline-offset: 6px; }
 .essay-row .essay-idx{
   font-family: var(--mono);
   font-size: 11px;
@@ -270,10 +258,10 @@ body{
 .cursor-dot{ width: 5px; height: 5px; background: var(--ink); }
 .cursor-ring{
   width: 30px; height: 30px;
-  border: 1px solid rgba(236, 236, 241, 0.5);
+  border: 1px solid rgba(235, 229, 214, 0.5);
   transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease;
 }
-.cursor-ring.hover{ width: 56px; height: 56px; border-color: rgba(236, 236, 241, 0.9); }
+.cursor-ring.hover{ width: 56px; height: 56px; border-color: rgba(235, 229, 214, 0.9); }
 @media (hover: none), (max-width: 800px){
   .cursor-dot, .cursor-ring{ display: none; }
 }
