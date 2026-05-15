@@ -612,8 +612,30 @@ body{
       }
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
+
+    // Intercept catalog row clicks — prevent browser from following the
+    // anchor natively (which triggers a scroll-to-element indicator on mobile).
+    document.querySelectorAll('a.essay-row').forEach(row => {
+      row.addEventListener('click', (e) => {
+        e.preventDefault();
+        history.pushState(null, '', row.getAttribute('href'));
+        show();
+      });
+    });
+
+    // Intercept back-to-catalog clicks
+    document.querySelectorAll('a.back-to-catalog').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        history.pushState(null, '', location.pathname);
+        show();
+      });
+    });
+
+    // Browser back / forward
+    window.addEventListener('popstate', show);
+
     show();
-    window.addEventListener('hashchange', show);
   })();
 </script>
 </body>
