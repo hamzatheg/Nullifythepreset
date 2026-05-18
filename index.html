@@ -196,14 +196,18 @@
             display: inline-flex; align-items: center; gap: clamp(14px, 2vw, 28px);
         }
         .topbar .meta a {
-            color: inherit; text-decoration: none;
+            color: var(--ink-soft); text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px;
             transition: color 0.3s ease;
         }
+        .topbar .meta a svg {
+            transition: transform 0.3s ease;
+        }
         .topbar .meta a:hover { color: var(--ink); }
+        .topbar .meta a:hover svg { transform: translateX(3px); }
 
         @media (max-width: 560px) {
             .topbar .mark span:not(.glyph) { font-size: 10px; }
-            .topbar .meta .meta-tag { display: none; }
         }
 
         /* ─────────────────────────── TYPOGRAPHY ─────────────────────────── */
@@ -995,10 +999,10 @@
             <span>Nullify the Preset</span>
         </a>
         <nav class="meta">
-            <span class="meta-tag">Private Review</span>
-            <span class="meta-tag">Async</span>
-            <a href="essays.html">Essays</a>
-            <a href="apply.html">Apply</a>
+            <a href="essays.html">
+                Essays
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
         </nav>
     </header>
 
