@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "opentweet": {
+      "type": "sse",
+      "url": "https://opentweet.io/twitter-mcp-server",
+      "headers": {
+        "Authorization": "Bearer ${OPENTWEET_TOKEN}"
+      }
+    }
+  }
+}
