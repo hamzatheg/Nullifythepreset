@@ -501,6 +501,22 @@
         .panel:hover { border-color: var(--rule-strong); }
         .panel:hover::before { opacity: 1; }
 
+        .panel-link {
+            display: inline-flex; align-items: center; gap: 8px;
+            margin-top: 16px;
+            font-family: var(--mono);
+            font-size: clamp(10px, 0.7vw, 11px);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--ink-soft);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .panel-link svg { transition: transform 0.3s ease; }
+        .panel-link:hover { color: var(--ink); }
+        .panel-link:hover svg { transform: translateX(3px); }
+        .panel-link:focus-visible { outline: 1px solid var(--moss-light); outline-offset: 5px; }
+
         .panel .num {
             font-family: var(--mono);
             font-size: clamp(10px, 0.7vw, 11px);
@@ -999,6 +1015,7 @@
             <span>Nullify the Preset</span>
         </a>
         <nav class="meta">
+            <a href="reviews.html">Reviews</a>
             <a href="essays.html">
                 Essays
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -1495,6 +1512,10 @@
                 <article class="panel">
                     <h3 style="margin-bottom: 10px;">What qualifies you to do this?</h3>
                     <p style="margin: 0;">Pattern recognition isn't credentialed — it's practiced. This work sits outside clinical territory by design. What qualifies it is the structural precision of the output, not a certificate. Read the page. If the thinking is rigorous, the work will be.</p>
+                    <a href="reviews.html" class="panel-link">
+                        Read three sample reviews
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
                 </article>
             </div>
         </section>
