@@ -77,14 +77,14 @@ The repeated reviews have not changed her conclusion. Consistency is not correct
 
 ## A proportionate next step
 
-1. **Write the record.** The "Before You Reopen the Decision" worksheet on this site is built for this.
+1. **Write the record.**
 2. **Run the four triggers through it.**
 3. **Write the hiring bar.**
 4. **Set the review point:** week eight from posting, or the first candidate who meets the bar, whichever comes first. Until then, any urge to reopen goes to the record.
 
 **Stopping rule:** the comparison is not rebuilt. A trigger is checked against the record; if it touches a reason, a factor that was left out, a changed priority, a new option or an error in the original reasoning, that point is examined and a threshold set; if not, the reopen is closed. Opinions and moods can prompt a written question, not a re-run.
 
-**Conditions that would trigger a deliberate reassessment, all provisional:** no candidate meets the bar by week eight; an outsourcing quote close enough to in-house cost that the original price reason is mostly gone (she sets the number; the completed worksheet example uses a 5% gap); a volume forecast beyond what two coordinators can handle; or a factor the original comparison left out that turns out to matter. Meeting one means re-evaluating on purpose, not reversing automatically.
+**Conditions that would trigger a deliberate reassessment, all provisional:** no candidate meets the bar by week eight; an outsourcing quote close enough to in-house cost that the original price reason is mostly gone (she sets the number); a volume forecast beyond what two coordinators can handle; or a factor the original comparison left out that turns out to matter. Meeting one means re-evaluating on purpose, not reversing automatically.
 
 ---
 

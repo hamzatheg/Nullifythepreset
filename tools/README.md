@@ -57,11 +57,5 @@ the stream differs from the source.
   `https://nullifythepreset.com/apply.html`. The build rewrites it to the
   relative `apply.html`, matching every other link in the site and surviving
   being served from a subpath. This is the only text transformation applied.
-- **Worksheet.** The "Before You Reopen the Decision" worksheet was removed
-  from this section; it belongs somewhere else on the site. Its source
-  markdown and the two PDFs are recoverable from git history if it comes back.
-  Note that review 3's prose still refers to it ("the worksheet on this site is
-  built for this", "the completed worksheet example uses a 5% gap"), so those
-  two sentences currently point at something not published.
 - **`content/` is not served.** The markdown is kept for editing and for the
   fidelity check. The public pages are the generated HTML at the repo root.
