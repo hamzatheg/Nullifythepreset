@@ -201,60 +201,6 @@ body{
   display: block;
 }
 
-/* Worksheet block */
-.worksheet{
-  margin-top: clamp(40px, 5vw, 56px);
-  padding: clamp(24px, 3vw, 32px);
-  border: 1px solid var(--rule);
-  border-radius: var(--rad);
-  background: rgba(235, 229, 214, 0.018);
-}
-.worksheet .label{
-  font-family: var(--mono);
-  font-size: clamp(10px, 0.65vw, 11px);
-  letter-spacing: 0.22em;
-  color: var(--ink-muted);
-  text-transform: uppercase;
-  display: inline-block;
-  margin-bottom: 14px;
-}
-.worksheet h2{
-  font-family: var(--serif);
-  font-weight: 300;
-  font-size: clamp(1.2rem, 2vw, 1.5rem);
-  line-height: 1.3;
-  color: var(--ink);
-  margin-bottom: 12px;
-}
-.worksheet p{
-  font-family: var(--sans);
-  font-size: 0.98rem;
-  line-height: 1.7;
-  color: var(--ink-soft);
-  margin: 0 0 20px;
-}
-.dl-row{ display: flex; flex-wrap: wrap; gap: 12px; }
-.dl{
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 12px 18px;
-  border: 1px solid var(--rule-strong);
-  border-radius: var(--rad);
-  font-family: var(--mono);
-  font-size: clamp(10px, 0.7vw, 11px);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  text-decoration: none;
-  transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
-}
-.dl:hover{
-  color: var(--ink);
-  border-color: var(--moss-light);
-  background: rgba(110, 142, 123, 0.08);
-}
-.dl:focus-visible{ outline: 1px solid var(--moss-light); outline-offset: 4px; }
-.dl .sz{ color: var(--ink-faint); letter-spacing: 0.1em; }
-
 /* Index apply CTA */
 .index-cta{
   margin-top: clamp(56px, 7vw, 80px);
@@ -366,20 +312,6 @@ body{
       </span>
     </a>
   </div>
-
-  <section class="worksheet">
-    <span class="label">04 · Worksheet</span>
-    <h2>Before You Reopen the Decision</h2>
-    <p>A two-page printable sheet for the moment a settled decision starts to feel unsettled. Records the original reasoning, tests whether anything has actually changed, and sets the next action and a review point.</p>
-    <div class="dl-row">
-      <a class="dl" href="worksheet-before-you-reopen-blank.pdf" download>
-        Blank version <span class="sz">PDF · 27 KB</span>
-      </a>
-      <a class="dl" href="worksheet-before-you-reopen-completed-example.pdf" download>
-        Completed example <span class="sz">PDF · 28 KB</span>
-      </a>
-    </div>
-  </section>
 
   <div class="index-cta">
     <a class="cta" href="apply.html">

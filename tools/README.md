@@ -30,7 +30,6 @@ from any directory.
 | A review's title or body | `content/sample-review-*.md` |
 | The index intro paragraphs | `content/website-integration-copy.md`, under `### Sample Reviews` |
 | A review's one-line index blurb | `content/website-integration-copy.md`, under `## Resource descriptions` |
-| The worksheet blurb | `content/website-integration-copy.md`, the paragraph under the worksheet link |
 
 Then re-run both scripts.
 
@@ -58,8 +57,5 @@ the stream differs from the source.
   `https://nullifythepreset.com/apply.html`. The build rewrites it to the
   relative `apply.html`, matching every other link in the site and surviving
   being served from a subpath. This is the only text transformation applied.
-- **Worksheet PDFs** live at the repo root as the served files. The build only
-  reads their byte size to label the download buttons; it does not copy or
-  generate them. Replacing a PDF and re-running the build updates the label.
 - **`content/` is not served.** The markdown is kept for editing and for the
   fidelity check. The public pages are the generated HTML at the repo root.

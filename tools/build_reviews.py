@@ -35,11 +35,6 @@ REVIEWS = [
     ('03', 'sample-review-3-reopening-decisions'),
 ]
 
-WORKSHEETS = [
-    ('blank', 'worksheet-before-you-reopen-blank', 'Blank version'),
-    ('example', 'worksheet-before-you-reopen-completed-example', 'Completed example'),
-]
-
 # ---------------------------------------------------------------- chassis CSS
 
 
@@ -126,8 +121,8 @@ def render_body(bs) -> str:
 
 
 def integration_copy():
-    """Pull the index intro, the per-review blurbs and the worksheet blurb out
-    of website-integration-copy.md, so that copy lives in exactly one place."""
+    """Pull the index intro and the per-review blurbs out of
+    website-integration-copy.md, so that copy lives in exactly one place."""
     md = (SRC / 'website-integration-copy.md').read_text(encoding='utf-8')
 
     sec = md.split('### Sample Reviews', 1)[1].split('\n---', 1)[0]
@@ -139,12 +134,7 @@ def integration_copy():
             r'\*\*\[([^\]]+)\]\(([^)]+)\.html\)\*\*\s*\n(.+?)(?=\n\s*\n|\Z)', md, re.S):
         descs[m.group(2)] = ' '.join(m.group(3).split())
 
-    wm = re.search(r'\*\*\[Worksheet:[^\]]*\]\([^)]+\)\*\*\s*\n(.+?)(?=\n\s*\n|\Z)', md, re.S)
-    assert wm, 'worksheet blurb not found'
-    ws = ' '.join(wm.group(1).split())
-    ws = re.sub(r'\s*\[Blank version\].*$', '', ws).strip()
-
-    return intro, descs, ws
+    return intro, descs
 
 
 # ---------------------------------------------------------------- page shell
@@ -392,60 +382,6 @@ INDEX_CSS = """
   display: block;
 }
 
-/* Worksheet block */
-.worksheet{
-  margin-top: clamp(40px, 5vw, 56px);
-  padding: clamp(24px, 3vw, 32px);
-  border: 1px solid var(--rule);
-  border-radius: var(--rad);
-  background: rgba(235, 229, 214, 0.018);
-}
-.worksheet .label{
-  font-family: var(--mono);
-  font-size: clamp(10px, 0.65vw, 11px);
-  letter-spacing: 0.22em;
-  color: var(--ink-muted);
-  text-transform: uppercase;
-  display: inline-block;
-  margin-bottom: 14px;
-}
-.worksheet h2{
-  font-family: var(--serif);
-  font-weight: 300;
-  font-size: clamp(1.2rem, 2vw, 1.5rem);
-  line-height: 1.3;
-  color: var(--ink);
-  margin-bottom: 12px;
-}
-.worksheet p{
-  font-family: var(--sans);
-  font-size: 0.98rem;
-  line-height: 1.7;
-  color: var(--ink-soft);
-  margin: 0 0 20px;
-}
-.dl-row{ display: flex; flex-wrap: wrap; gap: 12px; }
-.dl{
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 12px 18px;
-  border: 1px solid var(--rule-strong);
-  border-radius: var(--rad);
-  font-family: var(--mono);
-  font-size: clamp(10px, 0.7vw, 11px);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  text-decoration: none;
-  transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
-}
-.dl:hover{
-  color: var(--ink);
-  border-color: var(--moss-light);
-  background: rgba(110, 142, 123, 0.08);
-}
-.dl:focus-visible{ outline: 1px solid var(--moss-light); outline-offset: 4px; }
-.dl .sz{ color: var(--ink-faint); letter-spacing: 0.1em; }
-
 /* Index apply CTA */
 .index-cta{
   margin-top: clamp(56px, 7vw, 80px);
@@ -638,7 +574,7 @@ def build_review(slug, prev_slug, next_slug):
     return out, h1
 
 
-def build_index(entries, sizes, intro, descs, ws_desc):
+def build_index(entries, intro, descs):
     rows = []
     for idx, slug, title in entries:
         desc = descs.get(slug)
@@ -653,13 +589,6 @@ def build_index(entries, sizes, intro, descs, ws_desc):
             f'    </a>'
         )
 
-    dls = '\n'.join(
-        f'      <a class="dl" href="{name}.pdf" download>\n'
-        f'        {text} <span class="sz">PDF · {sizes[key]} KB</span>\n'
-        f'      </a>'
-        for key, name, text in WORKSHEETS
-    )
-
     body = f"""<main class="reviews-wrap">
   <div class="reviews-header">
     <h1>Sample Reviews</h1>
@@ -672,15 +601,6 @@ def build_index(entries, sizes, intro, descs, ws_desc):
   <div class="reviews-list">
 {chr(10).join(rows)}
   </div>
-
-  <section class="worksheet">
-    <span class="label">04 · Worksheet</span>
-    <h2>Before You Reopen the Decision</h2>
-    <p>{inline(ws_desc)}</p>
-    <div class="dl-row">
-{dls}
-    </div>
-  </section>
 
   <div class="index-cta">
     <a class="cta" href="apply.html">
@@ -698,15 +618,7 @@ def build_index(entries, sizes, intro, descs, ws_desc):
 
 
 def main():
-    # The worksheet PDFs are the served files and live at the repo root; the
-    # build only reads their sizes for the download labels.
-    sizes = {}
-    for key, name, _ in WORKSHEETS:
-        pdf = REPO / f'{name}.pdf'
-        assert pdf.exists(), f'missing worksheet PDF at repo root: {pdf.name}'
-        sizes[key] = max(1, pdf.stat().st_size // 1024)
-
-    intro, descs, ws_desc = integration_copy()
+    intro, descs = integration_copy()
 
     entries = []
     for i, (idx, slug) in enumerate(REVIEWS):
@@ -716,7 +628,7 @@ def main():
         entries.append((idx, slug, title))
         print(f'built {out.name} ({out.stat().st_size // 1024} KB)')
 
-    out = build_index(entries, sizes, intro, descs, ws_desc)
+    out = build_index(entries, intro, descs)
     print(f'built {out.name} ({out.stat().st_size // 1024} KB)')
 
 
