@@ -18,7 +18,8 @@
   min-height: 100svh;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   text-align: center;
-  padding: clamp(110px, 16vh, 160px) 0 clamp(40px, 6vh, 64px);
+  padding-top: clamp(110px, 16vh, 160px);
+  padding-bottom: clamp(40px, 6vh, 64px);
 }
 .hero h1 { margin-top: clamp(18px, 3vw, 28px); }
 .hero h1 .word {
@@ -150,7 +151,6 @@
 
 /* ─── Closing ─── */
 .closing-sec { text-align: center; max-width: 760px; margin: 0 auto; }
-.closing-sec h2 { margin-top: 20px; }
 .closing-sec .body { margin: clamp(24px, 3.5vw, 36px) auto 0; max-width: 560px; }
 .closing-sec .write-line { margin-top: clamp(24px, 3vw, 32px); }
 </style>
@@ -627,10 +627,9 @@
     </div>
   </section>
 
-  <!-- ONE LAST THING -->
+  <!-- CLOSING -->
   <section class="wrap reveal">
     <div class="closing-sec">
-      <span class="label dot center">One Last Thing</span>
       <h2>A single thing happens.<br><em>Your mind turns it into ten.</em></h2>
       <div class="body">
         <p>That tax runs every day, whether you’re watching it or not.</p>
