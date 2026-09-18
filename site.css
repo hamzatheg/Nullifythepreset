@@ -29,7 +29,7 @@
   --mono:  'JetBrains Mono', 'Courier New', monospace;
 
   --pad-x:  clamp(20px, 4vw, 56px);
-  --pad-y:  clamp(64px, 9vw, 112px);
+  --pad-y:  clamp(72px, 9vw, 112px);
   --gap:    clamp(14px, 2vw, 22px);
   --rad:    10px;
   --rad-sm: 6px;
@@ -308,10 +308,12 @@ ul.clean li:last-child { margin-bottom: 0; }
   position: relative; z-index: 2;
   max-width: var(--max-w);
   margin: 0 auto;
-  padding: 0 var(--pad-x);
+  padding-left: var(--pad-x);
+  padding-right: var(--pad-x);
 }
 .page { position: relative; z-index: 2; }
-section { position: relative; padding: var(--pad-y) 0; }
+/* Vertical rhythm lives on the section; .wrap only ever sets the gutters, so the two never collide. */
+section { position: relative; padding-top: var(--pad-y); padding-bottom: var(--pad-y); }
 section.tight { padding-top: clamp(40px, 5vw, 64px); }
 
 /* Full-bleed band: a different surface, so the page changes shape */
