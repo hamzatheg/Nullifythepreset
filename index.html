@@ -1,1651 +1,694 @@
 <!DOCTYPE html>
 <html lang="en" class="lenis">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#0A100D">
-    <title>Private Review · The Loop That Runs Your Day</title>
-    <meta name="description" content="A diagnostic for the mind that multiplies. Free, async, structurally precise.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0A100D">
+<title>Nullify the Preset · The Loop That Runs Your Day</title>
+<meta name="description" content="A diagnostic for the mind that multiplies. Free, async, structurally precise.">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,200;0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,200;0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
 
-    <style>
-        /* ─────────────────────────── TOKENS ─────────────────────────── */
-        :root {
-            /* Dark-green tech palette */
-            --bg:           #0A100D;
-            --bg-elev:      #0F1814;
-            --bg-deeper:    #07100B;
+<style>
+/* ─── Hero ─── */
+.hero {
+  min-height: 100svh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+  padding: clamp(110px, 16vh, 160px) 0 clamp(40px, 6vh, 64px);
+}
+.hero h1 { margin-top: clamp(18px, 3vw, 28px); }
+.hero h1 .word {
+  display: inline-block; opacity: 0; transform: translateY(0.4em);
+  animation: word-rise 1.1s var(--ease) forwards;
+}
+.hero h1 .delim { display: inline-block; width: 0.24em; }
+@keyframes word-rise { to { opacity: 1; transform: translateY(0); } }
+.hero h1 em { position: relative; }
+.hero h1 em::before {
+  content: ""; position: absolute;
+  top: 50%; left: -8%; width: 116%; height: 0.95em;
+  border: 1px solid var(--moss-light); border-radius: 50%;
+  transform: translateY(-48%) rotate(-3deg) scaleX(0);
+  transform-origin: 30% 50%; opacity: 0;
+  animation: orbit-draw 1.4s 1.2s var(--ease) forwards;
+  pointer-events: none;
+  box-shadow: 0 0 16px var(--moss-glow);
+}
+@keyframes orbit-draw { to { transform: translateY(-48%) rotate(-3deg) scaleX(1); opacity: 0.85; } }
+.hero-brief {
+  max-width: 600px;
+  margin: clamp(30px, 5vw, 48px) auto 0;
+  font-size: clamp(1rem, 0.6vw + 0.9rem, 1.16rem);
+  line-height: 1.65;
+  opacity: 0; animation: fade-in 1s 1.5s forwards;
+}
+.hero-brief p { margin-bottom: 0.65rem; }
+.hero-brief p.snap { margin-top: 24px; font-size: clamp(1.08rem, 0.7vw + 0.95rem, 1.28rem); }
+.hero-brief p.snap strong { font-weight: 500; }
+@keyframes fade-in { to { opacity: 1; } }
+.scroll-cue { margin-top: clamp(40px, 7vh, 72px); position: relative; height: 56px; width: 1px; opacity: 0; animation: fade-in 1s 2.2s forwards; }
+.scroll-cue::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent, var(--ink-faint)); }
+.scroll-cue::after { content: ""; position: absolute; top: 0; left: 0; width: 1px; height: 18px; background: var(--ink); animation: drip 2.4s ease-in-out infinite; }
+@keyframes drip { 0% { transform: translateY(-18px); opacity: 0; } 30% { opacity: 1; } 100% { transform: translateY(56px); opacity: 0; } }
 
-            /* Warm whites and grays */
-            --ink:          #EBE5D6;        /* warm white */
-            --ink-soft:     #C9C3B1;        /* warm light */
-            --ink-muted:    #8B8676;        /* warm gray */
-            --ink-faint:    rgba(235, 229, 214, 0.42);
+/* ─── The shape of it ─── */
+.shape { display: grid; grid-template-columns: 1fr; gap: clamp(20px, 4vw, 56px); align-items: center; }
+.shape .fig { width: min(100%, 300px); margin: 0 auto; }
+.shape .fig svg { width: 100%; height: auto; }
+@media (min-width: 860px) {
+  .shape { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  .shape .fig { width: min(100%, 380px); }
+}
+.shape h2 { margin: 14px 0 22px; }
 
-            /* Greens — accent palette */
-            --moss:         #3F5D4E;
-            --moss-light:   #6E8E7B;
-            --sage:         #94A892;
-            --moss-glow:    rgba(110, 142, 123, 0.18);
-            --moss-deep:    rgba(63, 93, 78, 0.12);
+/* ─── Cost ─── */
+.cost-eq {
+  display: grid; grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  gap: 10px; align-items: stretch; margin-top: var(--gap);
+}
+.eq {
+  border: 1px solid var(--rule); border-radius: var(--rad);
+  padding: clamp(18px, 2.4vw, 26px) 12px; text-align: center;
+  background: rgba(235, 229, 214, 0.02);
+}
+.eq .big { font-family: var(--serif); font-weight: 300; font-size: clamp(1.45rem, 2.4vw, 2.1rem); color: var(--ink); line-height: 1.1; white-space: nowrap; letter-spacing: -0.02em; }
+.eq .small { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-muted); margin-top: 10px; }
+.eq.result { border-color: var(--rule-green); background: radial-gradient(circle at 50% 0%, rgba(110, 142, 123, 0.18), transparent 70%), rgba(235, 229, 214, 0.03); }
+.eq.result .big { color: #fff; }
+.op { font-family: var(--serif); font-size: 1.5rem; color: var(--ink-muted); align-self: center; }
+@media (max-width: 720px) {
+  .cost-eq { grid-template-columns: 1fr 1fr; }
+  .op { display: none; }
+  .eq.result { grid-column: 1 / -1; }
+}
+.panel .kicker { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--rule); color: var(--ink); }
 
-            /* Rules */
-            --rule:         rgba(235, 229, 214, 0.07);
-            --rule-strong:  rgba(235, 229, 214, 0.16);
-            --rule-green:   rgba(110, 142, 123, 0.22);
+/* ─── Mechanism ─── */
+.mech { display: grid; grid-template-columns: 1fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
+@media (min-width: 900px) { .mech { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); } }
+.mech .fig { width: min(100%, 420px); margin: 0 auto; }
+.mech .fig svg { width: 100%; height: auto; }
+.mech .facts { list-style: none; border-top: 1px solid var(--rule); }
+.mech .facts li { padding: clamp(18px, 2.2vw, 24px) 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 1fr; gap: 6px 28px; }
+@media (min-width: 640px) { .mech .facts li { grid-template-columns: minmax(0, 11rem) 1fr; } }
+.mech .facts strong { font-family: var(--serif); font-weight: 300; font-size: clamp(1.15rem, 1.4vw, 1.35rem); letter-spacing: -0.015em; }
+.mech .callout { margin-top: clamp(22px, 3vw, 30px); }
 
-            /* Type stacks */
-            --serif:        'IBM Plex Serif', 'Times New Roman', serif;
-            --sans:         'Manrope', system-ui, -apple-system, sans-serif;
-            --mono:         'JetBrains Mono', 'Courier New', monospace;
+/* ─── Outcomes ─── */
+.outcome {
+  position: relative;
+  border: 1px solid var(--rule); border-radius: var(--rad);
+  padding: clamp(24px, 3vw, 34px);
+  background: linear-gradient(180deg, rgba(235, 229, 214, 0.03), rgba(235, 229, 214, 0.008));
+  transition: border-color 0.4s ease, transform 0.4s var(--ease);
+}
+.outcome:hover { border-color: var(--rule-strong); transform: translateY(-3px); }
+.outcome .n { font-family: var(--serif); font-weight: 200; font-size: clamp(2.6rem, 4vw, 3.4rem); line-height: 1; letter-spacing: -0.04em; color: var(--ink-faint); margin-bottom: clamp(28px, 4vw, 44px); }
+.outcome .icon-tile { position: absolute; top: clamp(20px, 2.6vw, 30px); right: clamp(20px, 2.6vw, 30px); }
+.outcome strong { display: block; font-family: var(--serif); font-weight: 300; font-size: clamp(1.5rem, 2vw, 1.8rem); letter-spacing: -0.02em; margin-bottom: 8px; }
+.outcome span { color: var(--ink-soft); }
+.payoff { margin-top: clamp(36px, 5vw, 56px); max-width: 30ch; }
 
-            /* Fluid spacing */
-            --pad-x:        clamp(20px, 4vw, 56px);
-            --pad-y:        clamp(72px, 11vw, 140px);
-            --gap-card:     clamp(16px, 2vw, 24px);
-            --rad:          6px;
+/* ─── Machinery ─── */
+.steps { display: grid; grid-template-columns: 1fr; gap: clamp(22px, 3vw, 36px); }
+@media (min-width: 860px) { .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.step { border-top: 1px solid var(--rule-strong); padding-top: 20px; }
+.step .n { font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--moss-light); margin-bottom: 14px; }
+.step h3 { font-family: var(--serif); font-weight: 300; font-size: clamp(1.5rem, 2vw, 1.85rem); letter-spacing: -0.02em; margin-bottom: 10px; }
+.machinery-result { margin-top: clamp(40px, 6vw, 64px); padding-top: clamp(28px, 4vw, 40px); border-top: 1px solid var(--rule); display: grid; grid-template-columns: 1fr; gap: 12px 48px; align-items: center; }
+@media (min-width: 900px) { .machinery-result { grid-template-columns: auto 1fr; } }
+.machinery-result .label { margin-top: 4px; }
+@media (max-width: 859px) { .hero h1 br { display: none; } }
 
-            /* Container reference */
-            --max-w:        1240px;
-        }
+/* ─── Pricing ─── */
+.pricing { display: grid; grid-template-columns: 1fr; gap: var(--gap); }
+@media (min-width: 900px) { .pricing { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } }
+.vault {
+  border: 1px solid var(--rule-green); border-radius: var(--rad);
+  padding: clamp(26px, 3.4vw, 44px);
+  background: radial-gradient(ellipse 70% 60% at 0% 0%, rgba(110, 142, 123, 0.16), transparent 60%), linear-gradient(180deg, rgba(235, 229, 214, 0.04), rgba(235, 229, 214, 0.01));
+}
+.vault .price-line { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-muted); }
+.vault .price-line strong { color: var(--sage); font-weight: 400; }
+.vault .price { font-family: var(--serif); font-weight: 200; font-size: clamp(3.4rem, 6.4vw, 5.4rem); line-height: 1; letter-spacing: -0.045em; color: var(--ink); margin: 14px 0 6px; display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 12px; }
+.vault .price small { font-family: var(--sans); font-size: 1rem; letter-spacing: 0; color: var(--ink-muted); font-weight: 400; }
+.vault hr { margin: 24px 0; }
+.vault .ctx { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--rule); color: var(--ink-muted); font-size: 0.95rem; }
+.guarantee { display: flex; flex-direction: column; justify-content: center; }
+.guarantee .label { color: var(--ink); align-self: center; }
 
-        /* ─────────────────────────── BASE ─────────────────────────── */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ─── Straight answers ─── */
+.faq { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--rule); }
+@media (min-width: 900px) { .faq { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(32px, 5vw, 72px); } }
+.faq > div { padding: clamp(22px, 3vw, 36px) 0; border-bottom: 1px solid var(--rule); }
+.faq h3 { font-family: var(--serif); font-weight: 300; font-size: clamp(1.3rem, 1.8vw, 1.6rem); letter-spacing: -0.02em; margin-bottom: 12px; }
+.faq .arrow-link { margin-top: 16px; }
 
-        html.lenis, html.lenis body { height: auto; }
-        .lenis.lenis-smooth { scroll-behavior: auto !important; }
-        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
-        .lenis.lenis-stopped { overflow: hidden; }
-        .lenis.lenis-smooth iframe { pointer-events: none; }
-
-        html { background: var(--bg); -webkit-text-size-adjust: 100%; }
-
-        body {
-            background: var(--bg);
-            color: var(--ink-soft);
-            font-family: var(--sans);
-            font-size: clamp(0.95rem, 0.42vw + 0.86rem, 1.05rem);
-            font-weight: 400;
-            line-height: 1.65;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden;
-            font-feature-settings: "ss01", "kern", "calt";
-            min-height: 100svh;
-        }
-
-        img, svg, canvas, video { display: block; max-width: 100%; }
-
-        /* ─────────────────────────── STAGE ─────────────────────────── */
-        .stage {
-            position: fixed; inset: 0; pointer-events: none; z-index: 0;
-        }
-        .stage::before {
-            content: ""; position: absolute; inset: 0;
-            background:
-              radial-gradient(ellipse 70% 45% at 50% 0%, rgba(110, 142, 123, 0.10) 0%, transparent 65%),
-              radial-gradient(ellipse 100% 80% at 50% 100%, rgba(7, 16, 11, 0.65) 0%, transparent 60%),
-              linear-gradient(180deg, var(--bg-elev) 0%, var(--bg) 35%, var(--bg) 65%, var(--bg-deeper) 100%);
-        }
-        .stage::after {
-            content: ""; position: absolute;
-            top: -30vh; left: 50%;
-            width: 140vmax; height: 140vmax;
-            transform: translateX(-50%);
-            background: conic-gradient(
-                from 200deg at 50% 50%,
-                transparent 0deg,
-                rgba(235, 229, 214, 0.022) 60deg,
-                transparent 120deg,
-                rgba(110, 142, 123, 0.05) 200deg,
-                transparent 260deg,
-                rgba(235, 229, 214, 0.018) 320deg,
-                transparent 360deg
-            );
-            opacity: 0.55;
-            animation: spin 90s linear infinite;
-        }
-        @keyframes spin { to { transform: translateX(-50%) rotate(360deg); } }
-
-        .grain {
-            position: fixed; inset: 0; pointer-events: none; z-index: 9998;
-            opacity: 0.022;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-            mix-blend-mode: overlay;
-        }
-
-        .progress {
-            position: fixed; top: 0; left: 0;
-            height: 1px; width: 0%;
-            background: linear-gradient(90deg, transparent, var(--ink-faint), var(--moss-light));
-            z-index: 10000;
-            transition: width 0.1s linear;
-        }
-
-        /* ─────────────────────────── CURSOR ─────────────────────────── */
-        .cursor-dot, .cursor-ring {
-            position: fixed; top: 0; left: 0;
-            pointer-events: none; z-index: 10001;
-            border-radius: 50%;
-            mix-blend-mode: difference;
-            transform: translate(-50%, -50%);
-            will-change: transform;
-        }
-        .cursor-dot {
-            width: 5px; height: 5px;
-            background: var(--ink);
-        }
-        .cursor-ring {
-            width: 30px; height: 30px;
-            border: 1px solid rgba(235, 229, 214, 0.5);
-            transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease;
-        }
-        .cursor-ring.hover {
-            width: 56px; height: 56px;
-            border-color: rgba(235, 229, 214, 0.9);
-        }
-        @media (hover: none), (max-width: 800px) {
-            .cursor-dot, .cursor-ring { display: none; }
-        }
-
-        /* ─────────────────────────── TOPBAR ─────────────────────────── */
-        .topbar {
-            position: fixed; top: 0; left: 0; right: 0;
-            z-index: 100;
-            padding: clamp(14px, 1.6vw, 22px) var(--pad-x);
-            display: flex; justify-content: space-between; align-items: center;
-            font-family: var(--mono);
-            font-size: clamp(10px, 0.7vw, 11px);
-            font-weight: 400;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--ink-faint);
-            background: transparent;
-            border-bottom: 1px solid transparent;
-            transition: background 0.5s ease, backdrop-filter 0.5s ease, border-color 0.5s ease, padding 0.4s ease;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .topbar.scrolled {
-            backdrop-filter: blur(18px) saturate(150%);
-            -webkit-backdrop-filter: blur(18px) saturate(150%);
-            background: rgba(10, 16, 13, 0.72);
-            border-bottom-color: var(--rule);
-        }
-        .topbar .mark {
-            display: inline-flex; align-items: center; gap: 12px;
-            color: var(--ink); text-decoration: none;
-        }
-        .topbar .mark .glyph {
-            width: 14px; height: 14px;
-            border: 1px solid var(--ink);
-            border-radius: 50%;
-            position: relative;
-            flex-shrink: 0;
-        }
-        .topbar .mark .glyph::after {
-            content: "";
-            position: absolute; inset: 3px;
-            border-radius: 50%;
-            background: var(--moss-light);
-            box-shadow: 0 0 8px var(--moss-glow);
-        }
-        .topbar .meta {
-            display: inline-flex; align-items: center; gap: clamp(14px, 2vw, 28px);
-        }
-        .topbar .meta a {
-            color: var(--ink-soft); text-decoration: none;
-            display: inline-flex; align-items: center; gap: 8px;
-            transition: color 0.3s ease;
-        }
-        .topbar .meta a svg {
-            transition: transform 0.3s ease;
-        }
-        .topbar .meta a:hover { color: var(--ink); }
-        .topbar .meta a:hover svg { transform: translateX(3px); }
-
-        @media (max-width: 560px) {
-            .topbar .mark span:not(.glyph) { font-size: 10px; }
-        }
-
-        /* ─────────────────────────── TYPOGRAPHY ─────────────────────────── */
-        h1, h2 {
-            font-family: var(--serif);
-            color: var(--ink);
-            font-weight: 300;
-            letter-spacing: -0.02em;
-        }
-
-        h1 {
-            font-size: clamp(2.6rem, 8.8vw, 7rem);
-            line-height: 0.96;
-            letter-spacing: -0.04em;
-            font-weight: 300;
-            text-wrap: balance;
-        }
-
-        h2 {
-            font-size: clamp(2rem, 5.4vw, 3.6rem);
-            line-height: 1.05;
-            letter-spacing: -0.025em;
-            font-weight: 300;
-            text-wrap: balance;
-        }
-
-        h3, h4, h5, h6 {
-            font-family: var(--sans);
-            color: var(--ink);
-            font-weight: 600;
-            letter-spacing: -0.005em;
-        }
-
-        h3 {
-            font-size: clamp(1.1rem, 1.6vw, 1.3rem);
-            line-height: 1.3;
-        }
-
-        em, i {
-            font-family: var(--serif);
-            font-style: italic;
-            color: var(--ink);
-            font-weight: 300;
-        }
-
-        strong { color: var(--ink); font-weight: 500; }
-
-        p {
-            margin-bottom: 1.4rem;
-            font-size: clamp(0.95rem, 0.4vw + 0.86rem, 1.05rem);
-            color: var(--ink-soft);
-            line-height: 1.7;
-        }
-        p:last-child { margin-bottom: 0; }
-
-        a { color: inherit; }
-
-        /* ─────────────────────────── LABELS ─────────────────────────── */
-        .label {
-            font-family: var(--mono);
-            font-size: clamp(10px, 0.65vw, 11px);
-            letter-spacing: 0.22em;
-            color: var(--ink-muted);
-            text-transform: uppercase;
-            font-weight: 400;
-            display: inline-flex; align-items: center;
-            gap: 14px;
-            line-height: 1;
-        }
-        .label::before {
-            content: "";
-            width: 28px; height: 1px;
-            background: currentColor;
-            opacity: 0.5;
-            flex-shrink: 0;
-        }
-        .label.center::after {
-            content: "";
-            width: 28px; height: 1px;
-            background: currentColor;
-            opacity: 0.5;
-            flex-shrink: 0;
-        }
-        .label.bare::before { display: none; }
-
-        /* ─────────────────────────── LAYOUT ─────────────────────────── */
-        .wrap {
-            position: relative; z-index: 2;
-            max-width: var(--max-w);
-            margin: 0 auto;
-            padding: 0 var(--pad-x);
-            container-type: inline-size;
-            container-name: wrap;
-        }
-
-        section { padding: var(--pad-y) 0; position: relative; }
-
-        .split {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: clamp(36px, 6vw, 60px);
-            align-items: start;
-            container-type: inline-size;
-            container-name: split;
-        }
-
-        @container wrap (min-width: 980px) {
-            .split {
-                grid-template-columns: 4fr 6fr;
-                gap: clamp(60px, 6vw, 100px);
-            }
-            .split-left { position: sticky; top: 120px; }
-        }
-
-        .sec-head { margin-bottom: clamp(40px, 6vw, 64px); }
-        .sec-head .label { margin-bottom: clamp(14px, 1.6vw, 22px); }
-
-        /* ─────────────────────────── HERO ─────────────────────────── */
-        .hero {
-            min-height: 100svh;
-            display: flex; flex-direction: column; align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding-top: clamp(120px, 18vh, 22vh);
-            padding-bottom: clamp(60px, 8vh, 80px);
-            position: relative;
-        }
-
-        .hero h1 {
-            margin-top: clamp(20px, 3vw, 32px);
-            position: relative;
-        }
-
-        .hero h1 .word {
-            display: inline-block;
-            opacity: 0;
-            transform: translateY(0.4em);
-            animation: word-rise 1.1s cubic-bezier(0.2, 0.85, 0.2, 1) forwards;
-        }
-        .hero h1 .word.delim { display: inline-block; width: 0.32em; }
-        @keyframes word-rise { to { opacity: 1; transform: translateY(0); } }
-
-        .hero h1 em {
-            position: relative;
-        }
-        .hero h1 em::before {
-            content: "";
-            position: absolute;
-            top: 50%; left: -8%;
-            width: 116%; height: 0.95em;
-            border: 1px solid var(--moss-light);
-            border-radius: 50%;
-            transform: translateY(-48%) rotate(-3deg) scaleX(0);
-            transform-origin: 30% 50%;
-            opacity: 0;
-            animation: orbit-draw 1.4s 1.2s cubic-bezier(0.2, 0.85, 0.2, 1) forwards;
-            pointer-events: none;
-            box-shadow: 0 0 16px var(--moss-glow);
-        }
-        @keyframes orbit-draw {
-            to { transform: translateY(-48%) rotate(-3deg) scaleX(1); opacity: 0.85; }
-        }
-
-        .hero-brief {
-            max-width: 640px;
-            margin: clamp(36px, 6vw, 56px) auto 0;
-            font-size: clamp(1rem, 1.2vw + 0.8rem, 1.18rem);
-            line-height: 1.7;
-            color: var(--ink-soft);
-            opacity: 0;
-            animation: fade-in 1s 1.6s forwards;
-        }
-        .hero-brief p { margin-bottom: 0.8rem; font-size: inherit; }
-        .hero-brief p.snap {
-            color: var(--ink); margin-top: 28px;
-            font-size: clamp(1.05rem, 1.4vw + 0.8rem, 1.25rem);
-        }
-        @keyframes fade-in { to { opacity: 1; } }
-
-        .scroll-cue {
-            margin-top: clamp(48px, 8vh, 80px);
-            position: relative;
-            height: 60px;
-            opacity: 0;
-            animation: fade-in 1s 2.2s forwards;
-        }
-        .scroll-cue::before {
-            content: ""; position: absolute;
-            top: 0; left: 50%;
-            width: 1px; height: 60px;
-            background: linear-gradient(180deg, transparent, var(--ink-faint));
-        }
-        .scroll-cue::after {
-            content: ""; position: absolute;
-            top: 0; left: 50%;
-            transform: translateX(-50%);
-            width: 1px; height: 20px;
-            background: var(--ink);
-            animation: drip 2.4s ease-in-out infinite;
-        }
-        @keyframes drip {
-            0%   { transform: translate(-50%, -20px); opacity: 0; }
-            30%  { opacity: 1; }
-            100% { transform: translate(-50%, 60px); opacity: 0; }
-        }
-
-        /* ─────────────────────────── CTA ─────────────────────────── */
-        .cta {
-            display: inline-flex; align-items: center; justify-content: center;
-            gap: 14px;
-            background: var(--ink);
-            color: #0A100D;
-            padding: clamp(15px, 1.4vw, 19px) clamp(28px, 3vw, 36px);
-            border-radius: 999px;
-            font-family: var(--sans);
-            font-weight: 600;
-            font-size: clamp(0.9rem, 0.4vw + 0.8rem, 0.98rem);
-            letter-spacing: 0.01em;
-            text-decoration: none;
-            position: relative; overflow: hidden;
-            transition: transform 0.4s cubic-bezier(0.2, 0.85, 0.2, 1),
-                        box-shadow 0.4s ease;
-            box-shadow:
-              0 1px 0 rgba(255,255,255,0.3) inset,
-              0 12px 40px -12px rgba(235, 229, 214, 0.22),
-              0 0 0 1px rgba(235, 229, 214, 0.1);
-        }
-        .cta::after {
-            content: ""; position: absolute; inset: 0;
-            background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%),
-                rgba(110, 142, 123, 0.45) 0%, transparent 50%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-        .cta:hover {
-            transform: translateY(-2px);
-            box-shadow:
-              0 1px 0 rgba(255,255,255,0.4) inset,
-              0 18px 60px -10px rgba(235, 229, 214, 0.32),
-              0 0 0 1px rgba(235, 229, 214, 0.2);
-        }
-        .cta:hover::after { opacity: 1; }
-        .cta .arrow { display: inline-block; transition: transform 0.4s cubic-bezier(0.2, 0.85, 0.2, 1); }
-        .cta:hover .arrow { transform: translateX(4px); }
-
-        .cta-cluster {
-            margin-top: clamp(32px, 5vw, 56px);
-            display: flex; flex-direction: column; align-items: center;
-            gap: 18px;
-        }
-
-        /* ─────────────────────────── PANELS (was: cards) ─────────────────────────── */
-        .panel {
-            position: relative;
-            background: linear-gradient(180deg, rgba(235, 229, 214, 0.025) 0%, rgba(235, 229, 214, 0.005) 100%);
-            border: 1px solid var(--rule);
-            padding: clamp(28px, 3.4vw, 44px);
-            border-radius: var(--rad);
-            overflow: hidden;
-            box-shadow:
-              0 24px 48px -28px rgba(0, 0, 0, 0.55),
-              0 1px 0 rgba(235, 229, 214, 0.04) inset;
-            transition: border-color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
-            container-type: inline-size;
-        }
-        .panel::before {
-            content: "";
-            position: absolute; inset: 0;
-            border-radius: var(--rad);
-            padding: 1px;
-            background: conic-gradient(
-                from var(--card-angle, 0deg) at var(--mx, 50%) var(--my, 50%),
-                transparent 0deg,
-                rgba(235, 229, 214, 0.0) 60deg,
-                rgba(110, 142, 123, 0.45) 120deg,
-                rgba(235, 229, 214, 0.0) 180deg,
-                transparent 360deg
-            );
-            -webkit-mask:
-              linear-gradient(#000 0 0) content-box,
-              linear-gradient(#000 0 0);
-            mask:
-              linear-gradient(#000 0 0) content-box,
-              linear-gradient(#000 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            pointer-events: none;
-        }
-        .panel:hover { border-color: var(--rule-strong); }
-        .panel:hover::before { opacity: 1; }
-
-        .panel-link {
-            display: inline-flex; align-items: center; gap: 8px;
-            margin-top: 16px;
-            font-family: var(--mono);
-            font-size: clamp(10px, 0.7vw, 11px);
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: var(--ink-soft);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        .panel-link svg { transition: transform 0.3s ease; }
-        .panel-link:hover { color: var(--ink); }
-        .panel-link:hover svg { transform: translateX(3px); }
-        .panel-link:focus-visible { outline: 1px solid var(--moss-light); outline-offset: 5px; }
-
-        .panel .num {
-            font-family: var(--mono);
-            font-size: clamp(10px, 0.7vw, 11px);
-            letter-spacing: 0.22em;
-            color: var(--ink-muted);
-            display: inline-flex; align-items: center;
-            margin-bottom: clamp(18px, 2.2vw, 26px);
-            text-transform: uppercase;
-        }
-        .panel .num::before {
-            content: "";
-            display: inline-block;
-            width: 18px; height: 1px;
-            background: var(--ink-muted);
-            margin-right: 10px;
-        }
-
-        .panel .icon-block {
-            display: flex; align-items: center; gap: 14px;
-            margin-bottom: clamp(20px, 2.4vw, 28px);
-        }
-        .icon {
-            width: clamp(20px, 2vw, 24px);
-            height: clamp(20px, 2vw, 24px);
-            stroke: var(--ink);
-            stroke-width: 1.25;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            fill: none;
-            flex-shrink: 0;
-        }
-        .icon-tile {
-            width: clamp(40px, 4.4vw, 52px);
-            height: clamp(40px, 4.4vw, 52px);
-            border-radius: 50%;
-            border: 1px solid var(--rule-green);
-            background: radial-gradient(circle at 50% 30%, rgba(110, 142, 123, 0.18), transparent 70%);
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0;
-        }
-        .icon-tile .icon {
-            width: clamp(18px, 1.8vw, 22px);
-            height: clamp(18px, 1.8vw, 22px);
-            stroke: var(--moss-light);
-        }
-
-        /* ─────────────────────────── GRIDS via CONTAINER QUERIES ─────────────────────────── */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: var(--gap-card);
-            container-type: inline-size;
-            container-name: g2;
-        }
-        @container wrap (min-width: 760px) {
-            .grid-2 { grid-template-columns: 1fr 1fr; }
-        }
-
-        .grid-4 {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: var(--gap-card);
-            container-type: inline-size;
-            container-name: g4;
-        }
-        @container wrap (min-width: 640px) {
-            .grid-4 { grid-template-columns: 1fr 1fr; }
-        }
-
-        /* ─────────────────────────── LISTS ─────────────────────────── */
-        ul.clean { list-style: none; padding: 0; }
-        ul.clean li {
-            position: relative;
-            padding-left: 28px;
-            margin-bottom: 16px;
-            line-height: 1.6;
-        }
-        ul.clean li::before {
-            content: "";
-            position: absolute;
-            left: 0; top: 0.7em;
-            width: 14px; height: 1px;
-            background: var(--rule-strong);
-        }
-
-        /* ─────────────────────────── COST EQUATION ─────────────────────────── */
-        .cost-eq {
-            margin-top: clamp(48px, 7vw, 80px);
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-            justify-items: center;
-            container-type: inline-size;
-            container-name: cost;
-        }
-        @container wrap (min-width: 760px) {
-            .cost-eq {
-                grid-template-columns: 1fr auto 1fr auto 1fr auto 1.1fr;
-                gap: 12px;
-                align-items: stretch;
-            }
-        }
-        .cost-eq .eq {
-            padding: clamp(18px, 2vw, 26px) clamp(20px, 2.4vw, 28px);
-            border: 1px solid var(--rule);
-            border-radius: var(--rad);
-            text-align: center;
-            min-width: 150px;
-            width: 100%;
-            max-width: 280px;
-            display: flex; flex-direction: column; justify-content: center;
-            background: rgba(235, 229, 214, 0.018);
-        }
-        @container wrap (min-width: 760px) {
-            .cost-eq .eq { max-width: none; min-width: 0; }
-        }
-        .cost-eq .eq .big {
-            font-family: var(--serif);
-            font-size: clamp(1.3rem, 1.8vw, 1.6rem);
-            color: var(--ink);
-            line-height: 1.1;
-            margin-bottom: 4px;
-            font-weight: 300;
-        }
-        .cost-eq .eq .small {
-            font-family: var(--mono);
-            font-size: 0.7rem;
-            letter-spacing: 0.14em;
-            color: var(--ink-muted);
-            text-transform: uppercase;
-        }
-        .cost-eq .op {
-            display: flex; align-items: center; justify-content: center;
-            color: var(--ink-faint);
-            font-family: var(--serif);
-            font-style: italic;
-            font-size: 1.5rem;
-            font-weight: 300;
-            min-width: 24px;
-            min-height: 24px;
-            transform: rotate(90deg);
-        }
-        @container wrap (min-width: 760px) {
-            .cost-eq .op { transform: none; }
-        }
-        .cost-eq .result {
-            border-color: var(--rule-green);
-            background:
-              radial-gradient(circle at 50% 0%, rgba(110, 142, 123, 0.12), transparent 70%),
-              rgba(235, 229, 214, 0.04);
-        }
-
-        /* ─────────────────────────── PIERCE QUOTE ─────────────────────────── */
-        .pierce {
-            font-family: var(--serif);
-            font-size: clamp(1.4rem, 3vw, 2.2rem);
-            font-style: italic;
-            line-height: 1.3;
-            color: var(--ink);
-            font-weight: 300;
-            padding: clamp(24px, 3vw, 32px) clamp(28px, 3.4vw, 40px);
-            border-left: 1px solid var(--moss-light);
-            position: relative;
-            margin: clamp(28px, 4vw, 40px) 0;
-            text-wrap: balance;
-        }
-        .pierce::before {
-            content: ""; position: absolute;
-            top: 0; left: -1px;
-            width: 1px; height: 40%;
-            background: linear-gradient(180deg, var(--moss-light), transparent);
-        }
-
-        .warn {
-            border-color: var(--rule-green);
-            background:
-              radial-gradient(circle at 0% 0%, rgba(110, 142, 123, 0.08), transparent 50%),
-              linear-gradient(180deg, rgba(235, 229, 214, 0.018) 0%, rgba(235, 229, 214, 0.005) 100%);
-        }
-        .warn p { color: var(--ink); }
-
-        /* ─────────────────────────── OUTCOMES ─────────────────────────── */
-        .outcomes {
-            border: 1px solid var(--rule);
-            border-radius: var(--rad);
-            overflow: hidden;
-            box-shadow: 0 24px 48px -28px rgba(0, 0, 0, 0.55);
-            container-type: inline-size;
-        }
-        .outcome {
-            padding: clamp(24px, 3vw, 32px) clamp(22px, 3vw, 36px);
-            border-bottom: 1px solid var(--rule);
-            display: grid;
-            grid-template-columns: clamp(40px, 5vw, 56px) auto 1fr;
-            gap: clamp(14px, 2vw, 22px);
-            align-items: start;
-            background: rgba(235, 229, 214, 0.012);
-            transition: background 0.4s ease;
-        }
-        .outcome:last-child { border-bottom: none; }
-        .outcome:hover { background: rgba(235, 229, 214, 0.04); }
-        .outcome .idx {
-            font-family: var(--mono);
-            font-size: clamp(11px, 0.85vw, 13px);
-            letter-spacing: 0.16em;
-            color: var(--ink-muted);
-            padding-top: 6px;
-        }
-        .outcome .icon-tile {
-            width: clamp(36px, 4vw, 46px);
-            height: clamp(36px, 4vw, 46px);
-        }
-        .outcome strong {
-            display: block;
-            font-family: var(--sans);
-            font-style: normal;
-            font-weight: 600;
-            font-size: clamp(1.1rem, 1.4vw, 1.25rem);
-            color: var(--ink);
-            margin-bottom: 4px;
-            letter-spacing: -0.005em;
-        }
-
-        /* ─────────────────────────── VAULT ─────────────────────────── */
-        .vault {
-            position: relative;
-            padding: clamp(36px, 5vw, 56px) clamp(28px, 4vw, 48px);
-            border: 1px solid var(--rule-green);
-            border-radius: var(--rad);
-            background:
-              radial-gradient(circle at 100% 0%, rgba(110, 142, 123, 0.10) 0%, transparent 45%),
-              linear-gradient(180deg, rgba(235, 229, 214, 0.04) 0%, rgba(235, 229, 214, 0.01) 100%);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            overflow: hidden;
-            margin-bottom: 18px;
-            box-shadow: 0 32px 72px -32px rgba(0, 0, 0, 0.6);
-        }
-        .vault::before {
-            content: ""; position: absolute;
-            top: 0; left: 0; right: 0; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(110, 142, 123, 0.55), transparent);
-        }
-        .vault .price-line {
-            color: var(--ink); font-size: clamp(0.95rem, 1.1vw, 1.05rem); margin-bottom: 12px;
-        }
-        .vault .price {
-            font-family: var(--serif);
-            font-size: clamp(2.2rem, 4vw, 3rem);
-            color: var(--ink);
-            line-height: 1;
-            margin-bottom: 8px;
-            font-weight: 300;
-            letter-spacing: -0.02em;
-        }
-        .vault .price small {
-            font-family: var(--sans);
-            font-size: clamp(0.85rem, 1vw, 0.95rem);
-            color: var(--ink-soft);
-            font-weight: 400;
-            letter-spacing: 0;
-        }
-        .vault hr { border: none; height: 1px; background: var(--rule); margin: clamp(20px, 2.6vw, 28px) 0; }
-        .vault .ctx { font-size: 0.9rem; color: var(--ink-muted); margin-top: 0; }
-
-        /* ─────────────────────────── MARQUEE ─────────────────────────── */
-        .marquee {
-            position: relative;
-            overflow: hidden;
-            padding: clamp(20px, 2.4vw, 30px) 0;
-            border-top: 1px solid var(--rule);
-            border-bottom: 1px solid var(--rule);
-            background: rgba(235, 229, 214, 0.012);
-        }
-        .marquee-track {
-            display: flex;
-            gap: clamp(36px, 5vw, 64px);
-            white-space: nowrap;
-            animation: marquee 60s linear infinite;
-            font-family: var(--sans);
-            font-style: normal;
-            font-size: clamp(1.2rem, 2.6vw, 2.1rem);
-            color: var(--ink);
-            font-weight: 500;
-            letter-spacing: -0.01em;
-            width: max-content;
-            align-items: center;
-        }
-        .marquee-track .dot {
-            width: clamp(5px, 0.6vw, 7px);
-            height: clamp(5px, 0.6vw, 7px);
-            border-radius: 50%;
-            background: var(--moss-light);
-            box-shadow: 0 0 8px var(--moss-glow);
-            display: inline-block;
-        }
-        @keyframes marquee {
-            from { transform: translateX(0); }
-            to   { transform: translateX(-50%); }
-        }
-
-        /* ─────────────────────────── REVEAL ─────────────────────────── */
-        .reveal {
-            opacity: 0;
-            transform: translateY(28px);
-            transition: opacity 1.1s cubic-bezier(0.2, 0.85, 0.2, 1),
-                        transform 1.1s cubic-bezier(0.2, 0.85, 0.2, 1);
-            will-change: opacity, transform;
-        }
-        .reveal.in { opacity: 1; transform: translateY(0); }
-
-        @keyframes drawLine { to { stroke-dashoffset: 0; } }
-        @keyframes fadeIn { to { opacity: 1; } }
-        .reveal.in .svg-fade { animation: fadeIn 0.9s forwards; }
-        .reveal.in .svg-path { animation: drawLine 2.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-
-        /* ─────────────────────────── MULTIPLICATION VISUAL ─────────────────────────── */
-        .mult {
-            position: relative;
-            width: 100%;
-            max-width: 720px;
-            margin: 0 auto;
-            padding: clamp(96px, 12vw, 140px) 0;
-            text-align: center;
-        }
-        .mult .label {
-            margin-bottom: clamp(20px, 2.4vw, 28px);
-        }
-        .mult h2 {
-            margin-bottom: clamp(24px, 3vw, 32px);
-            text-wrap: balance;
-        }
-        .mult-cascade {
-            display: block;
-            width: 100%;
-            max-width: clamp(260px, 38vw, 380px);
-            margin: clamp(32px, 4.5vw, 52px) auto clamp(36px, 5vw, 56px);
-            opacity: 0.95;
-        }
-        .mult-cascade svg {
-            width: 100%;
-            height: auto;
-            overflow: visible;
-            display: block;
-        }
-        .mult .lede {
-            font-family: var(--sans);
-            color: var(--ink-soft);
-            font-size: clamp(1rem, 0.5vw + 0.9rem, 1.12rem);
-            line-height: 1.7;
-            max-width: 52ch;
-            margin: 0 auto;
-            text-align: left;
-        }
-        .mult .hairline {
-            width: 64px;
-            height: 1px;
-            border: 0;
-            background: linear-gradient(90deg, transparent, var(--moss-light), transparent);
-            margin: clamp(40px, 5vw, 56px) auto 0;
-            opacity: 0.6;
-        }
-        @container wrap (min-width: 880px) {
-            .mult {
-                max-width: 1040px;
-                display: grid;
-                grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
-                column-gap: clamp(56px, 6vw, 88px);
-                row-gap: 0;
-                align-items: start;
-                text-align: left;
-                padding: clamp(72px, 8vw, 100px) 0;
-            }
-            .mult > .label {
-                grid-column: 2;
-                grid-row: 1;
-                margin-bottom: clamp(14px, 1.8vw, 22px);
-            }
-            .mult > h2 {
-                grid-column: 2;
-                grid-row: 2;
-                margin-bottom: clamp(20px, 2.4vw, 28px);
-            }
-            .mult-cascade {
-                grid-column: 1;
-                grid-row: 1 / 5;
-                align-self: center;
-                justify-self: center;
-                margin: 0;
-                max-width: 100%;
-            }
-            .mult > .lede {
-                grid-column: 2;
-                grid-row: 3;
-                margin: 0;
-                text-align: left;
-                max-width: 52ch;
-            }
-            .mult > .hairline {
-                grid-column: 2;
-                grid-row: 4;
-                margin: clamp(28px, 3.5vw, 40px) 0 0;
-            }
-            .mult .label.center::after { display: none; }
-        }
-
-        /* ─────────────────────────── CLOSED LOOP ─────────────────────────── */
-        .closed-loop {
-            display: flex; justify-content: center; align-items: center;
-            margin-bottom: clamp(40px, 5vw, 56px);
-            container-type: inline-size;
-        }
-        .closed-loop svg { width: 100%; max-width: 420px; height: auto; overflow: visible; }
-
-        /* ─────────────────────────── ORNAMENT ─────────────────────────── */
-        .ornament {
-            display: flex; align-items: center; justify-content: center;
-            margin: clamp(56px, 8vw, 80px) 0;
-            gap: 20px;
-            opacity: 0.7;
-        }
-        .ornament .line {
-            flex: 1; height: 1px;
-            background: linear-gradient(90deg, transparent, var(--rule-strong), transparent);
-            max-width: 220px;
-        }
-        .ornament .glyph {
-            width: 8px; height: 8px;
-            border: 1px solid var(--ink-faint);
-            border-radius: 50%;
-            position: relative;
-        }
-        .ornament .glyph::after {
-            content: "";
-            position: absolute;
-            inset: 2px;
-            background: var(--moss-light);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--moss-glow);
-        }
-
-        /* ─────────────────────────── FOOTER ─────────────────────────── */
-        footer {
-            position: relative; z-index: 2;
-            padding: clamp(60px, 9vw, 90px) var(--pad-x) clamp(40px, 6vw, 60px);
-            text-align: center;
-            border-top: 1px solid var(--rule);
-            margin-top: 40px;
-            container-type: inline-size;
-        }
-        footer .sig {
-            display: inline-flex; flex-direction: column; align-items: center;
-            gap: 16px;
-        }
-        footer .sig svg { opacity: 0.85; }
-        footer .meta {
-            margin-top: clamp(20px, 3vw, 28px);
-            font-family: var(--mono);
-            font-size: 10px;
-            color: var(--ink-muted);
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
-        }
-        footer .meta .sep { opacity: 0.45; }
-
-        /* ─────────────────────────── REDUCED MOTION ─────────────────────────── */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.001ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.001ms !important;
-            }
-            .stage::after { display: none; }
-        }
-
-        /* ─────────────────────────── UTIL ─────────────────────────── */
-        .cluster-center { display: flex; flex-direction: column; align-items: center; }
-        .max-prose { max-width: 640px; }
-        .nowrap { white-space: nowrap; }
-        .text-ink { color: var(--ink); }
-        .accent-quiet { color: var(--moss-light); }
-    </style>
+/* ─── Closing ─── */
+.closing-sec { text-align: center; max-width: 760px; margin: 0 auto; }
+.closing-sec h2 { margin-top: 20px; }
+.closing-sec .body { margin: clamp(24px, 3.5vw, 36px) auto 0; max-width: 560px; }
+.closing-sec .write-line { margin-top: clamp(24px, 3vw, 32px); }
+</style>
 </head>
 <body>
 
-    <div class="stage" aria-hidden="true"></div>
-    <div class="grain" aria-hidden="true"></div>
-    <div class="progress" id="progress"></div>
-    <div class="cursor-ring" id="cursorRing"></div>
-    <div class="cursor-dot" id="cursorDot"></div>
+<div class="stage" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
 
-    <header class="topbar" id="topbar">
-        <a class="mark" href="#top">
-            <span class="glyph"></span>
-            <span>Nullify the Preset</span>
+<header class="topbar" id="topbar">
+  <a class="mark" href="index.html" aria-label="Nullify the Preset — home">
+    <span class="glyph"></span>
+    <span>Nullify the Preset</span>
+  </a>
+  <nav aria-label="Site">
+    <a href="essays.html">Essays <span class="count">20</span></a>
+    <a href="reviews.html">Reviews <span class="count">03</span></a>
+    <a href="apply.html" class="apply">Apply <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+  </nav>
+</header>
+
+<main class="page" id="top">
+
+  <!-- HERO -->
+  <section class="hero wrap">
+    <span class="label dot center">A diagnostic for the mind that multiplies</span>
+    <h1 id="heroH1">
+      <span class="word" style="animation-delay:0.10s">The</span><span class="word delim"></span><span class="word" style="animation-delay:0.22s"><em>loop</em></span><span class="word delim"></span><span class="word" style="animation-delay:0.34s">that</span><br>
+      <span class="word" style="animation-delay:0.46s">runs</span><span class="word delim"></span><span class="word" style="animation-delay:0.58s">your</span><span class="word delim"></span><span class="word" style="animation-delay:0.70s">day</span>
+    </h1>
+
+    <div class="hero-brief">
+      <p>One small thing happens.</p>
+      <p>A message. A look. A delay.</p>
+      <p>Your mind doesn’t stop there. It multiplies.</p>
+      <p>One detail becomes pressure, then doubt, then self-attack. The thoughts keep changing. The feeling stays the same.</p>
+      <p class="snap"><strong>You don’t need more thought. You need a map of what keeps multiplying it.</strong></p>
+
+      <div class="cta-cluster">
+        <a href="apply.html" class="cta" data-magnetic>
+          <span>Apply for a Private Review</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <nav class="meta">
-            <a href="reviews.html">Reviews</a>
-            <a href="essays.html">
-                Essays
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-        </nav>
-    </header>
-
-    <main class="wrap" id="top">
-
-        <!-- HERO -->
-        <section class="hero">
-            <span class="label center bare" style="margin: 0 auto;">A Diagnostic for the Mind That Multiplies</span>
-
-            <h1 id="heroH1">
-                <span class="word" style="animation-delay:0.10s">The</span>
-                <span class="word delim"></span>
-                <span class="word" style="animation-delay:0.22s"><em>loop</em></span>
-                <span class="word delim"></span>
-                <span class="word" style="animation-delay:0.34s">that</span>
-                <span class="word delim"></span>
-                <span class="word" style="animation-delay:0.46s">runs</span>
-                <span class="word delim"></span>
-                <span class="word" style="animation-delay:0.58s">your</span>
-                <span class="word delim"></span>
-                <span class="word" style="animation-delay:0.70s">day</span>
-            </h1>
-
-            <div class="hero-brief">
-                <p>One small thing happens.</p>
-                <p>A message. A look. A delay.</p>
-                <p>Your mind doesn't stop there. It multiplies.</p>
-                <p>One detail becomes pressure, then doubt, then self-attack. The thoughts keep changing. The feeling stays the same.</p>
-                <p class="snap"><strong>You don't need more thought. You need a map of what keeps multiplying it.</strong></p>
-
-                <div class="cta-cluster">
-                    <a href="apply.html" class="cta" data-magnetic>
-                        <span>Apply for a Private Review</span>
-                        <svg class="icon" style="width:16px; height:16px; stroke: currentColor; stroke-width:2;" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                    </a>
-                    <span class="label center bare">Free · Async · Structured</span>
-                </div>
-            </div>
-
-            <div class="scroll-cue" aria-hidden="true"></div>
-        </section>
-
-        <!-- THE SHAPE OF IT — bridge from hero to cost -->
-        <section class="mult reveal">
-            <span class="label center">The Shape of It</span>
-            <h2>One trigger does not stay one trigger.</h2>
-
-            <div class="mult-cascade" aria-hidden="true">
-                <svg viewBox="0 0 320 320" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Branches: 9 paths from trigger fanning to a row of endpoints -->
-                    <g fill="none" stroke-linecap="round">
-                        <path d="M 160 52 C 160 130, 56 200, 30 282" stroke="rgba(235,229,214,0.10)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:0.85s;"/>
-                        <path d="M 160 52 C 160 130, 88 200, 66 282" stroke="rgba(235,229,214,0.13)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:0.95s;"/>
-                        <path d="M 160 52 C 160 130, 118 200, 102 282" stroke="rgba(235,229,214,0.16)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:1.05s;"/>
-                        <path d="M 160 52 C 160 130, 146 200, 138 282" stroke="rgba(235,229,214,0.20)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:1.15s;"/>
-                        <line x1="160" y1="52" x2="160" y2="282" stroke="rgba(235,229,214,0.30)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:1.25s;"/>
-                        <path d="M 160 52 C 160 130, 174 200, 182 282" stroke="rgba(235,229,214,0.20)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:1.15s;"/>
-                        <path d="M 160 52 C 160 130, 202 200, 218 282" stroke="rgba(235,229,214,0.16)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:1.05s;"/>
-                        <path d="M 160 52 C 160 130, 232 200, 254 282" stroke="rgba(235,229,214,0.13)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:0.95s;"/>
-                        <path d="M 160 52 C 160 130, 264 200, 290 282" stroke="rgba(235,229,214,0.10)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:0.85s;"/>
-                    </g>
-
-                    <!-- Trigger (apex): halo ring + inner moss core + bright center -->
-                    <g class="svg-fade" style="animation-delay:0.3s; opacity:0;">
-                        <circle cx="160" cy="38" r="18" fill="none" stroke="rgba(110,142,123,0.32)" stroke-width="1"/>
-                        <circle cx="160" cy="38" r="11" fill="rgba(110,142,123,0.10)" stroke="rgba(110,142,123,0.55)" stroke-width="1"/>
-                        <circle cx="160" cy="38" r="4.5" fill="#EBE5D6"/>
-                    </g>
-
-                    <!-- Endpoints (echoes): center brighter, outer fainter -->
-                    <g class="svg-fade" style="animation-delay:2.0s; opacity:0;">
-                        <circle cx="30"  cy="282" r="2.2" fill="#6E6A5C"/>
-                        <circle cx="66"  cy="282" r="2.4" fill="#7D7869"/>
-                        <circle cx="102" cy="282" r="2.6" fill="#8B8676"/>
-                        <circle cx="138" cy="282" r="2.8" fill="#A19B8A"/>
-                        <circle cx="160" cy="282" r="3.6" fill="#C9C3B1"/>
-                        <circle cx="182" cy="282" r="2.8" fill="#A19B8A"/>
-                        <circle cx="218" cy="282" r="2.6" fill="#8B8676"/>
-                        <circle cx="254" cy="282" r="2.4" fill="#7D7869"/>
-                        <circle cx="290" cy="282" r="2.2" fill="#6E6A5C"/>
-                    </g>
-                </svg>
-            </div>
-
-            <p class="lede">It rehearses through the day, through the week, through every adjacent decision. By Sunday you've paid for it thirty times in attention you can't refund.</p>
-            <hr class="hairline" aria-hidden="true" />
-        </section>
-
-        <!-- WHAT IT COSTS YOU -->
-        <section class="reveal">
-            <div class="sec-head">
-                <span class="label">The Hidden Bill</span>
-                <h2>What it costs you</h2>
-            </div>
-
-            <div class="grid-2">
-                <article class="panel">
-                    <div class="icon-block">
-                        <span class="icon-tile">
-                            <!-- Lucide: hourglass -->
-                            <svg class="icon" viewBox="0 0 24 24"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
-                        </span>
-                        <h3>Time tax</h3>
-                    </div>
-                    <ul class="clean">
-                        <li>A rumination episode runs <strong>20 to 40 minutes</strong>.</li>
-                        <li>A self-aware professional hits <strong>three to five of them</strong> on a normal workday.</li>
-                        <li>That's <strong>5 to 16⅔ hours a week</strong>. As much as two workweeks a month.</li>
-                    </ul>
-                    <p style="color: var(--ink); margin-top: 22px;"><strong>Gone to internal friction, not to real work.</strong></p>
-                </article>
-
-                <article class="panel">
-                    <div class="icon-block">
-                        <span class="icon-tile">
-                            <!-- Lucide: receipt -->
-                            <svg class="icon" viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8H8"/><path d="M16 12H8"/><path d="M13 16H8"/></svg>
-                        </span>
-                        <h3>The second bill</h3>
-                    </div>
-                    <p style="color: var(--ink);">Then the second bill arrives.</p>
-                    <ul class="clean" style="margin-top: 16px;">
-                        <li>You stop trusting your own timing.</li>
-                        <li>Small decisions take the bandwidth of big ones.</li>
-                        <li>You dread the ordinary.</li>
-                    </ul>
-                </article>
-            </div>
-
-            <div class="cost-eq">
-                <div class="eq">
-                    <div class="big">20–40 min</div>
-                    <div class="small">/ episode</div>
-                </div>
-                <div class="op">×</div>
-                <div class="eq">
-                    <div class="big">3–5</div>
-                    <div class="small">/ day</div>
-                </div>
-                <div class="op">×</div>
-                <div class="eq">
-                    <div class="big">5</div>
-                    <div class="small">workdays</div>
-                </div>
-                <div class="op">=</div>
-                <div class="eq result">
-                    <div class="big">5–16⅔ hrs</div>
-                    <div class="small">/ week lost</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- WHY IT DOESN'T STOP -->
-        <section class="reveal split">
-            <div class="split-left">
-                <span class="label">The Mechanism</span>
-                <h2 style="margin-top: 18px;">Why it doesn't stop<br>on its own</h2>
-            </div>
-            <div>
-                <div class="closed-loop">
-                    <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <g id="ln">
-                                <circle cx="160" cy="40" r="6" fill="#0A100D"/>
-                                <circle cx="160" cy="40" r="4.5" fill="none" stroke="#8B8676" stroke-width="1.2"/>
-                                <circle cx="160" cy="40" r="1.8" fill="#EBE5D6"/>
-                            </g>
-                            <g id="la">
-                                <path d="M 154 35 L 160 40 L 154 45" fill="none" stroke="#8B8676" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </g>
-                        </defs>
-
-                        <circle cx="160" cy="160" r="120" fill="none" stroke="rgba(235,229,214,0.16)" stroke-width="1.2" class="svg-path" stroke-dasharray="754" stroke-dashoffset="754" style="animation-delay:0s;"/>
-
-                        <g class="svg-fade" style="animation-delay:1.5s; opacity:0;">
-                            <use href="#ln" transform="rotate(0 160 160)"/>
-                            <use href="#ln" transform="rotate(45 160 160)"/>
-                            <use href="#ln" transform="rotate(90 160 160)"/>
-                            <use href="#ln" transform="rotate(135 160 160)"/>
-                            <use href="#ln" transform="rotate(180 160 160)"/>
-                            <use href="#ln" transform="rotate(225 160 160)"/>
-                            <use href="#ln" transform="rotate(270 160 160)"/>
-                            <use href="#ln" transform="rotate(315 160 160)"/>
-
-                            <use href="#la" transform="rotate(35 160 160)"/>
-                            <use href="#la" transform="rotate(80 160 160)"/>
-                            <use href="#la" transform="rotate(125 160 160)"/>
-                            <use href="#la" transform="rotate(170 160 160)"/>
-                            <use href="#la" transform="rotate(215 160 160)"/>
-                            <use href="#la" transform="rotate(260 160 160)"/>
-                            <use href="#la" transform="rotate(305 160 160)"/>
-                            <use href="#la" transform="rotate(350 160 160)"/>
-                        </g>
-
-                        <g font-family="JetBrains Mono, monospace" font-size="9" fill="#8B8676" font-weight="300" letter-spacing="1.6" class="svg-fade" style="animation-delay:2.0s; opacity:0;">
-                            <text x="90" y="100" text-anchor="middle">TRIGGER</text>
-                            <text x="230" y="100" text-anchor="middle">SELF-PROTECTION</text>
-                            <text x="230" y="220" text-anchor="middle">RATIONALIZATION</text>
-                            <text x="90" y="220" text-anchor="middle">RE-TRIGGERING</text>
-                        </g>
-
-                        <g class="svg-fade" style="animation-delay:1.0s; opacity:0;">
-                            <circle cx="160" cy="160" r="32" fill="none" stroke="rgba(235,229,214,0.16)" stroke-width="1.2" opacity="0.5"/>
-                            <circle cx="160" cy="160" r="18" fill="none" stroke="rgba(235,229,214,0.16)" stroke-width="1.2"/>
-                            <circle cx="160" cy="160" r="5" fill="#6E8E7B"/>
-                        </g>
-                    </svg>
-                </div>
-
-                <p class="pierce">The outside world hits once.<br><strong>Your mind hits again, and again.</strong></p>
-
-                <ul class="clean" style="margin-top: 22px;">
-                    <li><strong>Not truth-seeking.</strong> The spiral isn't aimed at truth. It's aimed at self-protection. Protection first, rationalization after.</li>
-                    <li><strong>False thinking.</strong> The loop feels like thinking. It's actually defense.</li>
-                    <li><strong>Why advice fails.</strong> Defense systems don't disarm themselves.</li>
-                </ul>
-
-                <div class="panel warn" style="margin-top: 28px; padding: clamp(22px, 2.6vw, 30px);">
-                    <p style="margin: 0;">They recruit whatever you throw at them, including <em>"stop overthinking,"</em> as fresh ammunition.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- WHAT CHANGES WHEN IT BREAKS -->
-        <section class="reveal split">
-            <div class="split-left">
-                <span class="label">After the Loop</span>
-                <h2 style="margin-top: 18px;">What changes when<br>it breaks</h2>
-            </div>
-            <div>
-                <div class="outcomes" style="margin-bottom: 28px;">
-                    <div class="outcome">
-                        <span class="idx">01</span>
-                        <span class="icon-tile">
-                            <!-- Lucide: reply -->
-                            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
-                        </span>
-                        <div>
-                            <strong>Reply</strong>
-                            <span>to the message in ten minutes. Close the tab.</span>
-                        </div>
-                    </div>
-                    <div class="outcome">
-                        <span class="idx">02</span>
-                        <span class="icon-tile">
-                            <!-- Lucide: check -->
-                            <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                        </span>
-                        <div>
-                            <strong>Decide</strong>
-                            <span>on the outcome in one evening instead of three days.</span>
-                        </div>
-                    </div>
-                    <div class="outcome">
-                        <span class="idx">03</span>
-                        <span class="icon-tile">
-                            <!-- Lucide: eye -->
-                            <svg class="icon" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                        </span>
-                        <div>
-                            <strong>Observe</strong>
-                            <span>a stressor arrive, watch it land, and watch it resolve where it started — instead of spawning five more.</span>
-                        </div>
-                    </div>
-                </div>
-                <p>You keep your intelligence, your standards, your sensitivity.</p>
-                <p style="color: var(--ink); font-size: clamp(1.05rem, 1.4vw, 1.18rem);"><em>You just stop paying interest on them.</em></p>
-            </div>
-        </section>
-
-        <!-- THE STRATEGY -->
-        <section class="reveal split">
-            <div class="split-left">
-                <span class="label">The Strategy</span>
-                <h2 style="margin-top: 18px;">Breaking the<br>machinery.</h2>
-            </div>
-            <div>
-                <p>The aim is not to calm the loop down.</p>
-                <p>That only masks it.</p>
-                <p>The work is to find the carrying parts: the hidden conditions that let the same pattern rebuild itself across different situations.</p>
-                <p>Once isolated, the carrying parts are tested — which of them the pattern actually runs on, and which are noise.</p>
-                <p>Then the system is rebuilt around fewer permissions, clearer thresholds, and stronger stopping rules.</p>
-                <p>The result is not temporary relief.</p>
-                <p>It is a machinery that can no longer reproduce the same failure in the same way.</p>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- MARQUEE SEPARATOR -->
-    <div class="marquee" aria-hidden="true">
-        <div class="marquee-track">
-            <span>Apply</span><span class="dot"></span>
-            <span>Review</span><span class="dot"></span>
-            <span>Receive a Map</span><span class="dot"></span>
-            <span>Decide</span><span class="dot"></span>
-            <span>Apply</span><span class="dot"></span>
-            <span>Review</span><span class="dot"></span>
-            <span>Receive a Map</span><span class="dot"></span>
-            <span>Decide</span><span class="dot"></span>
-            <span>Apply</span><span class="dot"></span>
-            <span>Review</span><span class="dot"></span>
-            <span>Receive a Map</span><span class="dot"></span>
-            <span>Decide</span><span class="dot"></span>
-        </div>
+        <span class="label bare center">Free <span class="tick">·</span> Async <span class="tick">·</span> Structured</span>
+      </div>
     </div>
 
-    <main class="wrap">
+    <div class="scroll-cue" aria-hidden="true"></div>
+  </section>
 
-        <!-- THE REVIEW IN FOUR STEPS -->
-        <section class="reveal">
-            <div class="sec-head">
-                <span class="label">The Process</span>
-                <h2>The review, in four steps</h2>
-                <p style="margin-top: 14px; max-width: 640px;">A purely asynchronous, structurally precise breakdown.</p>
-            </div>
+  <!-- THE SHAPE OF IT -->
+  <div class="band">
+    <section class="wrap reveal">
+      <div class="shape">
+        <div class="fig" aria-hidden="true">
+          <svg viewBox="0 0 320 320" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke-linecap="round">
+              <path d="M 160 52 C 160 130, 56 200, 30 282" stroke="rgba(235,229,214,0.10)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:0.85s;"/>
+              <path d="M 160 52 C 160 130, 88 200, 66 282" stroke="rgba(235,229,214,0.13)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:0.95s;"/>
+              <path d="M 160 52 C 160 130, 118 200, 102 282" stroke="rgba(235,229,214,0.16)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:1.05s;"/>
+              <path d="M 160 52 C 160 130, 146 200, 138 282" stroke="rgba(235,229,214,0.20)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:1.15s;"/>
+              <line x1="160" y1="52" x2="160" y2="282" stroke="rgba(235,229,214,0.30)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:1.25s;"/>
+              <path d="M 160 52 C 160 130, 174 200, 182 282" stroke="rgba(235,229,214,0.20)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:1.15s;"/>
+              <path d="M 160 52 C 160 130, 202 200, 218 282" stroke="rgba(235,229,214,0.16)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:1.05s;"/>
+              <path d="M 160 52 C 160 130, 232 200, 254 282" stroke="rgba(235,229,214,0.13)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:0.95s;"/>
+              <path d="M 160 52 C 160 130, 264 200, 290 282" stroke="rgba(235,229,214,0.10)" stroke-width="1" class="svg-path" stroke-dasharray="320" stroke-dashoffset="320" style="animation-delay:0.85s;"/>
+            </g>
+            <g class="svg-fade" style="animation-delay:0.3s; opacity:0;">
+              <circle cx="160" cy="38" r="18" fill="none" stroke="rgba(110,142,123,0.32)" stroke-width="1"/>
+              <circle cx="160" cy="38" r="11" fill="rgba(110,142,123,0.10)" stroke="rgba(110,142,123,0.55)" stroke-width="1"/>
+              <circle cx="160" cy="38" r="4.5" fill="#EBE5D6"/>
+            </g>
+            <g class="svg-fade" style="animation-delay:2.0s; opacity:0;">
+              <circle cx="30"  cy="282" r="2.2" fill="#6E6A5C"/>
+              <circle cx="66"  cy="282" r="2.4" fill="#7D7869"/>
+              <circle cx="102" cy="282" r="2.6" fill="#8B8676"/>
+              <circle cx="138" cy="282" r="2.8" fill="#A19B8A"/>
+              <circle cx="160" cy="282" r="3.6" fill="#C9C3B1"/>
+              <circle cx="182" cy="282" r="2.8" fill="#A19B8A"/>
+              <circle cx="218" cy="282" r="2.6" fill="#8B8676"/>
+              <circle cx="254" cy="282" r="2.4" fill="#7D7869"/>
+              <circle cx="290" cy="282" r="2.2" fill="#6E6A5C"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <span class="label">The Shape of It</span>
+          <h2>One trigger does not stay one trigger.</h2>
+          <p class="lede">It rehearses through the day, through the week, through every adjacent decision. By Sunday you’ve paid for it thirty times in attention you can’t refund.</p>
+        </div>
+      </div>
+    </section>
+  </div>
 
-            <div class="grid-4">
-                <article class="panel">
-                    <span class="num">Step 01</span>
-                    <div class="icon-block">
-                        <span class="icon-tile">
-                            <!-- Lucide: file-edit -->
-                            <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M14 2v6h6"/><path d="M18.4 8.6 21 11.2l-7 7-3 .5.5-3 6.9-7.1Z"/></svg>
-                        </span>
-                        <h3>You apply</h3>
-                    </div>
-                    <p>Four questions: what keeps happening, one recent example, what it's costing you, what you think is going on and what you've tried.</p>
-                </article>
+  <!-- WHAT IT COSTS YOU -->
+  <section class="wrap reveal">
+    <div class="sec-head">
+      <div>
+        <span class="label">The Hidden Bill</span>
+        <h2>What it costs you</h2>
+      </div>
+    </div>
 
-                <article class="panel">
-                    <span class="num">Step 02</span>
-                    <div class="icon-block">
-                        <span class="icon-tile">
-                            <!-- Lucide: search-line -->
-                            <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                        </span>
-                        <h3>I review</h3>
-                    </div>
-                    <p>I read your answers looking for the multiplier — the part of your response that converts a one-unit trigger into a five-unit problem.</p>
-                </article>
+    <div class="grid-2">
+      <article class="panel">
+        <div class="icon-block">
+          <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg></span>
+          <h3>Time tax</h3>
+        </div>
+        <ul class="clean">
+          <li>A rumination episode runs <strong>20 to 40 minutes</strong>.</li>
+          <li>A self-aware professional hits <strong>three to five of them</strong> on a normal workday.</li>
+          <li>That’s <strong>5 to 16⅔ hours a week</strong>. As much as two workweeks a month.</li>
+        </ul>
+        <p class="kicker"><strong>Gone to internal friction, not to real work.</strong></p>
+      </article>
 
-                <article class="panel">
-                    <span class="num">Step 03</span>
-                    <div class="icon-block">
-                        <span class="icon-tile">
-                            <!-- Lucide: map -->
-                            <svg class="icon" viewBox="0 0 24 24"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
-                        </span>
-                        <h3>You receive a map</h3>
-                    </div>
-                    <p>A concise breakdown of the likely core pattern, delivered to your private Signal vault. Yours to keep.</p>
-                </article>
+      <article class="panel">
+        <div class="icon-block">
+          <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8H8"/><path d="M16 12H8"/><path d="M13 16H8"/></svg></span>
+          <h3>The second bill</h3>
+        </div>
+        <p style="color: var(--ink);">Then the second bill arrives.</p>
+        <ul class="clean" style="margin-top: 14px;">
+          <li>You stop trusting your own timing.</li>
+          <li>Small decisions take the bandwidth of big ones.</li>
+          <li>You dread the ordinary.</li>
+        </ul>
+      </article>
+    </div>
 
-                <article class="panel">
-                    <span class="num">Step 04</span>
-                    <div class="icon-block">
-                        <span class="icon-tile">
-                            <!-- Lucide: split / divide path -->
-                            <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h2l4 14h2"/><path d="M21 6h-2l-4 14h-2"/><path d="M11 10h2"/></svg>
-                        </span>
-                        <h3>We decide</h3>
-                    </div>
-                    <p>If there's a real fit, you move into ongoing async work. If not, you walk away with the map. No follow-up, no pitch.</p>
-                </article>
-            </div>
+    <div class="cost-eq" role="img" aria-label="20 to 40 minutes per episode, times 3 to 5 per day, times 5 workdays, equals 5 to 16 and two-thirds hours lost per week">
+      <div class="eq"><div class="big">20–40 min</div><div class="small">/ episode</div></div>
+      <div class="op">×</div>
+      <div class="eq"><div class="big">3–5</div><div class="small">/ day</div></div>
+      <div class="op">×</div>
+      <div class="eq"><div class="big">5</div><div class="small">workdays</div></div>
+      <div class="op">=</div>
+      <div class="eq result"><div class="big">5–16⅔ hrs</div><div class="small">/ week lost</div></div>
+    </div>
+  </section>
 
-            <div class="cta-cluster" style="margin-top: clamp(48px, 7vw, 80px);">
-                <a href="apply.html" class="cta" data-magnetic>
-                    <span>Apply for a Private Review</span>
-                    <svg class="icon" style="width:16px; height:16px; stroke: currentColor; stroke-width:2;" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </a>
-                <span class="label center bare">Free · Async · Structured</span>
-            </div>
-        </section>
+  <!-- WHY IT DOESN'T STOP -->
+  <section class="wrap reveal">
+    <div class="sec-head has-lede">
+      <div>
+        <span class="label">The Mechanism</span>
+        <h2>Why it doesn’t stop on its own</h2>
+      </div>
+      <p class="pull lede">The outside world hits once. <strong>Your mind hits again, and again.</strong></p>
+    </div>
 
-        <!-- HOW WE WORK TOGETHER -->
-        <section class="reveal split">
-            <div class="split-left">
-                <span class="label">Operations</span>
-                <h2 style="margin-top: 18px;">How we work<br>together</h2>
-            </div>
-            <div class="grid-2">
-                <article class="panel">
-                    <div class="icon-block">
-                        <span class="icon-tile">
-                            <!-- Lucide: lock -->
-                            <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                        </span>
-                        <h3>Channel</h3>
-                    </div>
-                    <p style="margin: 0;">Private Signal channel. End-to-end encrypted. If you don't already use Signal, setup takes two minutes.</p>
-                </article>
-                <article class="panel">
-                    <div class="icon-block">
-                        <span class="icon-tile">
-                            <!-- Lucide: audio-waveform -->
-                            <svg class="icon" viewBox="0 0 24 24"><path d="M2 13a2 2 0 0 0 2-2V7a2 2 0 1 1 4 0v13a2 2 0 1 0 4 0V4a2 2 0 1 1 4 0v13a2 2 0 1 0 4 0v-4a2 2 0 0 1 2-2"/></svg>
-                        </span>
-                        <h3>Cadence</h3>
-                    </div>
-                    <p style="margin: 0;">Async by design. You drop messages or voice notes whenever you want. No live chat, no rapid replies — those feed the exact reactive loops we're here to dismantle.</p>
-                </article>
-                <article class="panel">
-                    <div class="icon-block">
-                        <span class="icon-tile">
-                            <!-- Lucide: clock -->
-                            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        </span>
-                        <h3>Review blocks (EST)</h3>
-                    </div>
-                    <p>Monday to Friday.</p>
-                    <ul class="clean" style="margin: 6px 0 12px;">
-                        <li><strong>Morning:</strong> 7:00 – 11:00 AM</li>
-                        <li><strong>Afternoon:</strong> 1:30 – 3:30 PM</li>
-                    </ul>
-                    <p style="margin: 0;">Submissions return by the end of the active block, or the start of the next.</p>
-                </article>
-                <article class="panel">
-                    <div class="icon-block">
-                        <span class="icon-tile">
-                            <!-- Lucide: file-text -->
-                            <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
-                        </span>
-                        <h3>Delivery format</h3>
-                    </div>
-                    <p style="margin: 0;">Every response arrives as a structured written breakdown: trigger, escalation, mechanism, action. Re-readable. Referenceable. Yours to keep.</p>
-                </article>
-            </div>
-        </section>
+    <div class="mech">
+      <div class="fig" aria-hidden="true">
+        <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <g id="ln">
+              <circle cx="160" cy="40" r="6" fill="#0A100D"/>
+              <circle cx="160" cy="40" r="4.5" fill="none" stroke="#8B8676" stroke-width="1.2"/>
+              <circle cx="160" cy="40" r="1.8" fill="#EBE5D6"/>
+            </g>
+            <g id="la">
+              <path d="M 154 35 L 160 40 L 154 45" fill="none" stroke="#8B8676" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+          </defs>
+          <circle cx="160" cy="160" r="120" fill="none" stroke="rgba(235,229,214,0.16)" stroke-width="1.2" class="svg-path" stroke-dasharray="754" stroke-dashoffset="754" style="animation-delay:0s;"/>
+          <g class="svg-fade" style="animation-delay:1.5s; opacity:0;">
+            <use href="#ln" transform="rotate(0 160 160)"/><use href="#ln" transform="rotate(45 160 160)"/><use href="#ln" transform="rotate(90 160 160)"/><use href="#ln" transform="rotate(135 160 160)"/><use href="#ln" transform="rotate(180 160 160)"/><use href="#ln" transform="rotate(225 160 160)"/><use href="#ln" transform="rotate(270 160 160)"/><use href="#ln" transform="rotate(315 160 160)"/>
+            <use href="#la" transform="rotate(35 160 160)"/><use href="#la" transform="rotate(80 160 160)"/><use href="#la" transform="rotate(125 160 160)"/><use href="#la" transform="rotate(170 160 160)"/><use href="#la" transform="rotate(215 160 160)"/><use href="#la" transform="rotate(260 160 160)"/><use href="#la" transform="rotate(305 160 160)"/><use href="#la" transform="rotate(350 160 160)"/>
+          </g>
+          <g font-family="JetBrains Mono, monospace" font-size="9" fill="#8B8676" font-weight="300" letter-spacing="1.6" class="svg-fade" style="animation-delay:2.0s; opacity:0;">
+            <text x="90" y="100" text-anchor="middle">TRIGGER</text>
+            <text x="230" y="100" text-anchor="middle">SELF-PROTECTION</text>
+            <text x="230" y="220" text-anchor="middle">RATIONALIZATION</text>
+            <text x="90" y="220" text-anchor="middle">RE-TRIGGERING</text>
+          </g>
+          <g class="svg-fade" style="animation-delay:1.0s; opacity:0;">
+            <circle cx="160" cy="160" r="32" fill="none" stroke="rgba(235,229,214,0.16)" stroke-width="1.2" opacity="0.5"/>
+            <circle cx="160" cy="160" r="18" fill="none" stroke="rgba(235,229,214,0.16)" stroke-width="1.2"/>
+            <circle cx="160" cy="160" r="5" fill="#6E8E7B"/>
+          </g>
+        </svg>
+      </div>
 
-        <!-- INVESTMENT -->
-        <section class="reveal split">
-            <div class="split-left">
-                <span class="label">Investment</span>
-                <h2 style="margin-top: 18px;">Pricing &amp; terms</h2>
-                <p style="margin-top: 16px; color: var(--ink-muted);">Free first review. Continue only if the map is useful.</p>
-            </div>
-            <div>
-                <div class="vault">
-                    <div class="price-line"><strong>First review:</strong> Free.</div>
-                    <div class="price">$325 <small>per month</small></div>
-                    <hr>
-                    <ul class="clean">
-                        <li><strong>Includes —</strong> unlimited async access, pattern analysis across new situations, structured written feedback.</li>
-                        <li><strong>Terms —</strong> month-to-month. Cancel anytime.</li>
-                    </ul>
-                    <p class="ctx"><strong style="color: var(--ink-soft);">Context.</strong> One hour with a licensed therapist on the East Coast runs $200 – $400. This is the cost of a single session for continuous access, all month.</p>
-                </div>
+      <div>
+        <ul class="facts">
+          <li><strong>Not truth-seeking.</strong><span>The spiral isn’t aimed at truth. It’s aimed at self-protection. Protection first, rationalization after.</span></li>
+          <li><strong>False thinking.</strong><span>The loop feels like thinking. It’s actually defense.</span></li>
+          <li><strong>Why advice fails.</strong><span>Defense systems don’t disarm themselves.</span></li>
+        </ul>
+        <div class="callout">
+          <p>They recruit whatever you throw at them, including <em>“stop overthinking,”</em> as fresh ammunition.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-                <div class="panel" style="border-color: var(--rule-strong); background: transparent;">
-                    <div class="icon-block">
-                        <span class="icon-tile">
-                            <!-- Lucide: shield-check -->
-                            <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><polyline points="9 12 11 14 15 10"/></svg>
-                        </span>
-                        <span class="label" style="color: var(--ink); align-self: center;">30-Day Guarantee</span>
-                    </div>
-                    <p style="color: var(--ink); margin: 0;">If your first month doesn't produce a clearer structural map than you started with, I refund it. One email.</p>
-                </div>
-            </div>
-        </section>
+  <!-- WHAT CHANGES WHEN IT BREAKS -->
+  <div class="band">
+    <section class="wrap reveal">
+      <div class="sec-head">
+        <div>
+          <span class="label">After the Loop</span>
+          <h2>What changes when it breaks</h2>
+        </div>
+      </div>
 
-        <div class="ornament" aria-hidden="true">
-            <span class="line"></span>
-            <span class="glyph"></span>
-            <span class="line"></span>
+      <div class="grid-3">
+        <div class="outcome">
+          <div class="n">01</div>
+          <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg></span>
+          <strong>Reply</strong>
+          <span>to the message in ten minutes. Close the tab.</span>
+        </div>
+        <div class="outcome">
+          <div class="n">02</div>
+          <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <strong>Decide</strong>
+          <span>on the outcome in one evening instead of three days.</span>
+        </div>
+        <div class="outcome">
+          <div class="n">03</div>
+          <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></span>
+          <strong>Observe</strong>
+          <span>a stressor arrive, watch it land, and watch it resolve where it started — instead of spawning five more.</span>
+        </div>
+      </div>
+
+      <p class="pull payoff">You keep your intelligence, your standards, your sensitivity. <em>You just stop paying interest on them.</em></p>
+    </section>
+  </div>
+
+  <!-- THE STRATEGY -->
+  <section class="wrap reveal">
+    <div class="sec-head has-lede">
+      <div>
+        <span class="label">The Strategy</span>
+        <h2>Breaking the machinery.</h2>
+      </div>
+      <p class="lede">The aim is not to calm the loop down. That only masks it.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="n">01 — Find</div>
+        <h3>The carrying parts</h3>
+        <p>The work is to find the carrying parts: the hidden conditions that let the same pattern rebuild itself across different situations.</p>
+      </div>
+      <div class="step">
+        <div class="n">02 — Test</div>
+        <h3>Which of them it runs on</h3>
+        <p>Once isolated, the carrying parts are tested — which of them the pattern actually runs on, and which are noise.</p>
+      </div>
+      <div class="step">
+        <div class="n">03 — Rebuild</div>
+        <h3>Fewer permissions</h3>
+        <p>Then the system is rebuilt around fewer permissions, clearer thresholds, and stronger stopping rules.</p>
+      </div>
+    </div>
+
+    <div class="machinery-result">
+      <span class="label">The Result</span>
+      <p class="pull">The result is not temporary relief. <strong>It is a machinery that can no longer reproduce the same failure in the same way.</strong></p>
+    </div>
+  </section>
+
+  <!-- THE EVIDENCE: ESSAYS + SAMPLE REVIEWS -->
+  <div class="band" id="read">
+    <section class="wrap reveal">
+      <div class="sec-head has-lede">
+        <div>
+          <span class="label">The Evidence</span>
+          <h2>If the thinking is rigorous, the work will be.</h2>
+        </div>
+        <p class="lede">Twenty essays and three full-length sample reviews. Read them before you apply — both are open, no application required.</p>
+      </div>
+
+      <div class="features">
+        <a class="feature" href="reviews.html">
+          <span class="watermark" aria-hidden="true">03</span>
+          <span class="label">Sample Reviews <span class="tick">·</span> Three cases</span>
+          <h3>Sample Reviews</h3>
+          <p class="desc">The private review is written, structured, and free. Before you apply, you can see what one looks like.</p>
+          <ul>
+            <li><span class="idx">01</span><span>“I’ve researched the decision for weeks. Why am I still stuck?”</span><span class="meta">2,300 words</span></li>
+            <li><span class="idx">02</span><span>“One piece of criticism makes me question everything I’m doing.”</span><span class="meta">1,300 words</span></li>
+            <li><span class="idx">03</span><span>“I keep reopening decisions I already made.”</span><span class="meta">1,450 words</span></li>
+          </ul>
+          <span class="arrow-link">Read the three reviews <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </a>
+
+        <a class="feature" href="essays.html">
+          <span class="watermark" aria-hidden="true">20</span>
+          <span class="label">Essays <span class="tick">·</span> The archive</span>
+          <h3>Essays</h3>
+          <p class="desc">Twenty short essays on the machinery of repeating yourself — and why understanding it hasn’t been enough.</p>
+          <ul>
+            <li><span class="idx">01</span><span>You Understand the Pattern. Why Are You Still Repeating It?</span><span class="meta">Essay</span></li>
+            <li><span class="idx">07</span><span>Every Inner Voice Thinks It Deserves a Vote</span><span class="meta">Essay</span></li>
+            <li><span class="idx">13</span><span>You Made the Decision. Why Are You Still Reopening It?</span><span class="meta">Essay</span></li>
+            <li><span class="idx">15</span><span>When Self-Awareness Becomes a Sophisticated Form of Delay</span><span class="meta">Essay</span></li>
+            <li class="more">…and sixteen more.</li>
+          </ul>
+          <span class="arrow-link">Open the archive <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <!-- THE REVIEW IN FOUR STEPS -->
+  <section class="wrap reveal">
+    <div class="sec-head has-lede">
+      <div>
+        <span class="label">The Process</span>
+        <h2>The review, in four steps</h2>
+      </div>
+      <p class="lede">A purely asynchronous, structurally precise breakdown.</p>
+    </div>
+
+    <div class="grid-4">
+      <article class="panel">
+        <span class="num">Step 01</span>
+        <div class="icon-block">
+          <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M14 2v6h6"/><path d="M18.4 8.6 21 11.2l-7 7-3 .5.5-3 6.9-7.1Z"/></svg></span>
+          <h3>You apply</h3>
+        </div>
+        <p>Four questions: what keeps happening, one recent example, what it’s costing you, what you think is going on and what you’ve tried.</p>
+      </article>
+      <article class="panel">
+        <span class="num">Step 02</span>
+        <div class="icon-block">
+          <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+          <h3>I review</h3>
+        </div>
+        <p>I read your answers looking for the multiplier — the part of your response that converts a one-unit trigger into a five-unit problem.</p>
+      </article>
+      <article class="panel">
+        <span class="num">Step 03</span>
+        <div class="icon-block">
+          <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg></span>
+          <h3>You receive a map</h3>
+        </div>
+        <p>A concise breakdown of the likely core pattern, delivered to your private Signal vault. Yours to keep.</p>
+      </article>
+      <article class="panel">
+        <span class="num">Step 04</span>
+        <div class="icon-block">
+          <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><path d="M3 6h2l4 14h2"/><path d="M21 6h-2l-4 14h-2"/><path d="M11 10h2"/></svg></span>
+          <h3>We decide</h3>
+        </div>
+        <p>If there’s a real fit, you move into ongoing async work. If not, you walk away with the map. No follow-up, no pitch.</p>
+      </article>
+    </div>
+
+    <div class="cta-cluster">
+      <a href="apply.html" class="cta" data-magnetic>
+        <span>Apply for a Private Review</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <span class="label bare center">Free <span class="tick">·</span> Async <span class="tick">·</span> Structured</span>
+    </div>
+  </section>
+
+  <!-- HOW WE WORK TOGETHER -->
+  <section class="wrap reveal">
+    <div class="sec-head">
+      <div>
+        <span class="label">Operations</span>
+        <h2>How we work together</h2>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <article class="panel">
+        <div class="icon-block">
+          <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+          <h3>Channel</h3>
+        </div>
+        <p>Private Signal channel. End-to-end encrypted. If you don’t already use Signal, setup takes two minutes.</p>
+      </article>
+      <article class="panel">
+        <div class="icon-block">
+          <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><path d="M2 13a2 2 0 0 0 2-2V7a2 2 0 1 1 4 0v13a2 2 0 1 0 4 0V4a2 2 0 1 1 4 0v13a2 2 0 1 0 4 0v-4a2 2 0 0 1 2-2"/></svg></span>
+          <h3>Cadence</h3>
+        </div>
+        <p>Async by design. You drop messages or voice notes whenever you want. No live chat, no rapid replies — those feed the exact reactive loops we’re here to dismantle.</p>
+      </article>
+      <article class="panel">
+        <div class="icon-block">
+          <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+          <h3>Review blocks (EST)</h3>
+        </div>
+        <p>Monday to Friday.</p>
+        <ul class="clean" style="margin: 10px 0 14px;">
+          <li><strong>Morning:</strong> 7:00 – 11:00 AM</li>
+          <li><strong>Afternoon:</strong> 1:30 – 3:30 PM</li>
+        </ul>
+        <p>Submissions return by the end of the active block, or the start of the next.</p>
+      </article>
+      <article class="panel">
+        <div class="icon-block">
+          <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg></span>
+          <h3>Delivery format</h3>
+        </div>
+        <p>Every response arrives as a structured written breakdown: trigger, escalation, mechanism, action. Re-readable. Referenceable. Yours to keep.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- INVESTMENT -->
+  <div class="band">
+    <section class="wrap reveal">
+      <div class="sec-head has-lede">
+        <div>
+          <span class="label">Investment</span>
+          <h2>Pricing &amp; terms</h2>
+        </div>
+        <p class="lede">Free first review. Continue only if the map is useful.</p>
+      </div>
+
+      <div class="pricing">
+        <div class="vault">
+          <div class="price-line"><strong>First review:</strong> Free.</div>
+          <div class="price">$325 <small>per month</small></div>
+          <hr class="hairline">
+          <ul class="clean">
+            <li><strong>Includes —</strong> unlimited async access, pattern analysis across new situations, structured written feedback.</li>
+            <li><strong>Terms —</strong> month-to-month. Cancel anytime.</li>
+          </ul>
+          <p class="ctx"><strong style="color: var(--ink-soft);">Context.</strong> One hour with a licensed therapist on the East Coast runs $200 – $400. This is the cost of a single session for continuous access, all month.</p>
         </div>
 
-        <!-- STRAIGHT ANSWERS -->
-        <section class="reveal">
-            <div class="sec-head">
-                <span class="label">Objection Handling</span>
-                <h2>Straight answers</h2>
-            </div>
-
-            <div class="grid-2">
-                <article class="panel">
-                    <h3 style="margin-bottom: 10px;">Is this therapy?</h3>
-                    <p style="margin: 0;">No. Not clinical practice, not mental-health treatment, not a substitute for either. If you're in crisis or managing a diagnosed condition, you need a licensed clinician. I'll refer you out in the free review if that's the call.</p>
-                </article>
-                <article class="panel">
-                    <h3 style="margin-bottom: 10px;">Why async, not calls?</h3>
-                    <p style="margin: 0;">Calls hide the pattern. People rush, perform clarity, answer before the real answer surfaces. Writing slows the machinery down enough to photograph it.</p>
-                </article>
-                <article class="panel">
-                    <h3 style="margin-bottom: 10px;">Who is this not for?</h3>
-                    <p style="margin: 0;">Anyone who wants comfort more than a clear answer, or whose self-image must be protected at all costs. That instinct is often what keeps the loop alive.</p>
-                </article>
-                <article class="panel">
-                    <h3 style="margin-bottom: 10px;">What qualifies you to do this?</h3>
-                    <p style="margin: 0;">Pattern recognition isn't credentialed — it's practiced. This work sits outside clinical territory by design. What qualifies it is the structural precision of the output, not a certificate. Read the page. If the thinking is rigorous, the work will be.</p>
-                    <a href="reviews.html" class="panel-link">
-                        Read three sample reviews
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                    </a>
-                </article>
-            </div>
-        </section>
-
-        <!-- ONE LAST THING -->
-        <section class="reveal" style="text-align: center; max-width: 760px; margin: 0 auto; padding-bottom: clamp(80px, 12vw, 120px);">
-            <span class="label center bare" style="margin: 0 auto;">One Last Thing</span>
-            <h2 style="margin-top: 22px;">A single thing happens.<br><em>Your mind turns it into ten.</em></h2>
-            <div style="margin-top: clamp(28px, 4vw, 40px);">
-                <p>That tax runs every day, whether you're watching it or not.</p>
-                <p>The free review costs nothing but 20 minutes of honest writing. You walk away with either a map worth keeping or an early goodbye.</p>
-            </div>
-
-            <div class="cta-cluster" style="margin-top: clamp(36px, 5vw, 56px);">
-                <a href="apply.html" class="cta" data-magnetic style="transform: scale(1.04);">
-                    <span>Apply for a Private Review</span>
-                    <svg class="icon" style="width:16px; height:16px; stroke: currentColor; stroke-width:2;" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </a>
-                <span class="label center bare">Free · Async · Structured</span>
-            </div>
-        </section>
-
-    </main>
-
-    <footer>
-        <div class="sig">
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                <circle cx="24" cy="24" r="22" stroke="rgba(235,229,214,0.5)" stroke-width="1"/>
-                <circle cx="24" cy="24" r="10" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-                <circle cx="24" cy="24" r="3" fill="#6E8E7B"/>
-                <line x1="24" y1="2" x2="24" y2="14" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-                <line x1="24" y1="34" x2="24" y2="46" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-                <line x1="2" y1="24" x2="14" y2="24" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-                <line x1="34" y1="24" x2="46" y2="24" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-            </svg>
-            <span class="label center bare" style="margin: 0;">Nullify the Preset</span>
+        <div class="panel guarantee">
+          <div class="icon-block">
+            <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><polyline points="9 12 11 14 15 10"/></svg></span>
+            <span class="label bare">30-Day Guarantee</span>
+          </div>
+          <p style="color: var(--ink); font-size: 1.08rem;">If your first month doesn’t produce a clearer structural map than you started with, I refund it. One email.</p>
         </div>
-        <div class="meta">
-            <span>Private</span><span class="sep">·</span><span>Async</span><span class="sep">·</span><span>By Application Only</span>
-        </div>
-    </footer>
+      </div>
+    </section>
+  </div>
 
-    <!-- Lenis (graceful: page works without it via native scroll) -->
-    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js" onerror="window.__noLenis=true"></script>
-    <script>
-        // ── LENIS (defensive) ─────────────────────────────────
-        let lenis = null;
-        try {
-            if (typeof Lenis !== 'undefined' && !window.__noLenis) {
-                lenis = new Lenis({
-                    duration: 1.2,
-                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                    direction: 'vertical',
-                    smooth: true,
-                    mouseMultiplier: 1,
-                    smoothTouch: false,
-                    touchMultiplier: 2,
-                });
-                function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
-                requestAnimationFrame(raf);
-            }
-        } catch (e) { lenis = null; }
+  <!-- STRAIGHT ANSWERS -->
+  <section class="wrap reveal">
+    <div class="sec-head">
+      <div>
+        <span class="label">Objection Handling</span>
+        <h2>Straight answers</h2>
+      </div>
+    </div>
 
-        // ── PROGRESS + SCROLLED NAV ─────────────────────────────
-        const progress = document.getElementById('progress');
-        const topbar = document.getElementById('topbar');
-        function onScroll(){
-            const h = document.documentElement.scrollHeight - window.innerHeight;
-            const y = window.scrollY;
-            const p = Math.max(0, Math.min(1, y / Math.max(h, 1)));
-            progress.style.width = (p * 100) + '%';
-            if (y > 24) topbar.classList.add('scrolled');
-            else topbar.classList.remove('scrolled');
-        }
-        if (lenis) lenis.on('scroll', onScroll);
-        addEventListener('scroll', onScroll, { passive: true });
-        onScroll();
+    <div class="faq">
+      <div>
+        <h3>Is this therapy?</h3>
+        <p>No. Not clinical practice, not mental-health treatment, not a substitute for either. If you’re in crisis or managing a diagnosed condition, you need a licensed clinician. I’ll refer you out in the free review if that’s the call.</p>
+      </div>
+      <div>
+        <h3>Why async, not calls?</h3>
+        <p>Calls hide the pattern. People rush, perform clarity, answer before the real answer surfaces. Writing slows the machinery down enough to photograph it.</p>
+      </div>
+      <div>
+        <h3>Who is this not for?</h3>
+        <p>Anyone who wants comfort more than a clear answer, or whose self-image must be protected at all costs. That instinct is often what keeps the loop alive.</p>
+      </div>
+      <div>
+        <h3>What qualifies you to do this?</h3>
+        <p>Pattern recognition isn’t credentialed — it’s practiced. This work sits outside clinical territory by design. What qualifies it is the structural precision of the output, not a certificate. Read the page. If the thinking is rigorous, the work will be.</p>
+        <a href="reviews.html" class="arrow-link">Read three sample reviews <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </section>
 
-        // ── REVEAL OBSERVER ──────────────────────────────────
-        const obs = new IntersectionObserver((entries) => {
-            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-        }, { threshold: 0.12 });
-        document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  <!-- ONE LAST THING -->
+  <section class="wrap reveal">
+    <div class="closing-sec">
+      <span class="label dot center">One Last Thing</span>
+      <h2>A single thing happens.<br><em>Your mind turns it into ten.</em></h2>
+      <div class="body">
+        <p>That tax runs every day, whether you’re watching it or not.</p>
+        <p>The free review costs nothing but 20 minutes of honest writing. You walk away with either a map worth keeping or an early goodbye.</p>
+      </div>
+      <div class="cta-cluster">
+        <a href="apply.html" class="cta" data-magnetic>
+          <span>Apply for a Private Review</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <span class="label bare center">Free <span class="tick">·</span> Async <span class="tick">·</span> Structured</span>
+      </div>
+      <p class="write-line">Questions before you apply? <a href="mailto:official@nullifythepreset.com">official@nullifythepreset.com</a></p>
+    </div>
+  </section>
 
-        // ── CUSTOM CURSOR ────────────────────────────────────
-        const dot = document.getElementById('cursorDot');
-        const ring = document.getElementById('cursorRing');
-        // Position offscreen initially so they don't show at top-left
-        let mx = -100, my = -100;
-        let rx = mx, ry = my;
-        dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
-        ring.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
-        addEventListener('mousemove', (e) => {
-            mx = e.clientX; my = e.clientY;
-            dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
-        });
-        function ringLoop(){
-            rx += (mx - rx) * 0.18;
-            ry += (my - ry) * 0.18;
-            ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
-            requestAnimationFrame(ringLoop);
-        }
-        ringLoop();
-        document.querySelectorAll('a, button, [data-magnetic]').forEach(el => {
-            el.addEventListener('mouseenter', () => ring.classList.add('hover'));
-            el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
-        });
+</main>
 
-        // ── PANEL CONIC TRACKING ─────────────────────────────
-        document.querySelectorAll('.panel').forEach(p => {
-            p.addEventListener('mousemove', (e) => {
-                const r = p.getBoundingClientRect();
-                const x = ((e.clientX - r.left) / r.width) * 100;
-                const y = ((e.clientY - r.top) / r.height) * 100;
-                const ang = Math.atan2(e.clientY - r.top - r.height/2, e.clientX - r.left - r.width/2) * 180 / Math.PI;
-                p.style.setProperty('--mx', x + '%');
-                p.style.setProperty('--my', y + '%');
-                p.style.setProperty('--card-angle', ang + 'deg');
-            });
-        });
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <a class="brand" href="index.html">
+          <svg width="40" height="40" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <circle cx="24" cy="24" r="22" stroke="rgba(235,229,214,0.5)" stroke-width="1"/>
+            <circle cx="24" cy="24" r="10" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
+            <circle cx="24" cy="24" r="3" fill="#6E8E7B"/>
+            <line x1="24" y1="2" x2="24" y2="14" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
+            <line x1="24" y1="34" x2="24" y2="46" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
+            <line x1="2" y1="24" x2="14" y2="24" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
+            <line x1="34" y1="24" x2="46" y2="24" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
+          </svg>
+          <span class="name">Nullify the Preset</span>
+        </a>
+        <p class="tag">A diagnostic for the mind that multiplies. Free, async, structurally precise.</p>
+      </div>
+      <div>
+        <h4>Read</h4>
+        <ul>
+          <li><a href="essays.html">Essays <span class="count">20</span></a></li>
+          <li><a href="reviews.html">Sample Reviews <span class="count">03</span></a></li>
+          <li><a href="apply.html">Apply for a Private Review</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Write</h4>
+        <a class="mail" href="mailto:official@nullifythepreset.com">official@nullifythepreset.com</a>
+        <p class="mail-note">Questions before applying go here. Applications go through the form.</p>
+      </div>
+    </div>
+    <div class="bottom">
+      <span>Private<span class="sep">·</span>Async<span class="sep">·</span>By application only</span>
+      <span>© <span data-year>2026</span> Nullify the Preset</span>
+    </div>
+  </div>
+</footer>
 
-        // ── CTA RADIAL HIGHLIGHT ─────────────────────────────
-        document.querySelectorAll('.cta').forEach(btn => {
-            btn.addEventListener('mousemove', (e) => {
-                const r = btn.getBoundingClientRect();
-                btn.style.setProperty('--mx', ((e.clientX - r.left) / r.width) * 100 + '%');
-                btn.style.setProperty('--my', ((e.clientY - r.top) / r.height) * 100 + '%');
-            });
-        });
-
-    </script>
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js" onerror="window.__noLenis=true"></script>
+<script src="site.js"></script>
 </body>
 </html>

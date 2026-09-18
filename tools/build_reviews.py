@@ -11,10 +11,9 @@ source file under tools/content/, re-run this script and then
 tools/verify_fidelity.py to confirm the pages still match the markdown
 word for word.
 
-Chassis CSS (design tokens, stage, grain, topbar, cursor, reduced-motion) is
-lifted verbatim out of essays.html at build time, so the review pages cannot
-drift from the rest of the site. Prose CSS for headings, lists, blockquotes
-and rules is added on top, since essays.html only ever needed paragraphs.
+Every page links the shared site.css / site.js, so the review pages cannot
+drift from the rest of the site. Only the two small page-specific rule sets
+below are inlined.
 """
 
 import html
@@ -24,7 +23,6 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 SRC = HERE / 'content'
 REPO = HERE.parent
-ESSAYS = REPO / 'essays.html'
 
 APPLY_ABS = 'https://nullifythepreset.com/apply.html'
 APPLY_REL = 'apply.html'
@@ -35,28 +33,24 @@ REVIEWS = [
     ('03', 'sample-review-3-reopening-decisions'),
 ]
 
-# ---------------------------------------------------------------- chassis CSS
-
-
-def chassis():
-    style = ESSAYS.read_text(encoding='utf-8').split('<style>', 1)[1].split('</style>', 1)[0]
-    head = style.split('/* Catalog wrap */', 1)[0].rstrip()
-    tail = '/* Custom cursor */' + style.split('/* Custom cursor */', 1)[1].rstrip()
-    assert '--moss-light' in head and '.topbar' in head, 'chassis extraction failed'
-    assert '.cursor-ring' in tail, 'cursor extraction failed'
-    return head, tail
-
-
-HEAD_CSS, TAIL_CSS = chassis()
-
 # ---------------------------------------------------------------- markdown
 
 LINK_RE = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
 
 
+def smarten(s: str) -> str:
+    """Straight quotes -> typographic quotes. Words are untouched, so the
+    fidelity check (which folds quote styles) still sees identical prose."""
+    s = re.sub(r'(^|[\s(\[\u2014-])"', '\\1\u201c', s)
+    s = s.replace('"', '\u201d')
+    s = re.sub(r"(^|[\s(\[\u2014])'(?=\w)", '\\1\u2018', s)
+    s = s.replace("'", '\u2019')
+    return s
+
+
 def inline(s: str) -> str:
     """Escape, then apply links, bold and italic (in that order)."""
-    s = html.escape(s, quote=False)
+    s = html.escape(smarten(s), quote=False)
     s = LINK_RE.sub(
         lambda m: '<a href="{}">{}</a>'.format(
             m.group(2).replace(APPLY_ABS, APPLY_REL), m.group(1)),
@@ -139,330 +133,81 @@ def integration_copy():
 
 # ---------------------------------------------------------------- page shell
 
-BACK_SVG = ('<svg width="12" height="12" viewBox="0 0 24 24" fill="none" '
-            'stroke="currentColor" stroke-width="2" stroke-linecap="round" '
-            'stroke-linejoin="round" aria-hidden="true">'
-            '<path d="M19 12H5M12 19l-7-7 7-7"/></svg>')
-
-ARROW_SVG = ('<svg width="12" height="12" viewBox="0 0 24 24" fill="none" '
-             'stroke="currentColor" stroke-width="2" stroke-linecap="round" '
-             'stroke-linejoin="round" aria-hidden="true">'
+ARROW_SVG = ('<svg viewBox="0 0 24 24" aria-hidden="true">'
              '<path d="M5 12h14M12 5l7 7-7 7"/></svg>')
 
 DOC_CSS = """
-/* ─── Document page (sample reviews) ─── */
-.doc-wrap{
-  position: relative; z-index: 2;
-  max-width: 68ch; margin: 0 auto;
-  padding: clamp(120px, 18vh, 160px) var(--pad-x) clamp(80px, 12vw, 120px);
-}
-.back-link{
-  display: flex; width: fit-content;
-  align-items: center; gap: 8px;
-  font-family: var(--mono);
-  font-size: clamp(10px, 0.7vw, 11px);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--ink-muted);
-  text-decoration: none;
-  margin-bottom: clamp(36px, 5vw, 56px);
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-.back-link:hover{ color: var(--ink); transform: translateX(-4px); }
-.back-link:focus-visible{ outline: 1px solid var(--moss-light); outline-offset: 6px; }
-
-.doc-wrap .label{
-  font-family: var(--mono);
-  font-size: clamp(10px, 0.65vw, 11px);
-  letter-spacing: 0.22em;
-  color: var(--ink-muted);
-  text-transform: uppercase;
-  display: inline-block;
-  margin-bottom: clamp(14px, 1.8vw, 18px);
-}
-.doc-wrap h1{
-  font-family: var(--serif);
-  font-weight: 300;
-  font-size: clamp(1.9rem, 4.4vw, 2.7rem);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  margin-bottom: clamp(28px, 3.6vw, 38px);
-  text-wrap: balance;
-}
-
-/* The hypothetical-case notice. Must stay visible in any layout. */
-.hypothetical{
-  margin: 0 0 clamp(40px, 5vw, 56px);
-  padding: clamp(18px, 2.2vw, 24px) clamp(20px, 2.4vw, 26px);
-  border: 1px solid var(--rule-green);
-  border-left: 2px solid var(--moss-light);
-  border-radius: var(--rad);
-  background:
-    radial-gradient(circle at 0% 0%, rgba(110, 142, 123, 0.10), transparent 70%),
-    rgba(235, 229, 214, 0.028);
-  font-family: var(--sans);
-  font-size: 0.95rem;
-  line-height: 1.65;
-  color: var(--ink-soft);
-}
-.hypothetical strong{ color: var(--ink); font-weight: 600; }
-
-.doc-body h2{
-  font-family: var(--serif);
-  font-weight: 300;
-  font-size: clamp(1.3rem, 2.2vw, 1.6rem);
-  line-height: 1.25;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-  margin: clamp(44px, 5.5vw, 64px) 0 clamp(16px, 2vw, 22px);
-  text-wrap: balance;
-}
-.doc-body h2:first-child{ margin-top: 0; }
-.doc-body p{
-  font-family: var(--sans);
-  font-weight: 400;
-  font-size: 1.05rem;
-  line-height: 1.75;
-  color: var(--ink-soft);
-  margin: 0 0 1.15em;
-}
-.doc-body strong{ color: var(--ink); font-weight: 600; }
-.doc-body em{ font-style: italic; }
-.doc-body a{
-  color: var(--ink);
-  text-decoration: underline;
-  text-decoration-color: var(--rule-strong);
-  text-underline-offset: 3px;
-  transition: text-decoration-color 0.3s ease;
-}
-.doc-body a:hover{ text-decoration-color: var(--moss-light); }
-
-.doc-body ul, .doc-body ol{
-  margin: 0 0 1.15em;
-  padding-left: 1.5em;
-  color: var(--ink-soft);
-  font-size: 1.05rem;
-  line-height: 1.75;
-}
-.doc-body li{ margin-bottom: 0.6em; }
-.doc-body li::marker{ color: var(--ink-muted); }
-.doc-body ol > li::marker{ font-family: var(--mono); font-size: 0.85em; }
-
-.doc-body blockquote{
-  margin: 0 0 1.4em;
-  padding-left: clamp(16px, 2vw, 22px);
-  border-left: 1px solid var(--rule-green);
-  color: var(--ink-soft);
-  font-size: 1.02rem;
-  line-height: 1.75;
-}
-
-.doc-body hr{
-  border: 0;
-  border-top: 1px solid var(--rule);
-  margin: clamp(44px, 5.5vw, 64px) 0;
-}
-
-.doc-body p.note{
-  font-size: 0.92rem;
-  line-height: 1.7;
-  color: var(--ink-muted);
-  font-style: italic;
-}
-
-/* Closing invitation */
-.closing{
-  margin-top: clamp(48px, 6vw, 72px);
-  padding: clamp(24px, 3vw, 34px) clamp(22px, 2.8vw, 32px);
-  border: 1px solid var(--rule-green);
-  border-radius: var(--rad);
-  background:
-    radial-gradient(circle at 50% 0%, rgba(110, 142, 123, 0.12), transparent 70%),
-    rgba(235, 229, 214, 0.04);
-}
-.closing p{
-  font-family: var(--sans);
-  font-size: 1.05rem;
-  line-height: 1.75;
-  color: var(--ink-soft);
-  margin: 0;
-}
-.closing strong{ color: var(--ink); font-weight: 600; }
-.closing a{
-  color: var(--ink);
-  text-decoration: underline;
-  text-decoration-color: var(--moss-light);
-  text-underline-offset: 3px;
-}
-.closing a:hover{ text-decoration-color: var(--ink); }
-
-/* Sequential nav between reviews */
-.doc-nav{
-  margin-top: clamp(40px, 5vw, 56px);
-  padding-top: clamp(24px, 3vw, 32px);
-  border-top: 1px solid var(--rule);
-  display: flex; flex-wrap: wrap; gap: 16px 28px;
-  justify-content: space-between; align-items: center;
-  font-family: var(--mono);
-  font-size: clamp(10px, 0.7vw, 11px);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-.doc-nav a{
-  display: inline-flex; align-items: center; gap: 8px;
-  color: var(--ink-muted); text-decoration: none;
-  transition: color 0.3s ease;
-}
-.doc-nav a:hover{ color: var(--ink); }
-.doc-nav a:focus-visible{ outline: 1px solid var(--moss-light); outline-offset: 6px; }
+.doc-wrap > .label{ display: inline-flex; }
 """
 
 INDEX_CSS = """
-/* ─── Reviews index ─── */
-.reviews-wrap{
-  position: relative; z-index: 2;
-  max-width: 760px; margin: 0 auto;
-  padding: clamp(120px, 18vh, 160px) var(--pad-x) clamp(80px, 12vw, 120px);
-}
-.reviews-header{ text-align: center; margin-bottom: clamp(40px, 5vw, 56px); }
-.reviews-header h1{
-  font-family: var(--serif);
-  font-weight: 300;
-  font-size: clamp(2.4rem, 7vw, 4.2rem);
-  line-height: 1;
-  letter-spacing: -0.025em;
-  color: var(--ink);
-}
-.reviews-intro{ margin-bottom: clamp(56px, 7vw, 80px); }
-.reviews-intro p{
-  font-family: var(--sans);
-  font-size: 1.05rem;
-  line-height: 1.75;
-  color: var(--ink-soft);
-  margin: 0 0 1.15em;
-}
-.reviews-intro p:last-child{ margin-bottom: 0; }
-
-.reviews-list{ border-top: 1px solid var(--rule); }
-.review-row{
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: clamp(20px, 3vw, 36px);
-  padding: clamp(24px, 3vw, 32px) 0;
-  border-bottom: 1px solid var(--rule);
-  color: var(--ink-soft);
-  text-decoration: none;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-.review-row:hover{ color: var(--ink); transform: translateX(-4px); }
-.review-row:focus-visible{ outline: 1px solid var(--moss-light); outline-offset: 6px; }
-.review-idx{
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  color: var(--ink-muted);
-  padding-top: 0.45em;
-}
-.review-title{
-  font-family: var(--serif);
-  font-weight: 300;
-  font-size: clamp(1.15rem, 1.8vw, 1.4rem);
-  line-height: 1.3;
-  color: var(--ink);
-  display: block;
-  margin-bottom: 8px;
-  text-wrap: balance;
-}
-.review-desc{
-  font-family: var(--sans);
-  font-size: 0.94rem;
-  line-height: 1.65;
-  color: var(--ink-muted);
-  display: block;
-}
-
-/* Index apply CTA */
-.index-cta{
-  margin-top: clamp(56px, 7vw, 80px);
-  text-align: center;
-}
-.index-cta .cta{
-  display: inline-flex; align-items: center; gap: 12px;
-  padding: 17px 30px;
-  border-radius: var(--rad);
-  background: var(--ink);
-  color: var(--bg);
-  font-family: var(--mono);
-  font-size: clamp(10px, 0.72vw, 11.5px);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.index-cta .cta:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.7);
-}
-.index-cta .cta:focus-visible{ outline: 1px solid var(--moss-light); outline-offset: 5px; }
-.index-cta .foot{
-  display: block;
-  margin-top: 18px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--ink-muted);
-}
+.reviews .row{ grid-template-columns: auto 1fr auto; }
+.reviews .row .title{ font-size: clamp(1.3rem, 2vw, 1.75rem); }
+.reviews .row .desc{ font-size: 0.97rem; color: var(--ink-soft); margin-top: 12px; }
+.reviews .row .idx{ padding-top: 0.5em; }
+.reviews .cta-cluster{ margin-top: clamp(44px, 6vw, 72px); }
+.reviews .write-line{ margin-top: 22px; }
 """
 
-SCRIPT_JS = """
-  let lenis = null;
-  try {
-    if (typeof Lenis !== 'undefined' && !window.__noLenis) {
-      lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        direction: 'vertical',
-        smooth: true,
-      });
-      function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
-      requestAnimationFrame(raf);
-    }
-  } catch (e) { lenis = null; }
-
-  const topbar = document.getElementById('topbar');
-  function onScroll(){
-    if (window.scrollY > 24) topbar.classList.add('scrolled');
-    else topbar.classList.remove('scrolled');
-  }
-  if (lenis) lenis.on('scroll', onScroll);
-  addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
-  const dot = document.getElementById('cursorDot');
-  const ring = document.getElementById('cursorRing');
-  let mx = -100, my = -100, rx = mx, ry = my;
-  dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
-  ring.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
-  addEventListener('mousemove', (e) => {
-    mx = e.clientX; my = e.clientY;
-    dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
-  });
-  function ringLoop(){
-    rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
-    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
-    requestAnimationFrame(ringLoop);
-  }
-  ringLoop();
-  document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
-    el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
-  });
-"""
+FONTS = ('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,200;0,300;0,400;1,300;1,400'
+         '&family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap')
 
 
-def shell(title, extra_css, back_href, back_label, body):
+def topbar():
+    return f"""<header class="topbar" id="topbar">
+  <a class="mark" href="index.html" aria-label="Nullify the Preset — home">
+    <span class="glyph"></span>
+    <span>Nullify the Preset</span>
+  </a>
+  <nav aria-label="Site">
+    <a href="essays.html">Essays <span class="count">20</span></a>
+    <a href="reviews.html" aria-current="page">Reviews <span class="count">03</span></a>
+    <a href="apply.html" class="apply">Apply {ARROW_SVG}</a>
+  </nav>
+</header>"""
+
+
+FOOTER = """<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <a class="brand" href="index.html">
+          <svg width="40" height="40" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <circle cx="24" cy="24" r="22" stroke="rgba(235,229,214,0.5)" stroke-width="1"/>
+            <circle cx="24" cy="24" r="10" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
+            <circle cx="24" cy="24" r="3" fill="#6E8E7B"/>
+            <line x1="24" y1="2" x2="24" y2="14" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
+            <line x1="24" y1="34" x2="24" y2="46" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
+            <line x1="2" y1="24" x2="14" y2="24" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
+            <line x1="34" y1="24" x2="46" y2="24" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
+          </svg>
+          <span class="name">Nullify the Preset</span>
+        </a>
+        <p class="tag">A diagnostic for the mind that multiplies. Free, async, structurally precise.</p>
+      </div>
+      <div>
+        <h4>Read</h4>
+        <ul>
+          <li><a href="essays.html">Essays <span class="count">20</span></a></li>
+          <li><a href="reviews.html">Sample Reviews <span class="count">03</span></a></li>
+          <li><a href="apply.html">Apply for a Private Review</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Write</h4>
+        <a class="mail" href="mailto:official@nullifythepreset.com">official@nullifythepreset.com</a>
+        <p class="mail-note">Questions before applying go here. Applications go through the form.</p>
+      </div>
+    </div>
+    <div class="bottom">
+      <span>Private<span class="sep">·</span>Async<span class="sep">·</span>By application only</span>
+      <span>© <span data-year>2026</span> Nullify the Preset</span>
+    </div>
+  </div>
+</footer>"""
+
+
+def shell(title, extra_css, body, description=''):
     return f"""<!DOCTYPE html>
 <html lang="en" class="lenis">
 <head>
@@ -470,44 +215,33 @@ def shell(title, extra_css, back_href, back_label, body):
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0A100D">
 <title>{html.escape(title)}</title>
+<meta name="description" content="{html.escape(description, quote=True)}">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,200;0,300;0,400;1,300;1,400&family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
-
-<script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js" onerror="window.__noLenis=true"></script>
+<link href="{FONTS}" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
 
 <style>
-{HEAD_CSS}
-
 {extra_css.strip()}
-
-{TAIL_CSS}
 </style>
 </head>
 <body>
 
 <div class="stage" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-<div class="cursor-dot" id="cursorDot"></div>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
 
-<header class="topbar" id="topbar">
-  <a class="mark" href="index.html">
-    <span class="glyph"></span>
-    <span>Nullify the Preset</span>
-  </a>
-  <a href="{back_href}" class="back">
-    {BACK_SVG}
-    {back_label}
-  </a>
-</header>
+{topbar()}
 
 {body}
 
-<script>
-{SCRIPT_JS.strip()}
-</script>
+{FOOTER}
+
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js" onerror="window.__noLenis=true"></script>
+<script src="site.js"></script>
 </body>
 </html>
 """
@@ -542,13 +276,13 @@ def build_review(slug, prev_slug, next_slug):
     label = re.sub(r'\*+', '', subtitle).strip() if subtitle else 'A sample private review'
 
     nav = []
-    nav.append(f'<a href="{prev_slug}.html">{BACK_SVG} Previous review</a>'
+    nav.append(f'<a class="arrow-link back" href="{prev_slug}.html">{ARROW_SVG} Previous review</a>'
                if prev_slug else '<span></span>')
-    nav.append(f'<a href="{next_slug}.html">Next review {ARROW_SVG}</a>'
-               if next_slug else f'<a href="reviews.html">All reviews {ARROW_SVG}</a>')
+    nav.append(f'<a class="arrow-link" href="{next_slug}.html">Next review {ARROW_SVG}</a>'
+               if next_slug else f'<a class="arrow-link" href="reviews.html">All reviews {ARROW_SVG}</a>')
 
     body = f"""<main class="doc-wrap">
-  <a class="back-link" href="reviews.html">{BACK_SVG} Back to sample reviews</a>
+  <a class="arrow-link back" href="reviews.html">{ARROW_SVG} Back to sample reviews</a>
   <span class="label">{html.escape(label)}</span>
   <h1>{inline(h1)}</h1>
 
@@ -562,7 +296,7 @@ def build_review(slug, prev_slug, next_slug):
     <p>{inline(closing)}</p>
   </div>
 
-  <nav class="doc-nav">
+  <nav class="doc-nav" aria-label="Review navigation">
     {nav[0]}
     {nav[1]}
   </nav>
@@ -570,7 +304,7 @@ def build_review(slug, prev_slug, next_slug):
 
     page_title = re.sub(r'\*+', '', h1).strip().strip('"“”') + ' — Nullify the Preset'
     out = REPO / f'{slug}.html'
-    out.write_text(shell(page_title, DOC_CSS, 'reviews.html', 'Reviews', body), encoding='utf-8')
+    out.write_text(shell(page_title, DOC_CSS, body, 'A full sample private review, published so the method can be inspected before you apply.'), encoding='utf-8')
     return out, h1
 
 
@@ -580,40 +314,46 @@ def build_index(entries, intro, descs):
         desc = descs.get(slug)
         assert desc, f'no index blurb for {slug} in website-integration-copy.md'
         rows.append(
-            f'    <a class="review-row" href="{slug}.html">\n'
-            f'      <span class="review-idx">{idx}</span>\n'
+            f'    <a class="row" href="{slug}.html">\n'
+            f'      <span class="idx">{idx}</span>\n'
             f'      <span>\n'
-            f'        <span class="review-title">{inline(title)}</span>\n'
-            f'        <span class="review-desc">{inline(desc)}</span>\n'
+            f'        <span class="title">{inline(title)}</span>\n'
+            f'        <span class="desc">{inline(desc)}</span>\n'
             f'      </span>\n'
+            f'      <span class="go">{ARROW_SVG}</span>\n'
             f'    </a>'
         )
 
-    body = f"""<main class="reviews-wrap">
-  <div class="reviews-header">
-    <h1>Sample Reviews</h1>
+    lede = chr(10).join('      <p>' + inline(p) + '</p>' for p in intro)
+    body = f"""<main class="index-wrap reviews">
+  <div class="index-head">
+    <div>
+      <span class="label">Sample Reviews <span class="tick">·</span> Three cases</span>
+      <h1>Sample Reviews</h1>
+    </div>
+    <div class="lede">
+{lede}
+    </div>
   </div>
 
-  <div class="reviews-intro">
-    {chr(10).join('    <p>' + inline(p) + '</p>' for p in intro).strip()}
-  </div>
-
-  <div class="reviews-list">
+  <div class="rows">
 {chr(10).join(rows)}
   </div>
 
-  <div class="index-cta">
-    <a class="cta" href="apply.html">
-      Apply for a Private Review
+  <div class="cta-cluster">
+    <a class="cta" href="apply.html" data-magnetic>
+      <span>Apply for a Private Review</span>
       {ARROW_SVG}
     </a>
-    <span class="foot">Free · Async · Structured</span>
+    <span class="label bare center">Free <span class="tick">·</span> Async <span class="tick">·</span> Structured</span>
+    <p class="write-line">Questions before you apply? <a href="mailto:official@nullifythepreset.com">official@nullifythepreset.com</a></p>
   </div>
 </main>"""
 
     out = REPO / 'reviews.html'
-    out.write_text(shell('Sample Reviews — Nullify the Preset', INDEX_CSS,
-                         'index.html', 'Back', body), encoding='utf-8')
+    out.write_text(shell('Sample Reviews — Nullify the Preset', INDEX_CSS, body,
+                         'Three full-length sample private reviews. Read the method before you apply.'),
+                   encoding='utf-8')
     return out
 
 

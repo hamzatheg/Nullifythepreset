@@ -5,10 +5,10 @@ Build scripts for the sample-review pages.
 ## What this is for
 
 `reviews.html` and the three `sample-review-*.html` pages are **generated**, not
-hand-edited. Their prose comes from the markdown in `content/`, and the page
-chassis (design tokens, stage, grain, topbar, cursor, reduced-motion rules) is
-lifted out of `essays.html` at build time so the review pages cannot drift from
-the rest of the site.
+hand-edited. Their prose comes from the markdown in `content/`. The page chassis
+(design tokens, stage, grain, topbar, footer, cursor, reduced-motion rules) is
+the shared `site.css` / `site.js` that every page links, so the review pages
+cannot drift from the rest of the site.
 
 Editing the generated HTML directly means your change is lost the next time
 anyone runs the build. Edit the markdown instead.
@@ -56,6 +56,9 @@ the stream differs from the source.
 - **Apply links.** The markdown uses the absolute
   `https://nullifythepreset.com/apply.html`. The build rewrites it to the
   relative `apply.html`, matching every other link in the site and surviving
-  being served from a subpath. This is the only text transformation applied.
+  being served from a subpath.
+- **Typographic quotes.** The build turns straight `"` and `'` into curly
+  quotes. The fidelity check folds them back before comparing, so the words
+  are still verified verbatim. These two are the only text transformations.
 - **`content/` is not served.** The markdown is kept for editing and for the
   fidelity check. The public pages are the generated HTML at the repo root.
