@@ -46,10 +46,12 @@ def md_words(md: str):
 def html_words(doc: str):
     body = doc.split('<main', 1)[1].split('>', 1)[1].rsplit('</main>', 1)[0]
     body = re.sub(r'<nav class="doc-nav".*?</nav>', ' ', body, flags=re.S)
-    body = re.sub(r'<a class="back-link".*?</a>', ' ', body, flags=re.S)
+    body = re.sub(r'<a class="arrow-link back".*?</a>', ' ', body, flags=re.S)
     body = re.sub(r'<svg.*?</svg>', ' ', body, flags=re.S)
     body = re.sub(r'<[^>]+>', ' ', body)
-    return html.unescape(body).split()
+    # The build sets typographic quotes; fold them back so only the words are compared.
+    body = html.unescape(body).translate(str.maketrans('\u201c\u201d\u2018\u2019', '""\'\''))
+    return body.split()
 
 
 def drop_label(ws):
