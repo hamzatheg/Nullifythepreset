@@ -108,8 +108,8 @@
 /* ─── Who I am ─── */
 .about { display: grid; grid-template-columns: 1fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
 @media (min-width: 860px) { .about { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); } }
-.about-photo { margin: 0 auto; width: min(100%, 340px); border-radius: var(--rad); overflow: hidden; border: 1px solid var(--rule); }
-.about-photo img { display: block; width: 100%; height: auto; filter: grayscale(0.15) contrast(1.02); }
+.about-photo { margin: 0 auto; width: min(100%, 360px); border-radius: var(--rad); overflow: hidden; border: 1px solid var(--rule); background: radial-gradient(ellipse 80% 70% at 50% 35%, rgba(110, 142, 123, 0.22), transparent 70%), linear-gradient(180deg, rgba(235, 229, 214, 0.05), rgba(235, 229, 214, 0.01)); }
+.about-photo img { display: block; width: 100%; height: auto; }
 .about h2 { margin: 14px 0 22px; }
 
 /* ─── Pricing ─── */
@@ -411,7 +411,7 @@
     <section class="wrap reveal">
       <div class="about">
         <figure class="about-photo">
-          <img src="images/hamza.jpg" alt="Hamza Pehlivanov" width="640" height="800" loading="lazy">
+          <img src="images/hamza.webp" alt="Hamza Pehlivanov" width="720" height="720" loading="lazy">
         </figure>
         <div>
           <span class="label">Who I Am</span>
