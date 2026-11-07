@@ -512,6 +512,7 @@ section.tight { padding-top: clamp(40px, 5vw, 64px); }
 /* ─────────────────────────── FEATURE CARDS (Essays / Reviews) ─────────────────────────── */
 .features { display: grid; grid-template-columns: 1fr; gap: var(--gap); }
 @media (min-width: 900px) { .features { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 900px) { .features--single { grid-template-columns: minmax(0, 1fr); max-width: 760px; } }
 .feature {
   position: relative; display: flex; flex-direction: column;
   min-height: 100%;
