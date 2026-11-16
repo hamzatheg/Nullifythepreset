@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0A100D">
 <title>Apply for a Free Review — Nullify the Preset</title>
-<meta name="description" content="Four written questions. A written breakdown in return. Free, async, read personally.">
+<meta name="description" content="Two written questions. A written breakdown in return within 24 hours. Free, async, read personally.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -82,6 +82,13 @@ input.field { min-height: 0; }
 .error-message { display: none; margin-bottom: 18px; padding: 12px 16px; border: 1px solid rgba(200, 120, 100, 0.4); border-radius: var(--rad-sm); color: #E4B2A4; font-size: 0.93rem; }
 .error-message.show { display: block; }
 .foot-note { margin-top: 20px; }
+.privacy-line { margin-bottom: clamp(18px, 2.4vw, 24px); }
+.privacy-line a { color: var(--ink); border-bottom: 1px solid var(--rule-strong); }
+.step-two-head { margin-bottom: clamp(24px, 3vw, 36px); outline: none; }
+.step-two-head h2 { font-size: clamp(1.7rem, 3vw, 2.3rem); margin: 12px 0 10px; }
+.step-two-head p { color: var(--ink-soft); }
+.skip-link { background: none; border: 0; padding: 8px 4px; cursor: pointer; color: var(--ink-muted); font: inherit; font-size: 0.95rem; border-bottom: 1px solid var(--rule-strong); }
+.skip-link:hover { color: var(--ink); }
 
 .success-state { display: none; text-align: center; max-width: 620px; margin: 0 auto; padding: clamp(24px, 6vh, 64px) 0; }
 .success-state.show { display: block; }
@@ -114,10 +121,10 @@ input.field { min-height: 0; }
     <aside class="apply-aside header">
       <span class="label">The Application</span>
       <h1>Apply for a <em>free review</em></h1>
-      <p class="lede">I ask you four questions. I read your answers myself and they remain confidential.</p>
+      <p class="lede">I ask two questions, with two optional ones after. Your breakdown is written from your answers and nothing else. I read them myself and they remain confidential.</p>
       <ul class="facts">
-        <li><span class="idx">01</span><span>Free. No card, no pitch.</span></li>
-        <li><span class="idx">02</span><span>Async. Write when you have twenty honest minutes.</span></li>
+        <li><span class="idx">01</span><span>Free. No card. If I can’t help, you won’t hear from me again.</span></li>
+        <li><span class="idx">02</span><span>Async. Write when you have ten honest minutes.</span></li>
         <li><span class="idx">03</span><span>Written. Your breakdown arrives by email or Signal, within 24 hours.</span></li>
       </ul>
       <p class="write-line">Questions first? <a href="mailto:official@nullifythepreset.com">official@nullifythepreset.com</a></p>
@@ -129,8 +136,8 @@ input.field { min-height: 0; }
           <input type="hidden" name="access_key" value="08f08761-cdd8-4b3d-8187-a20ee032c22c">
           <input type="hidden" name="subject" value="New Private Review Application">
           <input type="hidden" name="from_name" value="Private Review System">
-          <input type="hidden" name="replyto" value="@">
 
+          <div id="stepOne">
           <div class="q">
             <span class="q-num">01</span>
             <label class="q-label" for="f-pattern">What keeps happening?</label>
@@ -146,32 +153,13 @@ input.field { min-height: 0; }
           </div>
 
           <div class="q">
-            <span class="q-num">03</span>
-            <label class="q-label" for="f-cost">What is this costing you?</label>
-            <p class="q-hint">The time you spend on it, lost sleep, attention, whatever you are neglecting because of it. Be specific.</p>
-            <div class="field-wrap"><textarea class="field" id="f-cost" name="cost" required placeholder="Hours, decisions, relationships, work."></textarea></div>
-          </div>
-
-          <div class="q">
-            <span class="q-num">04</span>
-            <label class="q-label" for="f-diagnosis">The failed solutions.</label>
-            <p class="q-hint">What have you tried, and why did the pattern survive those attempts?</p>
-            <div class="field-wrap"><textarea class="field" id="f-diagnosis" name="diagnosis" required placeholder="Include what almost worked."></textarea></div>
-          </div>
-
-          <div class="q">
             <span class="q-num">—</span>
             <label class="q-label plain" for="f-contact">Signal username or email</label>
             <p class="q-hint">Where the review should arrive.</p>
             <div class="field-wrap"><input type="text" class="field" id="f-contact" name="contact" required autocomplete="email" placeholder="@username.01 or you@example.com"></div>
           </div>
 
-          <div class="q">
-            <span class="q-num">—</span>
-            <label class="q-label plain" for="f-timezone">Your current timezone</label>
-            <p class="q-hint">So the return window is quoted in your hours.</p>
-            <div class="field-wrap"><input type="text" class="field" id="f-timezone" name="timezone" required placeholder="e.g. EST, CET, UTC+3"></div>
-          </div>
+          <input type="hidden" name="timezone" id="f-timezone">
 
           <div class="submit-section">
             <div class="error-message" id="errorMessage" role="alert">Please fill in all required fields.</div>
@@ -179,12 +167,47 @@ input.field { min-height: 0; }
               <input type="checkbox" required id="consent">
               <label for="consent">I understand this is not therapy or medical advice. I am seeking a written pattern analysis for personal use only.</label>
             </div>
+            <p class="q-hint privacy-line">Only I read what you send. <a href="privacy.html">What happens to it</a>.</p>
             <div class="submit-row">
               <button type="submit" class="cta" id="submitButton" data-magnetic>
-                <span>Submit application</span>
+                <span>Send application</span>
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </button>
               <span class="label bare">Free <span class="tick">·</span> Async <span class="tick">·</span> Reviewed personally</span>
+            </div>
+          </div>
+          </div>
+
+          <div id="stepTwo" hidden>
+            <div class="step-two-head" tabindex="-1" id="stepTwoHead">
+              <span class="label">Application received</span>
+              <h2>Your breakdown arrives within 24 hours.</h2>
+              <p>Two optional questions. Your answers help me read it more precisely.</p>
+            </div>
+          <div class="q">
+            <span class="q-num">03</span>
+            <label class="q-label" for="f-cost">What is this costing you?</label>
+            <p class="q-hint">The time you spend on it, lost sleep, attention, whatever you are neglecting because of it. Be specific.</p>
+            <div class="field-wrap"><textarea class="field" id="f-cost" name="cost" placeholder="Hours, decisions, relationships, work."></textarea></div>
+          </div>
+
+          <div class="q">
+            <span class="q-num">04</span>
+            <label class="q-label" for="f-diagnosis">The failed solutions.</label>
+            <p class="q-hint">What have you tried, and why did the pattern survive those attempts?</p>
+            <div class="field-wrap"><textarea class="field" id="f-diagnosis" name="tried" placeholder="Include what almost worked."></textarea></div>
+          </div>
+
+
+            <div class="submit-section">
+              <div class="error-message" id="errorMessageTwo" role="alert"></div>
+              <div class="submit-row">
+                <button type="button" class="cta" id="addButton" data-magnetic>
+                  <span>Add to my application</span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+                <button type="button" class="skip-link" id="skipButton">Skip these</button>
+              </div>
             </div>
           </div>
         </form>
@@ -224,6 +247,7 @@ input.field { min-height: 0; }
         <ul>
           <li><a href="essays.html">Essays <span class="count">12</span></a></li>
           <li><a href="apply.html">Apply for a free review</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
         </ul>
       </div>
       <div>
@@ -246,13 +270,56 @@ input.field { min-height: 0; }
   const formCard = document.querySelector('.form-card');
   const successState = document.getElementById('successState');
   const errorMsg = document.getElementById('errorMessage');
+  const errorTwo = document.getElementById('errorMessageTwo');
+  const stepOne = document.getElementById('stepOne');
+  const stepTwo = document.getElementById('stepTwo');
+  const ENDPOINT = 'https://api.web3forms.com/submit';
+  const KEY = form.querySelector('[name="access_key"]').value;
+  const DRAFT = 'ntp_draft';
+  const val = (name) => (form.querySelector('[name="' + name + '"]').value || '').trim();
 
+  // Timezone is read from the device, so nobody has to type it.
+  try { document.getElementById('f-timezone').value = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) {}
+
+  // Where this visitor came from (set by site.js on the first page they opened).
+  let src = {};
+  try { src = JSON.parse(sessionStorage.getItem('ntp_src') || '{}'); } catch (e) {}
+  const srcLabel = src.source || (src.referrer ? src.referrer.replace(/^https?:\/\//, '').split('/')[0] : 'direct');
+
+  // Keep a draft on this device, so switching apps on a phone does not lose the writing.
+  const draftFields = ['pattern', 'example', 'contact'];
+  try {
+    const d = JSON.parse(localStorage.getItem(DRAFT) || '{}');
+    draftFields.forEach((n) => { const el = form.querySelector('[name="' + n + '"]'); if (d[n] && !el.value) el.value = d[n]; });
+    form.addEventListener('input', () => {
+      const o = {}; draftFields.forEach((n) => { o[n] = form.querySelector('[name="' + n + '"]').value; });
+      try { localStorage.setItem(DRAFT, JSON.stringify(o)); } catch (e) {}
+    });
+  } catch (e) {}
+
+  async function send(payload) {
+    const response = await fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(result.message || 'Server rejected the request');
+  }
+
+  function finish() {
+    document.querySelector('.header').style.display = 'none';
+    document.querySelector('.foot-note').style.display = 'none';
+    formCard.style.display = 'none';
+    successState.classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Step one: the application itself. It is complete once this sends.
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     errorMsg.classList.remove('show');
-
-    // Manual validation (novalidate keeps the browser's default bubbles off the design).
-    const missing = [...form.querySelectorAll('[required]')].filter((el) =>
+    const missing = [...stepOne.querySelectorAll('[required]')].filter((el) =>
       el.type === 'checkbox' ? !el.checked : !el.value.trim());
     if (missing.length) {
       errorMsg.textContent = 'Please fill in all required fields.';
@@ -260,35 +327,59 @@ input.field { min-height: 0; }
       missing[0].focus();
       return;
     }
-
-    const formData = new FormData(form);
-    const json = JSON.stringify(Object.fromEntries(formData));
     const submitButton = document.getElementById('submitButton');
     submitButton.disabled = true;
-    submitButton.querySelector('span').textContent = 'Submitting…';
-
+    submitButton.querySelector('span').textContent = 'Sending…';
+    const contact = val('contact');
+    const payload = {
+      access_key: KEY,
+      subject: 'Free review application [' + srcLabel + ']',
+      from_name: 'Private Review System',
+      pattern: val('pattern'), example: val('example'), contact: contact, timezone: val('timezone'),
+      source: src.source || '', medium: src.medium || '', campaign: src.campaign || '', ad: src.content || '',
+      referrer: src.referrer || '', landing_page: src.landing || ''
+    };
+    if (/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(contact)) payload.replyto = contact;
     try {
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: json
-      });
-      const result = await response.json();
-      if (response.ok) {
-        document.querySelector('.header').style.display = 'none';
-        document.querySelector('.foot-note').style.display = 'none';
-        formCard.style.display = 'none';
-        successState.classList.add('show');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        throw new Error(result.message || 'Server rejected the request');
-      }
+      await send(payload);
+      try { localStorage.removeItem(DRAFT); } catch (e) {}
+      document.querySelector('.header').style.display = 'none';
+      stepOne.hidden = true;
+      stepTwo.hidden = false;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.getElementById('stepTwoHead').focus({ preventScroll: true });
     } catch (error) {
       console.error(error);
       submitButton.disabled = false;
-      submitButton.querySelector('span').textContent = 'Submit application';
+      submitButton.querySelector('span').textContent = 'Send application';
       errorMsg.textContent = 'Error: ' + error.message;
       errorMsg.classList.add('show');
+    }
+  });
+
+  // Step two: optional answers, sent as a second message matched by contact.
+  document.getElementById('skipButton').addEventListener('click', finish);
+  document.getElementById('addButton').addEventListener('click', async () => {
+    errorTwo.classList.remove('show');
+    const cost = val('cost'), tried = val('tried');
+    if (!cost && !tried) { finish(); return; }
+    const addButton = document.getElementById('addButton');
+    addButton.disabled = true;
+    addButton.querySelector('span').textContent = 'Sending…';
+    try {
+      await send({
+        access_key: KEY,
+        subject: 'Free review application, part 2 [' + val('contact') + ']',
+        from_name: 'Private Review System',
+        contact: val('contact'), cost: cost, tried: tried
+      });
+      finish();
+    } catch (error) {
+      console.error(error);
+      addButton.disabled = false;
+      addButton.querySelector('span').textContent = 'Add to my application';
+      errorTwo.textContent = 'Your application is already in. These two answers did not send. Try again, or skip them.';
+      errorTwo.classList.add('show');
     }
   });
 </script>

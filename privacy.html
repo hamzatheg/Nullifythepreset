@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" class="lenis">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0A100D">
+<title>Privacy · Nullify the Preset</title>
+<meta name="description" content="What happens to what you send through the application form.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,200;0,300;0,400;1,300;1,400&family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+
+<style>
+.apply-wrap {
+  position: relative; z-index: 2;
+  max-width: var(--max-w); margin: 0 auto;
+  padding: clamp(104px, 15vh, 140px) var(--pad-x) clamp(64px, 9vw, 100px);
+}
+.apply-grid { display: grid; grid-template-columns: 1fr; gap: clamp(32px, 5vw, 64px); align-items: start; }
+@media (min-width: 1000px) {
+  .apply-grid { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: clamp(48px, 6vw, 96px); }
+  .apply-aside { position: sticky; top: 104px; }
+}
+.apply-aside h1 { font-size: clamp(2.6rem, 6.4vw, 4.4rem); margin: 16px 0 20px; }
+.apply-aside .lede { margin-bottom: 26px; }
+.apply-aside .facts { list-style: none; border-top: 1px solid var(--rule); margin-bottom: 26px; }
+.apply-aside .facts li {
+  display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: baseline;
+  padding: 12px 0; border-bottom: 1px solid var(--rule);
+  color: var(--ink-soft); font-size: 0.97rem;
+}
+.apply-aside .facts .idx { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--moss-light); }
+.apply-aside .write-line { justify-content: flex-start; }
+
+.form-card {
+  position: relative;
+  border: 1px solid var(--rule-strong);
+  border-radius: calc(var(--rad) + 4px);
+  padding: clamp(6px, 1vw, 12px) clamp(20px, 3vw, 40px) clamp(24px, 3vw, 40px);
+  background:
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(110, 142, 123, 0.10), transparent 60%),
+    linear-gradient(180deg, rgba(235, 229, 214, 0.035), rgba(235, 229, 214, 0.01));
+  box-shadow: 0 40px 80px -48px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(235, 229, 214, 0.05) inset;
+}
+.q {
+  display: grid; grid-template-columns: 1fr; gap: 8px 22px;
+  padding: clamp(22px, 3vw, 32px) 0;
+  border-bottom: 1px solid var(--rule);
+}
+@media (min-width: 640px) {
+  .q { grid-template-columns: 2.6rem 1fr; }
+  .q .q-num { grid-row: 1 / span 3; padding-top: 0.5em; }
+}
+.q-num { font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em; color: var(--moss-light); }
+.q-label { font-family: var(--serif); font-weight: 300; font-size: clamp(1.25rem, 1.8vw, 1.5rem); letter-spacing: -0.015em; color: var(--ink); line-height: 1.25; display: block; }
+.q-label.plain { font-family: var(--sans); font-weight: 500; font-size: 1.02rem; letter-spacing: 0; }
+.q-hint { color: var(--ink-muted); font-size: 0.95rem; margin: 0; }
+.field-wrap { position: relative; margin-top: 8px; }
+.field {
+  width: 100%; display: block;
+  background: rgba(7, 16, 11, 0.55);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--rad-sm);
+  color: var(--ink);
+  font-family: var(--sans); font-size: 1rem; line-height: 1.6;
+  padding: 14px 16px;
+  min-height: 150px; resize: vertical;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  -webkit-appearance: none; appearance: none;
+}
+input.field { min-height: 0; }
+.field::placeholder { color: var(--ink-faint); }
+.field:hover { border-color: rgba(235, 229, 214, 0.26); }
+.field:focus { outline: none; border-color: var(--moss-light); box-shadow: 0 0 0 3px var(--moss-glow); background: rgba(7, 16, 11, 0.75); }
+.submit-section { padding-top: clamp(22px, 3vw, 32px); }
+.consent { display: flex; gap: 14px; align-items: flex-start; color: var(--ink-muted); font-size: 0.95rem; line-height: 1.55; margin-bottom: clamp(22px, 3vw, 28px); }
+.consent input { width: 18px; height: 18px; flex: none; margin-top: 3px; accent-color: var(--moss-light); cursor: pointer; }
+.consent label { cursor: pointer; }
+.submit-row { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; }
+.error-message { display: none; margin-bottom: 18px; padding: 12px 16px; border: 1px solid rgba(200, 120, 100, 0.4); border-radius: var(--rad-sm); color: #E4B2A4; font-size: 0.93rem; }
+.error-message.show { display: block; }
+.foot-note { margin-top: 20px; }
+.privacy-line { margin-bottom: clamp(18px, 2.4vw, 24px); }
+.privacy-line a { color: var(--ink); border-bottom: 1px solid var(--rule-strong); }
+.step-two-head { margin-bottom: clamp(24px, 3vw, 36px); outline: none; }
+.step-two-head h2 { font-size: clamp(1.7rem, 3vw, 2.3rem); margin: 12px 0 10px; }
+.step-two-head p { color: var(--ink-soft); }
+.skip-link { background: none; border: 0; padding: 8px 4px; cursor: pointer; color: var(--ink-muted); font: inherit; font-size: 0.95rem; border-bottom: 1px solid var(--rule-strong); }
+.skip-link:hover { color: var(--ink); }
+
+.success-state { display: none; text-align: center; max-width: 620px; margin: 0 auto; padding: clamp(24px, 6vh, 64px) 0; }
+.success-state.show { display: block; }
+.success-state .glyph { width: 64px; height: 64px; border-radius: 50%; border: 1px solid var(--moss-light); margin: 0 auto 28px; position: relative; box-shadow: 0 0 40px var(--moss-glow); }
+.success-state .glyph::after { content: ""; position: absolute; inset: 20px; border-radius: 50%; background: var(--moss-light); }
+.success-state h2 { margin-bottom: 16px; }
+.success-state p { color: var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<div class="stage" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+
+<header class="topbar" id="topbar">
+  <a class="mark" href="index.html" aria-label="Nullify the Preset — home">
+    <span class="glyph"></span>
+    <span>Nullify the Preset</span>
+  </a>
+  <nav aria-label="Site">
+    <a href="essays.html">Essays <span class="count">12</span></a>
+    <a href="apply.html" class="apply">Apply <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+  </nav>
+</header>
+
+<main class="apply-wrap">
+  <div class="doc-wrap" style="max-width: 68ch;">
+    <a class="arrow-link back" href="apply.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg> Back to the application</a>
+    <span class="label">Privacy</span>
+    <h1>What happens to what you send</h1>
+    <p>Your application is sent to me through a third-party form service (Web3Forms). Only I read it. I use it to write your breakdown and for no other purpose.</p>
+    <p>I don’t sell it or share it, and I don’t use any of it publicly without your permission.</p>
+    <p>You can ask me to delete your application and my breakdown, and I will. Write to <a href="mailto:official@nullifythepreset.com">official@nullifythepreset.com</a>.</p>
+    <p>The form also logs which link or ad brought you here, so I can see where applications come from. A draft of your answers is kept on your own device while you write and is removed once you send.</p>
+    <p>If we work together after the review, messages go through Signal, which is end-to-end encrypted.</p>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <a class="brand" href="index.html">
+          <svg width="40" height="40" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <circle cx="24" cy="24" r="22" stroke="rgba(235,229,214,0.5)" stroke-width="1"/>
+            <circle cx="24" cy="24" r="10" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
+            <circle cx="24" cy="24" r="3" fill="#6E8E7B"/>
+            <line x1="24" y1="2" x2="24" y2="14" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
+            <line x1="24" y1="34" x2="24" y2="46" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
+            <line x1="2" y1="24" x2="14" y2="24" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
+            <line x1="34" y1="24" x2="46" y2="24" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
+          </svg>
+          <span class="name">Nullify the Preset</span>
+        </a>
+        <p class="tag">Psychological consulting, in writing. The first review is free.</p>
+      </div>
+      <div>
+        <h4>Read</h4>
+        <ul>
+          <li><a href="essays.html">Essays <span class="count">12</span></a></li>
+          <li><a href="apply.html">Apply for a free review</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Write</h4>
+        <a class="mail" href="mailto:official@nullifythepreset.com">official@nullifythepreset.com</a>
+        <p class="mail-note">Questions before applying go here. Applications go through the form.</p>
+      </div>
+    </div>
+    <div class="bottom">
+      <span>Private<span class="sep">·</span>Async<span class="sep">·</span>By application only</span>
+      <span>© <span data-year>2026</span> Nullify the Preset</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js" onerror="window.__noLenis=true"></script>
+<script src="site.js"></script>
+
+</body>
+</html>

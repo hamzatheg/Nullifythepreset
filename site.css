@@ -200,7 +200,7 @@ img, svg, canvas, video { display: block; max-width: 100%; }
 }
 .topbar a.back:hover { color: var(--ink); }
 @media (max-width: 640px) {
-  .topbar nav a.apply { display: none; }
+  .topbar nav a:not(.apply) { display: none; }
   .topbar nav a { padding: 0 10px; }
 }
 @media (max-width: 400px) {
