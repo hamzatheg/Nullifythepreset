@@ -23,6 +23,8 @@
   .apply-grid { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: clamp(48px, 6vw, 96px); }
   .apply-aside { position: sticky; top: 104px; }
 }
+/* After the application is sent the sidebar is hidden: centre the remaining column instead of leaving it in the narrow left slot. */
+.apply-grid.is-sent { grid-template-columns: minmax(0, 1fr); max-width: 760px; margin: 0 auto; }
 .apply-aside h1 { font-size: clamp(2.6rem, 6.4vw, 4.4rem); margin: 16px 0 20px; }
 .apply-aside .lede { margin-bottom: 26px; }
 .apply-aside .facts { list-style: none; border-top: 1px solid var(--rule); margin-bottom: 26px; }
@@ -314,7 +316,7 @@ input.field { min-height: 0; }
   }
 
   function finish() {
-    document.querySelector('.header').style.display = 'none';
+    document.querySelector('.header').style.display = 'none'; document.querySelector('.apply-grid').classList.add('is-sent');
     document.querySelector('.foot-note').style.display = 'none';
     formCard.style.display = 'none';
     successState.classList.add('show');
@@ -350,7 +352,7 @@ input.field { min-height: 0; }
       await send(payload);
       try { rdt('track', 'Lead'); } catch (e) {}
       try { localStorage.removeItem(DRAFT); } catch (e) {}
-      document.querySelector('.header').style.display = 'none';
+      document.querySelector('.header').style.display = 'none'; document.querySelector('.apply-grid').classList.add('is-sent');
       stepOne.hidden = true;
       stepTwo.hidden = false;
       window.scrollTo({ top: 0, behavior: 'smooth' });
