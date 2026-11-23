@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" class="lenis">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0A100D">
+<meta name="theme-color" content="#0F2B22">
 <title>The ongoing work · Nullify the Preset</title>
 <meta name="description" content="How the ongoing written work goes after the free review: what you get each month, the price and the first-month refund.">
 <meta property="og:type" content="website">
@@ -11,144 +11,40 @@
 <meta property="og:title" content="The ongoing work · Nullify the Preset">
 <meta property="og:description" content="What you get each month, the price and the first-month refund. It starts with a free written review.">
 <meta name="twitter:card" content="summary">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,200;0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,600&family=Schibsted+Grotesk:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
-
 <style>
-/* ─── Hero ─── */
-.hero {
-  min-height: 100svh;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center;
-  padding-top: clamp(110px, 16vh, 160px);
-  padding-bottom: clamp(40px, 6vh, 64px);
-}
-.hero h1 { margin-top: clamp(18px, 3vw, 28px); }
-.hero h1 .word {
-  display: inline-block; opacity: 0; transform: translateY(0.4em);
-  animation: word-rise 1.1s var(--ease) forwards;
-}
-.hero h1 .delim { display: inline-block; width: 0.24em; }
-@keyframes word-rise { to { opacity: 1; transform: translateY(0); } }
-.hero h1 em { position: relative; }
-.hero h1 em::before {
-  content: ""; position: absolute;
-  top: 50%; left: -8%; width: 116%; height: 0.95em;
-  border: 1px solid var(--moss-light); border-radius: 50%;
-  transform: translateY(-48%) rotate(-3deg) scaleX(0);
-  transform-origin: 30% 50%; opacity: 0;
-  animation: orbit-draw 1.4s 1.2s var(--ease) forwards;
-  pointer-events: none;
-  box-shadow: 0 0 16px var(--moss-glow);
-}
-@keyframes orbit-draw { to { transform: translateY(-48%) rotate(-3deg) scaleX(1); opacity: 0.85; } }
-.hero-brief {
-  max-width: 600px;
-  margin: clamp(30px, 5vw, 48px) auto 0;
-  font-size: clamp(1rem, 0.6vw + 0.9rem, 1.16rem);
-  line-height: 1.65;
-  opacity: 0; animation: fade-in 1s 1.5s forwards;
-}
-.hero-brief p { margin-bottom: 0.65rem; }
-.hero-brief p.snap { margin-top: 24px; font-size: clamp(1.08rem, 0.7vw + 0.95rem, 1.28rem); }
-.hero-brief p.snap strong { font-weight: 500; }
-@keyframes fade-in { to { opacity: 1; } }
-.scroll-cue { margin-top: clamp(40px, 7vh, 72px); position: relative; height: 56px; width: 1px; opacity: 0; animation: fade-in 1s 2.2s forwards; }
-.scroll-cue::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent, var(--ink-faint)); }
-.scroll-cue::after { content: ""; position: absolute; top: 0; left: 0; width: 1px; height: 18px; background: var(--ink); animation: drip 2.4s ease-in-out infinite; }
-@keyframes drip { 0% { transform: translateY(-18px); opacity: 0; } 30% { opacity: 1; } 100% { transform: translateY(56px); opacity: 0; } }
 
-.panel .kicker { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--rule); color: var(--ink); }
+.on-hero { padding-top: clamp(48px, 7vw, 96px); }
+.on-hero h1 { font-size: clamp(2.8rem, 7vw, 6.4rem); line-height: 0.92; letter-spacing: -0.03em; max-width: 13em; }
+.on-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; margin-top: clamp(40px, 5vw, 64px); }
+@media (min-width: 960px) { .on-grid { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); column-gap: clamp(48px, 6vw, 96px); align-items: start; } }
+.honesty { font-family: var(--display); font-size: clamp(1.6rem, 2.6vw, 2.3rem); line-height: 1.16; letter-spacing: -0.01em; color: var(--bone); margin: 0 0 18px; }
+.honesty strong { font-weight: 400; font-style: italic; color: var(--brass); }
+.honesty-note { font-size: 0.95rem; }
+.method h2, .changes h2 { margin-bottom: 18px; }
+.method .lead { max-width: 34rem; margin-bottom: clamp(40px, 5vw, 64px); }
+.changes h2 { margin-bottom: clamp(40px, 5vw, 64px); }
+.outcome { border-top: 1px solid var(--line-dark); padding-top: 22px; min-width: 0; }
+.outcome h3 { font-size: clamp(1.7rem, 2.6vw, 2.3rem); margin-bottom: 12px; }
+.outcomes { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; }
+@media (min-width: 960px) { .outcomes { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.price h2 { max-width: 15em; margin-bottom: 18px; }
+.price .lead { max-width: 34rem; margin-bottom: clamp(40px, 5vw, 64px); }
+.pricing { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: start; }
+@media (min-width: 960px) { .pricing { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); } }
+.fee { background: var(--field); border: 1px solid var(--line-light); padding: clamp(26px, 3.6vw, 44px); }
+.fee-line { font-size: 0.95rem; color: var(--ink-muted); }
+.fee-line strong { color: var(--brass-ink); }
+.fee-price { margin: 10px 0 8px; font-family: var(--display); font-size: clamp(4.6rem, 10vw, 8rem); line-height: 0.85; letter-spacing: -0.045em; color: var(--ink); display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 14px; }
+.fee-price small { font-family: var(--display); font-style: italic; font-size: 1.5rem; letter-spacing: 0; color: var(--brass-ink); }
+.fee hr { border: 0; border-top: 1px solid var(--line-light); margin: 24px 0; }
+.guarantee { background: var(--green); color: var(--bone-muted); color-scheme: dark; padding: clamp(26px, 3.6vw, 44px); }
+.guarantee .runhead { color: var(--brass); }
+.guarantee p:last-child { font-family: var(--display); font-size: clamp(1.4rem, 2vw, 1.75rem); line-height: 1.2; color: var(--bone); }
 
-/* ─── Mechanism ─── */
-.mech { display: grid; grid-template-columns: 1fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
-@media (min-width: 900px) { .mech { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); } }
-.mech .fig { width: min(100%, 420px); margin: 0 auto; }
-.mech .fig svg { width: 100%; height: auto; }
-.mech .facts { list-style: none; border-top: 1px solid var(--rule); }
-.mech .facts li { padding: clamp(18px, 2.2vw, 24px) 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 1fr; gap: 6px 28px; }
-@media (min-width: 640px) { .mech .facts li { grid-template-columns: minmax(0, 11rem) 1fr; } }
-.mech .facts strong { font-family: var(--serif); font-weight: 300; font-size: clamp(1.15rem, 1.4vw, 1.35rem); letter-spacing: -0.015em; }
-.mech .callout { margin-top: clamp(22px, 3vw, 30px); }
-
-/* ─── Outcomes ─── */
-.outcome {
-  position: relative;
-  border: 1px solid var(--rule); border-radius: var(--rad);
-  padding: clamp(24px, 3vw, 34px);
-  background: linear-gradient(180deg, rgba(235, 229, 214, 0.03), rgba(235, 229, 214, 0.008));
-  transition: border-color 0.4s ease, transform 0.4s var(--ease);
-}
-.outcome:hover { border-color: var(--rule-strong); transform: translateY(-3px); }
-.outcome .n { font-family: var(--serif); font-weight: 200; font-size: clamp(2.6rem, 4vw, 3.4rem); line-height: 1; letter-spacing: -0.04em; color: var(--ink-faint); margin-bottom: clamp(28px, 4vw, 44px); }
-.outcome .icon-tile { position: absolute; top: clamp(20px, 2.6vw, 30px); right: clamp(20px, 2.6vw, 30px); }
-.outcome strong { display: block; font-family: var(--serif); font-weight: 300; font-size: clamp(1.5rem, 2vw, 1.8rem); letter-spacing: -0.02em; margin-bottom: 8px; }
-.outcome span { color: var(--ink-soft); }
-.outcome-note { margin-top: clamp(18px, 2.4vw, 26px); color: var(--ink-muted); font-size: 0.95rem; max-width: 60ch; }
-.payoff { margin-top: clamp(36px, 5vw, 56px); max-width: 30ch; }
-
-/* ─── Machinery ─── */
-.steps { display: grid; grid-template-columns: 1fr; gap: clamp(22px, 3vw, 36px); }
-@media (min-width: 860px) { .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.step { border-top: 1px solid var(--rule-strong); padding-top: 20px; }
-.step .n { font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--moss-light); margin-bottom: 14px; }
-.step h3 { font-family: var(--serif); font-weight: 300; font-size: clamp(1.5rem, 2vw, 1.85rem); letter-spacing: -0.02em; margin-bottom: 10px; }
-.machinery-result { margin-top: clamp(40px, 6vw, 64px); padding-top: clamp(28px, 4vw, 40px); border-top: 1px solid var(--rule); display: grid; grid-template-columns: 1fr; gap: 12px 48px; align-items: center; }
-@media (min-width: 900px) { .machinery-result { grid-template-columns: auto 1fr; } }
-.machinery-result .label { margin-top: 4px; }
-@media (max-width: 859px) { .hero h1 br { display: none; } }
-
-
-/* ─── Mechanism prose ─── */
-.mech-prose { max-width: 62ch; }
-.mech-prose .callout { margin: clamp(22px, 3vw, 30px) 0; }
-.mech-prose .count { color: var(--ink); font-size: 1.08rem; border-left: 1px solid var(--moss-light); padding-left: 18px; }
-
-/* ─── Ongoing work ─── */
-.honesty { margin: clamp(40px, 6vw, 64px) 0; max-width: 34ch; }
-.small-head { margin-top: 0; }
-
-/* ─── Who I am ─── */
-.about { display: grid; grid-template-columns: 1fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
-@media (min-width: 860px) { .about { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); } }
-.about-photo { margin: 0 auto; width: min(100%, 360px); border-radius: var(--rad); overflow: hidden; border: 1px solid var(--rule); background: radial-gradient(ellipse 80% 70% at 50% 35%, rgba(110, 142, 123, 0.22), transparent 70%), linear-gradient(180deg, rgba(235, 229, 214, 0.05), rgba(235, 229, 214, 0.01)); }
-.about-photo img { display: block; width: 100%; height: auto; }
-.about h2 { margin: 14px 0 22px; }
-
-/* ─── Pricing ─── */
-.pricing { display: grid; grid-template-columns: 1fr; gap: var(--gap); }
-@media (min-width: 900px) { .pricing { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } }
-.vault {
-  border: 1px solid var(--rule-green); border-radius: var(--rad);
-  padding: clamp(26px, 3.4vw, 44px);
-  background: radial-gradient(ellipse 70% 60% at 0% 0%, rgba(110, 142, 123, 0.16), transparent 60%), linear-gradient(180deg, rgba(235, 229, 214, 0.04), rgba(235, 229, 214, 0.01));
-}
-.vault .price-line { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-muted); }
-.vault .price-line strong { color: var(--sage); font-weight: 400; }
-.vault .price { font-family: var(--serif); font-weight: 200; font-size: clamp(3.4rem, 6.4vw, 5.4rem); line-height: 1; letter-spacing: -0.045em; color: var(--ink); margin: 14px 0 6px; display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 12px; }
-.vault .price small { font-family: var(--sans); font-size: 1rem; letter-spacing: 0; color: var(--ink-muted); font-weight: 400; }
-.vault hr { margin: 24px 0; }
-.vault .ctx { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--rule); color: var(--ink-muted); font-size: 0.95rem; }
-.guarantee { display: flex; flex-direction: column; justify-content: center; }
-.guarantee .label { color: var(--ink); align-self: center; }
-
-/* ─── Straight answers ─── */
-.faq { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--rule); }
-@media (min-width: 900px) { .faq { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(32px, 5vw, 72px); } }
-.faq > div { padding: clamp(22px, 3vw, 36px) 0; border-bottom: 1px solid var(--rule); }
-.faq h3 { font-family: var(--serif); font-weight: 300; font-size: clamp(1.3rem, 1.8vw, 1.6rem); letter-spacing: -0.02em; margin-bottom: 12px; }
-.faq .arrow-link { margin-top: 16px; }
-
-/* ─── Closing ─── */
-.closing-sec { text-align: center; max-width: 760px; margin: 0 auto; }
-.closing-sec .body { margin: clamp(24px, 3.5vw, 36px) auto 0; max-width: 560px; }
-.closing-sec .write-line { margin-top: clamp(24px, 3vw, 32px); }
-.write-line.soft { display: block; }
-.write-line.soft a { font-family: inherit; font-size: inherit; letter-spacing: 0; text-transform: none; padding: 0; color: var(--ink); border-bottom: 1px solid var(--rule-strong); }
-.page-h1 { font-size: clamp(2.2rem, 5.2vw, 3.8rem); }
 </style>
 <!-- Reddit Pixel -->
 <script>
@@ -159,173 +55,128 @@
 </head>
 <body>
 
-<div class="stage" aria-hidden="true"></div>
-<div class="grain" aria-hidden="true"></div>
-<div class="progress" id="progress" aria-hidden="true"></div>
-<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
-<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
-
-<header class="topbar" id="topbar">
-  <a class="mark" href="index.html" aria-label="Nullify the Preset — home">
-    <span class="glyph"></span>
-    <span>Nullify the Preset</span>
-  </a>
-  <nav aria-label="Site">
-    <a href="essays.html">Essays <span class="count">12</span></a>
-    <a href="apply.html" class="apply">Apply <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-  </nav>
+<header class="site-header">
+  <div class="container">
+    <a class="wordmark" href="index.html">Nullify the Preset</a>
+    <nav class="site-nav" aria-label="Site">
+      <a href="essays.html">Essays</a>
+      <a href="ongoing.html" class="wide-only" aria-current="page">The ongoing work</a>
+      <a href="apply.html" class="btn btn--small">Apply</a>
+    </nav>
+  </div>
 </header>
 
-<main class="page" id="top">
+<main>
 
-  <!-- ONGOING WORK -->
-  <section class="wrap reveal" style="padding-top: clamp(110px, 16vh, 160px);">
-    <div class="sec-head">
+  <section class="section night on-hero">
+    <div class="container">
+      <p class="runhead">If we keep working</p>
+      <h1>You message me when it starts and I take it apart <em>with you</em></h1>
+      <div class="on-grid">
+        <div class="prose">
+          <p>This is for overthinking and second-guessing that you already understand and still find yourself doing. You have likely figured it out more than once and still lost days to the same loop, because it is hard to catch yourself while you are inside it. So you message me when it starts and I take it apart with you, every time. The aim is that it takes up less of your day and you get out of it faster.</p>
+          <p>Everything happens in a private Signal channel, end-to-end encrypted. If you don’t already use Signal, setup takes two minutes.</p>
+          <p>It is all in writing. When we speak, we tend to go through things too fast, or we say what we think we are supposed to say. You slow down when you write.</p>
+        </div>
         <div>
-          <span class="label">If We Keep Working</span>
-          <h1 class="page-h1">You message me when it starts and I take it apart with you</h1>
+          <p class="honesty">Describe what is going on as truthfully as you can, even where it doesn’t make sense. <strong>The things that don’t make sense are usually what we want to look at.</strong></p>
+          <p class="honesty-note">How much this helps depends on how precisely and openly you describe it.</p>
         </div>
       </div>
-
-    <div class="mech-prose">
-      <p>This is for overthinking and second-guessing that you already understand and still find yourself doing. You have likely figured it out more than once and still lost days to the same loop, because it is hard to catch yourself while you are inside it. So you message me when it starts and I take it apart with you, every time. The aim is that it takes up less of your day and you get out of it faster.</p>
-      <p>Everything happens in a private Signal channel, end-to-end encrypted. If you don’t already use Signal, setup takes two minutes.</p>
-      <p>It is all in writing. When we speak, we tend to go through things too fast, or we say what we think we are supposed to say. You slow down when you write.</p>
-    </div>
-
-    <p class="pull honesty">Describe what is going on as truthfully as you can, even where it doesn’t make sense. <strong>The things that don’t make sense are usually what we want to look at.</strong></p>
-    <p class="outcome-note">How much this helps depends on how precisely and openly you describe it.</p>
-  </section>
-
-  <!-- THE METHOD -->
-  <div class="band">
-    <section class="wrap reveal">
-    <div class="sec-head has-lede">
-      <div>
-        <span class="label">The Method</span>
-        <h2>Breaking the machinery.</h2>
-      </div>
-      <p class="lede">You can calm it down, and it helps for a while. The harder part is understanding what lets it come back.</p>
-    </div>
-
-    <div class="steps">
-      <div class="step">
-        <div class="n">01 — Find</div>
-        <h3>The load-bearing parts</h3>
-        <p>I look for what allows the same pattern to form again in situations that have nothing else in common.</p>
-      </div>
-      <div class="step">
-        <div class="n">02 — Test</div>
-        <h3>Which ones it runs on</h3>
-        <p>You change one thing in a real situation and report back to me what happened. Typically only a couple of things are keeping the pattern going. The rest is noise.</p>
-      </div>
-      <div class="step">
-        <div class="n">03 — Rebuild</div>
-        <h3>Fewer permissions</h3>
-        <p>Permissions are the things you allow yourself in the moment. One more check, or one more rewrite. We reduce these and set clear stopping points.</p>
-      </div>
-    </div>
-  </section>
-  </div>
-
-  <!-- WHAT CHANGES -->
-  <section class="wrap reveal">
-    <div class="sec-head">
-      <div>
-        <span class="label">When It Works</span>
-        <h2>What changes</h2>
-      </div>
-    </div>
-    <div class="grid-3">
-      <div class="outcome">
-        <div class="n">01</div>
-        <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></span>
-        <strong>You catch it sooner</strong>
-        <span>You recognise what set it off while it is still happening, because you have read it broken down enough times to know it when you see it.</span>
-      </div>
-      <div class="outcome">
-        <div class="n">02</div>
-        <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
-        <strong>It runs shorter</strong>
-        <span>You still get the thought. You just don’t spend two days on it.</span>
-      </div>
-      <div class="outcome">
-        <div class="n">03</div>
-        <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
-        <strong>Decisions stay made</strong>
-        <span>You’ll still have doubts on Thursday or whenever. You see if anything has changed, and carry on working if it hasn’t.</span>
-      </div>
     </div>
   </section>
 
-  <!-- PRICE -->
-  <div class="band">
-    <section class="wrap reveal">
-    <div class="sec-head has-lede">
-      <div>
-        <span class="label">Price</span>
-        <h2>One price, and a full refund if the first month wasn’t worth it</h2>
-      </div>
-      <p class="lede">If one episode takes two hours and it comes three times a week, that is about 300 hours a year.</p>
+  <section class="section paper method">
+    <div class="container">
+      <p class="runhead">The method</p>
+      <h2>Breaking the machinery.</h2>
+      <p class="lead">You can calm it down, and it helps for a while. The harder part is understanding what lets it come back.</p>
+      <ol class="steps steps--3">
+        <li class="step">
+          <span class="num">1</span>
+          <span class="kicker">Find</span>
+          <h3>The load-bearing parts</h3>
+          <p>I look for what allows the same pattern to form again in situations that have nothing else in common.</p>
+        </li>
+        <li class="step">
+          <span class="num">2</span>
+          <span class="kicker">Test</span>
+          <h3>Which ones it runs on</h3>
+          <p>You change one thing in a real situation and report back to me what happened. Typically only a couple of things are keeping the pattern going. The rest is noise.</p>
+        </li>
+        <li class="step">
+          <span class="num">3</span>
+          <span class="kicker">Rebuild</span>
+          <h3>Fewer permissions</h3>
+          <p>Permissions are the things you allow yourself in the moment. One more check, or one more rewrite. We reduce these and set clear stopping points.</p>
+        </li>
+      </ol>
     </div>
+  </section>
 
-    <div class="pricing">
-      <div class="vault">
-        <div class="price-line"><strong>First review:</strong> Free.</div>
-        <div class="price">$325 <small>per month</small></div>
-        <p>Month to month, cancel anytime.</p>
-        <hr class="hairline">
-        <ul class="clean">
-          <li><strong>Replies when it starts.</strong> Message me as soon as your head starts going in circles. No need to polish it. A few raw lines on what is happening is enough. I work from 8 AM to 4 PM ET, Monday to Friday (1 PM to 9 PM in the UK, 2 PM to 10 PM in Central Europe). Each reply points out what set it off this time, what keeps it going, and what to do the next time it starts.</li>
-          <li><strong>The week-one breakdown.</strong> A longer written breakdown of what is driving it, built from your review and your first week of messages.</li>
-          <li><strong>The month-end write-up.</strong> A full write-up of what has quieted down and what is still open.</li>
-        </ul>
-        <p class="ctx">If several different things keep coming back, we work on all of them, and I show you where they connect.</p>
-      </div>
-
-      <div class="panel guarantee">
-        <div class="icon-block">
-          <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><polyline points="9 12 11 14 15 10"/></svg></span>
-          <span class="label bare">First-Month Guarantee</span>
+  <section class="section night night--deep changes">
+    <div class="container">
+      <p class="runhead">When it works</p>
+      <h2>What changes</h2>
+      <div class="outcomes">
+        <div class="outcome">
+          <h3>You catch it sooner</h3>
+          <p>You recognise what set it off while it is still happening, because you have read it broken down enough times to know it when you see it.</p>
         </div>
-        <p style="color: var(--ink); font-size: 1.08rem;">If you reach the end of your first month and don’t feel the work was worth what you paid, tell me and I refund the full $325.</p>
+        <div class="outcome">
+          <h3>It runs shorter</h3>
+          <p>You still get the thought. You just don’t spend two days on it.</p>
+        </div>
+        <div class="outcome">
+          <h3>Decisions stay made</h3>
+          <p>You’ll still have doubts on Thursday or whenever. You see if anything has changed, and carry on working if it hasn’t.</p>
+        </div>
       </div>
     </div>
+  </section>
 
-    <div class="cta-cluster">
-      <a href="apply.html" class="cta" data-magnetic>
-        <span>Apply for a free review</span>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-      <span class="label bare center">Free <span class="tick">·</span> No card <span class="tick">·</span> Answer within 24 hours</span>
+  <section class="section paper price">
+    <div class="container">
+      <p class="runhead">Price</p>
+      <h2>One price, and a full refund if the first month wasn’t worth it</h2>
+      <p class="lead">If one episode takes two hours and it comes three times a week, that is about 300 hours a year.</p>
+      <div class="pricing">
+        <div class="fee">
+          <p class="fee-line"><strong>First review:</strong> Free.</p>
+          <p class="fee-price">$325 <small>per month</small></p>
+          <p>Month to month, cancel anytime.</p>
+          <hr>
+          <ul class="list">
+            <li><strong>Replies when it starts.</strong> Message me as soon as your head starts going in circles. No need to polish it. A few raw lines on what is happening is enough. I work from 8 AM to 4 PM ET, Monday to Friday (1 PM to 9 PM in the UK, 2 PM to 10 PM in Central Europe). Each reply points out what set it off this time, what keeps it going, and what to do the next time it starts.</li>
+            <li><strong>The week-one breakdown.</strong> A longer written breakdown of what is driving it, built from your review and your first week of messages.</li>
+            <li><strong>The month-end write-up.</strong> A full write-up of what has quieted down and what is still open.</li>
+          </ul>
+          <hr>
+          <p>If several different things keep coming back, we work on all of them, and I show you where they connect.</p>
+        </div>
+        <div class="guarantee">
+          <p class="runhead">First-month guarantee</p>
+          <p>If you reach the end of your first month and don’t feel the work was worth what you paid, tell me and I refund the full $325.</p>
+        </div>
+      </div>
+      <div class="cta-row">
+        <a href="apply.html" class="btn btn--dark">Apply for a free review</a>
+        <span class="cta-note">Free · No card · Answer within 24 hours</span>
+      </div>
     </div>
   </section>
-  </div>
 
 </main>
 
-<footer class="site">
-  <div class="inner">
-    <div class="cols">
-      <div>
-        <a class="brand" href="index.html">
-          <svg width="40" height="40" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-            <circle cx="24" cy="24" r="22" stroke="rgba(235,229,214,0.5)" stroke-width="1"/>
-            <circle cx="24" cy="24" r="10" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-            <circle cx="24" cy="24" r="3" fill="#6E8E7B"/>
-            <line x1="24" y1="2" x2="24" y2="14" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-            <line x1="24" y1="34" x2="24" y2="46" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-            <line x1="2" y1="24" x2="14" y2="24" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-            <line x1="34" y1="24" x2="46" y2="24" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-          </svg>
-          <span class="name">Nullify the Preset</span>
-        </a>
-        <p class="tag">Psychological consulting, in writing. The first review is free.</p>
-      </div>
+<footer class="site-footer">
+  <div class="container">
+    <a class="footer-mark" href="index.html">Nullify the Preset</a>
+    <div class="footer-cols">
+      <p class="footer-tag">Psychological consulting, in writing. The first review is free.</p>
       <div>
         <h4>Read</h4>
         <ul>
-          <li><a href="essays.html">Essays <span class="count">12</span></a></li>
+          <li><a href="essays.html">Essays</a></li>
           <li><a href="apply.html">Apply for a free review</a></li>
           <li><a href="ongoing.html">The ongoing work</a></li>
           <li><a href="https://substack.com/@hamzapehlivanov" target="_blank" rel="noopener">Substack</a></li>
@@ -335,17 +186,16 @@
       <div>
         <h4>Write</h4>
         <a class="mail" href="mailto:official@nullifythepreset.com">official@nullifythepreset.com</a>
-        <p class="mail-note">Questions before applying go here. Applications go through the form.</p>
+        <p>Questions before applying go here. Applications go through the form.</p>
       </div>
     </div>
-    <div class="bottom">
-      <span>Private<span class="sep">·</span>Async<span class="sep">·</span>By application only</span>
+    <div class="footer-bottom">
+      <span>Private · Async · By application only</span>
       <span>© <span data-year>2026</span> Nullify the Preset</span>
     </div>
   </div>
 </footer>
 
-<script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js" onerror="window.__noLenis=true"></script>
 <script src="site.js"></script>
 </body>
 </html>

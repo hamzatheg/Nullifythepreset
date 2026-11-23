@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" class="lenis">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0A100D">
+<meta name="theme-color" content="#0F2B22">
 <title>Nullify the Preset · You already know why you do it</title>
 <meta name="description" content="Psychological consulting, in writing, for patterns you understand and still repeat. The first review is free.">
 <meta property="og:type" content="website">
@@ -14,140 +14,89 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,200;0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,600&family=Schibsted+Grotesk:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
-
 <style>
-/* ─── Hero ─── */
-.hero {
-  min-height: 100svh;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center;
-  padding-top: clamp(110px, 16vh, 160px);
-  padding-bottom: clamp(40px, 6vh, 64px);
+
+/* ─── Opening ─── */
+.hero { padding-top: clamp(44px, 7vw, 96px); padding-bottom: clamp(72px, 9vw, 128px); }
+.hero h1 { font-size: clamp(3.3rem, 8.8vw, 8.6rem); line-height: 0.9; letter-spacing: -0.032em; }
+@media (max-width: 899px) { .hero h1 br { display: none; } }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; margin-top: clamp(36px, 5vw, 64px); }
+@media (min-width: 960px) {
+  .hero-grid { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); column-gap: clamp(48px, 6vw, 96px); align-items: start; }
 }
-.hero h1 { margin-top: clamp(18px, 3vw, 28px); }
-.hero h1 .word {
-  display: inline-block; opacity: 0; transform: translateY(0.4em);
-  animation: word-rise 1.1s var(--ease) forwards;
+.vignettes { border-top: 1px solid var(--line-dark); max-width: 34rem; }
+.vignettes p { margin: 0; padding-block: 13px; border-bottom: 1px solid var(--line-dark); }
+.offer { margin-top: 26px; max-width: 33rem; font-size: clamp(1.12rem, 0.5vw + 1rem, 1.28rem); line-height: 1.5; }
+.offer strong { font-weight: 500; }
+
+/* The draft that never gets sent */
+.draft {
+  width: 100%; max-width: 30rem; justify-self: end;
+  background: var(--paper); color: var(--ink); color-scheme: light;
+  padding: 20px 24px 16px;
+  box-shadow: 0 48px 80px -44px rgba(0, 0, 0, 0.7);
 }
-.hero h1 .delim { display: inline-block; width: 0.24em; }
-@keyframes word-rise { to { opacity: 1; transform: translateY(0); } }
-.hero h1 em { position: relative; }
-.hero h1 em::before {
-  content: ""; position: absolute;
-  top: 50%; left: -8%; width: 116%; height: 0.95em;
-  border: 1px solid var(--moss-light); border-radius: 50%;
-  transform: translateY(-48%) rotate(-3deg) scaleX(0);
-  transform-origin: 30% 50%; opacity: 0;
-  animation: orbit-draw 1.4s 1.2s var(--ease) forwards;
-  pointer-events: none;
-  box-shadow: 0 0 16px var(--moss-glow);
-}
-@keyframes orbit-draw { to { transform: translateY(-48%) rotate(-3deg) scaleX(1); opacity: 0.85; } }
-.hero-brief {
-  max-width: 600px;
-  margin: clamp(30px, 5vw, 48px) auto 0;
-  font-size: clamp(1rem, 0.6vw + 0.9rem, 1.16rem);
-  line-height: 1.65;
-  opacity: 0; animation: fade-in 1s 1.5s forwards;
-}
-.hero-brief p { margin-bottom: 0.65rem; }
-.hero-brief p.snap { margin-top: 24px; font-size: clamp(1.08rem, 0.7vw + 0.95rem, 1.28rem); }
-.hero-brief p.snap strong { font-weight: 500; }
-@keyframes fade-in { to { opacity: 1; } }
-.scroll-cue { margin-top: clamp(40px, 7vh, 72px); position: relative; height: 56px; width: 1px; opacity: 0; animation: fade-in 1s 2.2s forwards; }
-.scroll-cue::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent, var(--ink-faint)); }
-.scroll-cue::after { content: ""; position: absolute; top: 0; left: 0; width: 1px; height: 18px; background: var(--ink); animation: drip 2.4s ease-in-out infinite; }
-@keyframes drip { 0% { transform: translateY(-18px); opacity: 0; } 30% { opacity: 1; } 100% { transform: translateY(56px); opacity: 0; } }
+@media (max-width: 959px) { .draft { justify-self: start; } }
+.draft-top, .draft-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 0.82rem; color: var(--ink-muted); }
+.draft-top { padding-bottom: 12px; border-bottom: 1px solid var(--line-light); }
+.draft-top b { color: var(--ink); font-weight: 600; }
+.draft-text { margin: 0; min-height: 7.6em; padding-block: 16px; font-size: 1.1rem; line-height: 1.55; color: var(--ink); }
+.caret { display: inline-block; width: 2px; height: 1.15em; margin-left: 1px; vertical-align: -0.2em; background: var(--brass-ink); animation: blink 1.05s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.draft-foot { padding-top: 12px; border-top: 1px solid var(--line-light); }
+.draft-foot b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.draft-send { font-weight: 600; color: #95A199; border: 1px solid var(--line-light); padding: 5px 13px; }
 
-.panel .kicker { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--rule); color: var(--ink); }
+/* ─── Why it keeps running ─── */
+.why h2 { max-width: 17em; }
+.why-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; margin-top: clamp(44px, 6vw, 72px); align-items: center; }
+@media (min-width: 960px) { .why-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); column-gap: clamp(48px, 6vw, 96px); } }
+.loop { width: min(100%, 420px); margin-inline: auto; }
+.loop svg { width: 100%; height: auto; overflow: visible; }
+.loop .ring { fill: none; stroke: var(--ink); stroke-width: 1; }
+.loop .chev { fill: none; stroke: var(--ink); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+.loop .node { fill: var(--paper); stroke: var(--ink); stroke-width: 1; }
+.loop .lbl { font-family: var(--display); font-style: italic; font-weight: 600; font-size: 20px; fill: var(--ink); }
+.loop .runner { fill: var(--brass-ink); }
+.loop .orbit { transform-box: view-box; transform-origin: 50% 50%; animation: orbit 14s linear infinite; }
+@keyframes orbit { to { transform: rotate(360deg); } }
+.count { font-family: var(--display); font-size: clamp(1.6rem, 2.6vw, 2.3rem); line-height: 1.18; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 0.9em; }
+.pull { margin-top: clamp(56px, 8vw, 112px); margin-bottom: 0; font-family: var(--display); font-size: clamp(2.2rem, 5.8vw, 5.2rem); line-height: 1.02; letter-spacing: -0.022em; color: var(--ink); max-width: 14em; text-wrap: balance; }
+.pull em { color: var(--brass-ink); }
+.after-pull { margin-top: clamp(28px, 4vw, 44px); }
+@media (min-width: 960px) { .after-pull { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); column-gap: clamp(48px, 6vw, 96px); } .after-pull p { grid-column: 2; } }
 
-/* ─── Mechanism ─── */
-.mech { display: grid; grid-template-columns: 1fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
-@media (min-width: 900px) { .mech { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); } }
-.mech .fig { width: min(100%, 420px); margin: 0 auto; }
-.mech .fig svg { width: 100%; height: auto; }
-.mech .facts { list-style: none; border-top: 1px solid var(--rule); }
-.mech .facts li { padding: clamp(18px, 2.2vw, 24px) 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 1fr; gap: 6px 28px; }
-@media (min-width: 640px) { .mech .facts li { grid-template-columns: minmax(0, 11rem) 1fr; } }
-.mech .facts strong { font-family: var(--serif); font-weight: 300; font-size: clamp(1.15rem, 1.4vw, 1.35rem); letter-spacing: -0.015em; }
-.mech .callout { margin-top: clamp(22px, 3vw, 30px); }
+/* ─── Free review ─── */
+.review h2 { max-width: 15em; margin-bottom: clamp(40px, 5vw, 64px); }
 
-/* ─── Outcomes ─── */
-.outcome {
-  position: relative;
-  border: 1px solid var(--rule); border-radius: var(--rad);
-  padding: clamp(24px, 3vw, 34px);
-  background: linear-gradient(180deg, rgba(235, 229, 214, 0.03), rgba(235, 229, 214, 0.008));
-  transition: border-color 0.4s ease, transform 0.4s var(--ease);
-}
-.outcome:hover { border-color: var(--rule-strong); transform: translateY(-3px); }
-.outcome .n { font-family: var(--serif); font-weight: 200; font-size: clamp(2.6rem, 4vw, 3.4rem); line-height: 1; letter-spacing: -0.04em; color: var(--ink-faint); margin-bottom: clamp(28px, 4vw, 44px); }
-.outcome .icon-tile { position: absolute; top: clamp(20px, 2.6vw, 30px); right: clamp(20px, 2.6vw, 30px); }
-.outcome strong { display: block; font-family: var(--serif); font-weight: 300; font-size: clamp(1.5rem, 2vw, 1.8rem); letter-spacing: -0.02em; margin-bottom: 8px; }
-.outcome span { color: var(--ink-soft); }
-.outcome-note { margin-top: clamp(18px, 2.4vw, 26px); color: var(--ink-muted); font-size: 0.95rem; max-width: 60ch; }
-.payoff { margin-top: clamp(36px, 5vw, 56px); max-width: 30ch; }
-
-/* ─── Machinery ─── */
-.steps { display: grid; grid-template-columns: 1fr; gap: clamp(22px, 3vw, 36px); }
-@media (min-width: 860px) { .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.step { border-top: 1px solid var(--rule-strong); padding-top: 20px; }
-.step .n { font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--moss-light); margin-bottom: 14px; }
-.step h3 { font-family: var(--serif); font-weight: 300; font-size: clamp(1.5rem, 2vw, 1.85rem); letter-spacing: -0.02em; margin-bottom: 10px; }
-.machinery-result { margin-top: clamp(40px, 6vw, 64px); padding-top: clamp(28px, 4vw, 40px); border-top: 1px solid var(--rule); display: grid; grid-template-columns: 1fr; gap: 12px 48px; align-items: center; }
-@media (min-width: 900px) { .machinery-result { grid-template-columns: auto 1fr; } }
-.machinery-result .label { margin-top: 4px; }
-@media (max-width: 859px) { .hero h1 br { display: none; } }
-
-
-/* ─── Mechanism prose ─── */
-.mech-prose { max-width: 62ch; }
-.mech-prose .callout { margin: clamp(22px, 3vw, 30px) 0; }
-.mech-prose .count { color: var(--ink); font-size: 1.08rem; border-left: 1px solid var(--moss-light); padding-left: 18px; }
-
-/* ─── Ongoing work ─── */
-.honesty { margin: clamp(40px, 6vw, 64px) 0; max-width: 34ch; }
-.small-head { margin-top: 0; }
+/* ─── Money ─── */
+.money { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; }
+@media (min-width: 960px) { .money { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); column-gap: clamp(48px, 6vw, 96px); align-items: start; } }
+.big-figure { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(7.5rem, 21vw, 17.5rem); line-height: 0.78; letter-spacing: -0.055em; color: var(--ink); margin-left: -0.04em; }
+.big-figure-cap { font-family: var(--display); font-style: italic; font-size: clamp(1.4rem, 2.2vw, 2rem); line-height: 1.2; color: var(--brass-ink); margin-top: 18px; }
+.big-figure-note { margin-top: 16px; max-width: 24rem; }
+.money h2 { font-size: clamp(1.9rem, 3.4vw, 3rem); line-height: 1.06; margin-bottom: 26px; }
 
 /* ─── Who I am ─── */
-.about { display: grid; grid-template-columns: 1fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
-@media (min-width: 860px) { .about { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); } }
-.about-photo { margin: 0 auto; width: min(100%, 360px); border-radius: var(--rad); overflow: hidden; border: 1px solid var(--rule); background: radial-gradient(ellipse 80% 70% at 50% 35%, rgba(110, 142, 123, 0.22), transparent 70%), linear-gradient(180deg, rgba(235, 229, 214, 0.05), rgba(235, 229, 214, 0.01)); }
-.about-photo img { display: block; width: 100%; height: auto; }
-.about h2 { margin: 14px 0 22px; }
+.about { display: grid; grid-template-columns: minmax(0, 1fr); gap: 44px; }
+@media (min-width: 900px) { .about { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: clamp(48px, 6vw, 96px); align-items: center; } }
+.portrait { width: min(100%, 420px); background: var(--green-soft); }
+.portrait img { width: 100%; filter: grayscale(1) contrast(1.06); }
+.about h2 { margin-bottom: 26px; }
+.about .lead { margin-bottom: 1em; }
 
-/* ─── Pricing ─── */
-.pricing { display: grid; grid-template-columns: 1fr; gap: var(--gap); }
-@media (min-width: 900px) { .pricing { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } }
-.vault {
-  border: 1px solid var(--rule-green); border-radius: var(--rad);
-  padding: clamp(26px, 3.4vw, 44px);
-  background: radial-gradient(ellipse 70% 60% at 0% 0%, rgba(110, 142, 123, 0.16), transparent 60%), linear-gradient(180deg, rgba(235, 229, 214, 0.04), rgba(235, 229, 214, 0.01));
-}
-.vault .price-line { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-muted); }
-.vault .price-line strong { color: var(--sage); font-weight: 400; }
-.vault .price { font-family: var(--serif); font-weight: 200; font-size: clamp(3.4rem, 6.4vw, 5.4rem); line-height: 1; letter-spacing: -0.045em; color: var(--ink); margin: 14px 0 6px; display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 12px; }
-.vault .price small { font-family: var(--sans); font-size: 1rem; letter-spacing: 0; color: var(--ink-muted); font-weight: 400; }
-.vault hr { margin: 24px 0; }
-.vault .ctx { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--rule); color: var(--ink-muted); font-size: 0.95rem; }
-.guarantee { display: flex; flex-direction: column; justify-content: center; }
-.guarantee .label { color: var(--ink); align-self: center; }
-
-/* ─── Straight answers ─── */
-.faq { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--rule); }
-@media (min-width: 900px) { .faq { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(32px, 5vw, 72px); } }
-.faq > div { padding: clamp(22px, 3vw, 36px) 0; border-bottom: 1px solid var(--rule); }
-.faq h3 { font-family: var(--serif); font-weight: 300; font-size: clamp(1.3rem, 1.8vw, 1.6rem); letter-spacing: -0.02em; margin-bottom: 12px; }
-.faq .arrow-link { margin-top: 16px; }
+/* ─── Questions ─── */
+.faq h2 { margin-bottom: clamp(32px, 4vw, 52px); }
 
 /* ─── Closing ─── */
-.closing-sec { text-align: center; max-width: 760px; margin: 0 auto; }
-.closing-sec .body { margin: clamp(24px, 3.5vw, 36px) auto 0; max-width: 560px; }
-.closing-sec .write-line { margin-top: clamp(24px, 3vw, 32px); }
-.write-line.soft { display: block; }
-.write-line.soft a { font-family: inherit; font-size: inherit; letter-spacing: 0; text-transform: none; padding: 0; color: var(--ink); border-bottom: 1px solid var(--rule-strong); }
+.closing h2 { font-size: clamp(3rem, 8.6vw, 7.8rem); line-height: 0.92; letter-spacing: -0.03em; }
+.closing .body { margin-top: 28px; max-width: 34rem; font-size: 1.15rem; }
+.closing .after { margin-top: 40px; font-size: 0.97rem; }
+.closing .after p { margin-bottom: 0.4em; }
+.closing .after a { overflow-wrap: anywhere; }
+
 </style>
 <!-- Reddit Pixel -->
 <script>
@@ -158,269 +107,209 @@
 </head>
 <body>
 
-<div class="stage" aria-hidden="true"></div>
-<div class="grain" aria-hidden="true"></div>
-<div class="progress" id="progress" aria-hidden="true"></div>
-<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
-<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
-
-<header class="topbar" id="topbar">
-  <a class="mark" href="index.html" aria-label="Nullify the Preset — home">
-    <span class="glyph"></span>
-    <span>Nullify the Preset</span>
-  </a>
-  <nav aria-label="Site">
-    <a href="essays.html">Essays <span class="count">12</span></a>
-    <a href="apply.html" class="apply">Apply <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-  </nav>
+<header class="site-header">
+  <div class="container">
+    <a class="wordmark" href="index.html">Nullify the Preset</a>
+    <nav class="site-nav" aria-label="Site">
+      <a href="essays.html">Essays</a>
+      <a href="ongoing.html" class="wide-only">The ongoing work</a>
+      <a href="apply.html" class="btn btn--small">Apply</a>
+    </nav>
+  </div>
 </header>
 
-<main class="page" id="top">
+<main id="top">
 
-  <!-- HERO -->
-  <section class="hero wrap">
-    <span class="label dot center">Psychological consulting, in writing</span>
-    <h1 id="heroH1" aria-label="You already know why you do it.">
-      <span class="word" style="animation-delay:0.10s">You</span> <span class="word" style="animation-delay:0.22s">already</span> <span class="word" style="animation-delay:0.34s"><em>know</em></span><br>
-      <span class="word" style="animation-delay:0.46s">why</span> <span class="word" style="animation-delay:0.58s">you</span> <span class="word" style="animation-delay:0.70s">do</span> <span class="word" style="animation-delay:0.82s">it.</span>
-    </h1>
-
-    <div class="hero-brief">
-      <p>A message you’ve been replying to in your head for the past two days.</p>
-      <p>A decision you made on Tuesday and went back to on Thursday. No new information.</p>
-      <p>You could describe to a stranger what it is and what triggers it, and it still happened this week.</p>
-      <p class="snap"><strong>I read what you have to say about it and send you a written breakdown of what keeps it going, within 24 hours.</strong> The first one is free.</p>
-
-      <div class="cta-cluster">
-        <a href="apply.html" class="cta" data-magnetic>
-          <span>Apply for a free review</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <span class="label bare center">Free <span class="tick">·</span> No card <span class="tick">·</span> Answer within 24 hours</span>
-      </div>
-    </div>
-
-    <div class="scroll-cue" aria-hidden="true"></div>
-  </section>
-
-  <!-- THE MECHANISM -->
-  <div class="band">
-    <section class="wrap reveal">
-      <div class="sec-head">
+  <!-- OPENING -->
+  <section class="hero night">
+    <div class="container">
+      <p class="runhead">Psychological consulting, in writing</p>
+      <h1>You already <em>know</em><br> why you do it.</h1>
+      <div class="hero-grid">
         <div>
-          <span class="label">Why It Keeps Running</span>
-          <h2>From the inside it feels like thinking. Most of that time you are trying to protect yourself.</h2>
+          <div class="vignettes">
+            <p>A message you’ve been replying to in your head for the past two days.</p>
+            <p>A decision you made on Tuesday and went back to on Thursday. No new information.</p>
+            <p>You could describe to a stranger what it is and what triggers it, and it still happened this week.</p>
+          </div>
+          <p class="offer"><strong>I read what you have to say about it and send you a written breakdown of what keeps it going, within 24 hours.</strong> The first one is free.</p>
+          <div class="cta-row">
+            <a href="apply.html" class="btn">Apply for a free review</a>
+            <span class="cta-note">Free · No card · Answer within 24 hours</span>
+          </div>
+        </div>
+        <div class="draft" aria-hidden="true">
+          <div class="draft-top"><b>Draft</b><span>Last edited 2 days ago</span></div>
+          <p class="draft-text"><span id="draftText">Hey, sorry it took me so long to get back to you. I’ve been thinking about what you said and</span><span class="caret"></span></p>
+          <div class="draft-foot"><span>Rewritten <b id="draftCount">31</b> times</span><span class="draft-send">Send</span></div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="mech">
-        <div class="fig" aria-hidden="true">
-        <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <g id="ln">
-              <circle cx="160" cy="40" r="6" fill="#0A100D"/>
-              <circle cx="160" cy="40" r="4.5" fill="none" stroke="#8B8676" stroke-width="1.2"/>
-              <circle cx="160" cy="40" r="1.8" fill="#EBE5D6"/>
-            </g>
-            <g id="la">
-              <path d="M 154 35 L 160 40 L 154 45" fill="none" stroke="#8B8676" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </g>
-          </defs>
-          <circle cx="160" cy="160" r="120" fill="none" stroke="rgba(235,229,214,0.16)" stroke-width="1.2" class="svg-path" stroke-dasharray="754" stroke-dashoffset="754" style="animation-delay:0s;"/>
-          <g class="svg-fade" style="animation-delay:1.5s; opacity:0;">
-            <use href="#ln" transform="rotate(0 160 160)"/><use href="#ln" transform="rotate(45 160 160)"/><use href="#ln" transform="rotate(90 160 160)"/><use href="#ln" transform="rotate(135 160 160)"/><use href="#ln" transform="rotate(180 160 160)"/><use href="#ln" transform="rotate(225 160 160)"/><use href="#ln" transform="rotate(270 160 160)"/><use href="#ln" transform="rotate(315 160 160)"/>
-            <use href="#la" transform="rotate(35 160 160)"/><use href="#la" transform="rotate(80 160 160)"/><use href="#la" transform="rotate(125 160 160)"/><use href="#la" transform="rotate(170 160 160)"/><use href="#la" transform="rotate(215 160 160)"/><use href="#la" transform="rotate(260 160 160)"/><use href="#la" transform="rotate(305 160 160)"/><use href="#la" transform="rotate(350 160 160)"/>
-          </g>
-          <g font-family="JetBrains Mono, monospace" font-size="9" fill="#8B8676" font-weight="300" letter-spacing="1.6" class="svg-fade" style="animation-delay:2.0s; opacity:0;">
-            <text x="90" y="100" text-anchor="middle">TRIGGER</text>
-            <text x="230" y="100" text-anchor="middle">SELF-PROTECTION</text>
-            <text x="230" y="220" text-anchor="middle">RATIONALIZATION</text>
-            <text x="90" y="220" text-anchor="middle">RE-TRIGGERING</text>
-          </g>
-          <g class="svg-fade" style="animation-delay:1.0s; opacity:0;">
-            <circle cx="160" cy="160" r="32" fill="none" stroke="rgba(235,229,214,0.16)" stroke-width="1.2" opacity="0.5"/>
-            <circle cx="160" cy="160" r="18" fill="none" stroke="rgba(235,229,214,0.16)" stroke-width="1.2"/>
-            <circle cx="160" cy="160" r="5" fill="#6E8E7B"/>
-          </g>
-        </svg>
-      </div>
-
-        <div class="mech-prose">
+  <!-- WHY IT KEEPS RUNNING -->
+  <section class="section paper why">
+    <div class="container">
+      <p class="runhead">Why it keeps running</p>
+      <h2>From the inside it feels like thinking. Most of that time you are trying to protect yourself.</h2>
+      <div class="why-grid">
+        <figure class="loop">
+          <svg viewBox="0 0 400 400" role="img" aria-labelledby="loopTitle">
+            <title id="loopTitle">The loop: trigger, self-protection, rationalization, re-triggering, and back to the trigger.</title>
+            <circle class="ring" cx="200" cy="200" r="150"/>
+            <path class="chev" d="M-5 -6 L1 0 L-5 6" transform="translate(306.07 93.93) rotate(45)"/>
+            <path class="chev" d="M-5 -6 L1 0 L-5 6" transform="translate(306.07 306.07) rotate(135)"/>
+            <path class="chev" d="M-5 -6 L1 0 L-5 6" transform="translate(93.93 306.07) rotate(225)"/>
+            <path class="chev" d="M-5 -6 L1 0 L-5 6" transform="translate(93.93 93.93) rotate(315)"/>
+            <circle class="node" cx="200" cy="50" r="6"/>
+            <circle class="node" cx="350" cy="200" r="6"/>
+            <circle class="node" cx="200" cy="350" r="6"/>
+            <circle class="node" cx="50" cy="200" r="6"/>
+            <text class="lbl" x="200" y="88" text-anchor="middle">Trigger</text>
+            <text class="lbl" x="334" y="206" text-anchor="end">Self-protection</text>
+            <text class="lbl" x="200" y="326" text-anchor="middle">Rationalization</text>
+            <text class="lbl" x="66" y="206" text-anchor="start">Re-triggering</text>
+            <g class="orbit"><circle class="runner" cx="200" cy="50" r="5"/></g>
+          </svg>
+        </figure>
+        <div class="prose">
           <p class="count">If you understood this two years ago and it has happened a few times a week since, that is a few hundred times.</p>
           <p>Every time, you come out with one more reason to wait or one more version of what to say.</p>
           <p>You’ll know the difference by what you walk away with. If you were thinking, you have something to act on or test. If you were protecting yourself, you have one more thing to do first.</p>
           <p>That’s why you haven’t been able to work this out on your own. You’re protecting yourself, so you already know which explanations to throw out. Advice from a coach or a book gets thrown out the same way.</p>
-          <div class="callout">
-            <p>Even <em>“stop overthinking”</em> becomes fresh ammunition.</p>
-          </div>
-          <p>Someone else can point out the reasons you skip, because they aren’t the one being protected. Once it’s in writing, those reasons stay where you can see them.</p>
         </div>
       </div>
-    </section>
-  </div>
+      <p class="pull">Even <em>“stop overthinking”</em> becomes fresh ammunition.</p>
+      <div class="after-pull">
+        <p class="prose">Someone else can point out the reasons you skip, because they aren’t the one being protected. Once it’s in writing, those reasons stay where you can see them.</p>
+      </div>
+    </div>
+  </section>
 
   <!-- THE FREE REVIEW -->
-  <section class="wrap reveal">
-      <div class="sec-head">
-        <div>
-          <span class="label">The Free Review</span>
-          <h2>Ten minutes of writing, a written breakdown within 24 hours</h2>
-        </div>
-      </div>
-
-      <div class="grid-4">
-        <article class="panel">
-          <span class="num">Step 01</span>
-          <div class="icon-block">
-            <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M14 2v6h6"/><path d="M18.4 8.6 21 11.2l-7 7-3 .5.5-3 6.9-7.1Z"/></svg></span>
-            <h3>You apply</h3>
-          </div>
+  <section class="section night night--deep review">
+    <div class="container">
+      <p class="runhead">The free review</p>
+      <h2>Ten minutes of writing, a written breakdown within 24 hours</h2>
+      <ol class="steps steps--4">
+        <li class="step">
+          <span class="num">1</span>
+          <h3>You apply</h3>
           <p>I ask what keeps happening and for one recent example. This should take around ten minutes. I have two further questions, both optional, that help me read it more precisely.</p>
-        </article>
-        <article class="panel">
-          <span class="num">Step 02</span>
-          <div class="icon-block">
-            <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
-            <h3>I read</h3>
-          </div>
+        </li>
+        <li class="step">
+          <span class="num">2</span>
+          <h3>I read</h3>
           <p>I read your answers and look for the point where an ordinary trigger escalates into a full episode.</p>
-        </article>
-        <article class="panel">
-          <span class="num">Step 03</span>
-          <div class="icon-block">
-            <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21 3 6"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg></span>
-            <h3>You get the breakdown</h3>
-          </div>
+        </li>
+        <li class="step">
+          <span class="num">3</span>
+          <h3>You get the breakdown</h3>
           <p>I reply with a written breakdown within 24 hours. It identifies the point where your example escalated and what kept it going once you saw what you were doing. It also tells you what you can leave alone. I send it by email or Signal, and it’s yours to keep.</p>
-        </article>
-        <article class="panel">
-          <span class="num">Step 04</span>
-          <div class="icon-block">
-            <span class="icon-tile"><svg class="icon" viewBox="0 0 24 24"><path d="M3 6h2l4 14h2"/><path d="M21 6h-2l-4 14h-2"/><path d="M11 10h2"/></svg></span>
-            <h3>We decide</h3>
-          </div>
+        </li>
+        <li class="step">
+          <span class="num">4</span>
+          <h3>We decide</h3>
           <p>If I think I can help you further, I say so in the breakdown and explain what the ongoing work would involve. If I can’t, you have your breakdown and I will not be in touch again.</p>
-        </article>
+        </li>
+      </ol>
+      <div class="cta-row">
+        <a href="apply.html" class="btn">Apply for a free review</a>
+        <span class="cta-note">Free · No card · Answer within 24 hours</span>
       </div>
-
-      <div class="cta-cluster">
-        <a href="apply.html" class="cta" data-magnetic>
-          <span>Apply for a free review</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <span class="label bare center">Free <span class="tick">·</span> No card <span class="tick">·</span> Answer within 24 hours</span>
-      </div>
-    </section>
+    </div>
+  </section>
 
   <!-- IF WE KEEP WORKING -->
-  <div class="band">
-    <section class="wrap reveal">
-      <div class="sec-head">
+  <section class="section paper">
+    <div class="container">
+      <p class="runhead">If we keep working</p>
+      <div class="money">
         <div>
-          <span class="label">If We Keep Working</span>
+          <p class="big-figure">300</p>
+          <p class="big-figure-cap">hours a year</p>
+          <p class="big-figure-note">If one episode takes two hours and it comes three times a week, that is about 300 hours a year.</p>
+        </div>
+        <div>
           <h2>$325 a month, with a full refund if the first month wasn’t worth it</h2>
+          <p class="lead">You message me when it starts and I take it apart with you, every time. The aim is that it takes up less of your day and you get out of it faster.</p>
+          <ul class="list" style="margin-top: 1.4em;">
+            <li><strong>Replies when it starts,</strong> Monday to Friday.</li>
+            <li><strong>A longer written breakdown</strong> at the end of week one.</li>
+            <li><strong>A full write-up</strong> at the end of the month.</li>
+          </ul>
+          <p>Month to month, cancel anytime. If you reach the end of your first month and don’t feel the work was worth what you paid, tell me and I refund the full $325.</p>
+          <p style="margin-top: 1.6em;"><a class="text-link" href="ongoing.html">How the ongoing work goes</a></p>
         </div>
       </div>
-      <div class="mech-prose">
-        <p>If one episode takes two hours and it comes three times a week, that is about 300 hours a year.</p>
-        <p>You message me when it starts and I take it apart with you, every time. The aim is that it takes up less of your day and you get out of it faster.</p>
-        <ul class="clean" style="margin: 0 0 1.4em;">
-          <li><strong>Replies when it starts,</strong> Monday to Friday.</li>
-          <li><strong>A longer written breakdown</strong> at the end of week one.</li>
-          <li><strong>A full write-up</strong> at the end of the month.</li>
-        </ul>
-        <p>Month to month, cancel anytime. If you reach the end of your first month and don’t feel the work was worth what you paid, tell me and I refund the full $325.</p>
-        <p><a class="arrow-link" href="ongoing.html">How the ongoing work goes <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></p>
-      </div>
-    </section>
-  </div>
+    </div>
+  </section>
 
   <!-- WHO I AM -->
-  <section class="wrap reveal">
-      <div class="about">
-        <figure class="about-photo">
-          <img src="images/hamza.webp" alt="Hamza Pehlivanov" width="720" height="720" loading="lazy">
-        </figure>
-        <div>
-          <span class="label">Who I Am</span>
-          <h2>Hamza Pehlivanov</h2>
-          <p class="lede">I’ve taught myself philosophical psychology, mainly because I want to know why people do certain things while knowing full well that they shouldn’t.</p>
-          <p>I tend to read your submissions with an eye out for the reasons you skip over, probably because they would require something of you in the coming days. Naturally, these are reasons you’ll be blind to, since you’re the one they protect. Most of my reply will be about them.</p>
-          <p>There are many examples of my approach in the <a href="essays.html">essays</a> on this site.</p>
-        </div>
+  <section class="section night">
+    <div class="container about">
+      <figure class="portrait">
+        <img src="images/hamza.webp" alt="Hamza Pehlivanov" width="720" height="720">
+      </figure>
+      <div>
+        <p class="runhead">Who I am</p>
+        <h2>Hamza Pehlivanov</h2>
+        <p class="lead">I’ve taught myself philosophical psychology, mainly because I want to know why people do certain things while knowing full well that they shouldn’t.</p>
+        <p>I tend to read your submissions with an eye out for the reasons you skip over, probably because they would require something of you in the coming days. Naturally, these are reasons you’ll be blind to, since you’re the one they protect. Most of my reply will be about them.</p>
+        <p>There are many examples of my approach in the <a href="essays.html">essays</a> on this site.</p>
       </div>
-    </section>
+    </div>
+  </section>
 
-  <!-- FAQ -->
-  <div class="band">
-    <section class="wrap reveal">
-      <div class="sec-head">
-        <div>
-          <span class="label">Questions</span>
-          <h2>Straight answers</h2>
-        </div>
-      </div>
-
-      <div class="faq">
-        <div>
+  <!-- QUESTIONS -->
+  <section class="section paper faq">
+    <div class="container">
+      <p class="runhead">Questions</p>
+      <h2>Straight answers</h2>
+      <div class="qa">
+        <div class="qa-row">
           <h3>Can’t I get this from ChatGPT?</h3>
           <p>You can, and it may be enough if you already see everything that keeps the pattern going. It works off what you tell it, and you leave some of that out. I note what you left out, and I point to it again the next time the pattern starts.</p>
         </div>
-        <div>
+        <div class="qa-row">
           <h3>What qualifies you?</h3>
           <p>Nothing formal, and the essays here show how I work. I work from what you write. Once you are protecting yourself it is hard to spot your own excuse, and with it written down another person can see the point where the trigger turns into one. You can judge that on your own case with the free review before you pay anything, and if you do pay, the first month is refundable in full.</p>
         </div>
-        <div>
+        <div class="qa-row">
           <h3>Is this therapy?</h3>
           <p>No. This is not therapy and should not be a substitute for it. If you are in crisis or have been diagnosed with a condition, please see someone who is licensed. If your application reads that way to me, I will let you know.</p>
         </div>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
 
   <!-- CLOSING -->
-  <section class="wrap reveal">
-    <div class="closing-sec">
+  <section class="section night closing">
+    <div class="container">
       <h2>The first review <em>is free.</em></h2>
-      <div class="body">
-        <p>It takes about ten minutes, and it doesn’t need to be polished. You leave with a breakdown that’s yours to keep, or we part ways early.</p>
+      <p class="body">It takes about ten minutes, and it doesn’t need to be polished. You leave with a breakdown that’s yours to keep, or we part ways early.</p>
+      <div class="cta-row">
+        <a href="apply.html" class="btn">Apply for a free review</a>
+        <span class="cta-note">Free · No card · Answer within 24 hours</span>
       </div>
-      <div class="cta-cluster">
-        <a href="apply.html" class="cta" data-magnetic>
-          <span>Apply for a free review</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <span class="label bare center">Free <span class="tick">·</span> No card <span class="tick">·</span> Answer within 24 hours</span>
+      <div class="after">
+        <p>Not ready yet? I write about this on <a href="https://substack.com/@hamzapehlivanov" target="_blank" rel="noopener">Substack</a>, and the <a href="essays.html">essays</a> are open.</p>
+        <p>Questions before you apply? <a href="mailto:official@nullifythepreset.com">official@nullifythepreset.com</a></p>
       </div>
-      <p class="write-line soft">Not ready yet? I write about this on <a href="https://substack.com/@hamzapehlivanov" target="_blank" rel="noopener">Substack</a>, and the <a href="essays.html">essays</a> are open.</p>
-      <p class="write-line">Questions before you apply? <a href="mailto:official@nullifythepreset.com">official@nullifythepreset.com</a></p>
     </div>
   </section>
 
 </main>
 
-<footer class="site">
-  <div class="inner">
-    <div class="cols">
-      <div>
-        <a class="brand" href="index.html">
-          <svg width="40" height="40" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-            <circle cx="24" cy="24" r="22" stroke="rgba(235,229,214,0.5)" stroke-width="1"/>
-            <circle cx="24" cy="24" r="10" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-            <circle cx="24" cy="24" r="3" fill="#6E8E7B"/>
-            <line x1="24" y1="2" x2="24" y2="14" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-            <line x1="24" y1="34" x2="24" y2="46" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-            <line x1="2" y1="24" x2="14" y2="24" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-            <line x1="34" y1="24" x2="46" y2="24" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-          </svg>
-          <span class="name">Nullify the Preset</span>
-        </a>
-        <p class="tag">Psychological consulting, in writing. The first review is free.</p>
-      </div>
+<footer class="site-footer">
+  <div class="container">
+    <a class="footer-mark" href="index.html">Nullify the Preset</a>
+    <div class="footer-cols">
+      <p class="footer-tag">Psychological consulting, in writing. The first review is free.</p>
       <div>
         <h4>Read</h4>
         <ul>
-          <li><a href="essays.html">Essays <span class="count">12</span></a></li>
+          <li><a href="essays.html">Essays</a></li>
           <li><a href="apply.html">Apply for a free review</a></li>
           <li><a href="ongoing.html">The ongoing work</a></li>
           <li><a href="https://substack.com/@hamzapehlivanov" target="_blank" rel="noopener">Substack</a></li>
@@ -430,17 +319,49 @@
       <div>
         <h4>Write</h4>
         <a class="mail" href="mailto:official@nullifythepreset.com">official@nullifythepreset.com</a>
-        <p class="mail-note">Questions before applying go here. Applications go through the form.</p>
+        <p>Questions before applying go here. Applications go through the form.</p>
       </div>
     </div>
-    <div class="bottom">
-      <span>Private<span class="sep">·</span>Async<span class="sep">·</span>By application only</span>
+    <div class="footer-bottom">
+      <span>Private · Async · By application only</span>
       <span>© <span data-year>2026</span> Nullify the Preset</span>
     </div>
   </div>
 </footer>
 
-<script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js" onerror="window.__noLenis=true"></script>
 <script src="site.js"></script>
+<script>
+  // The draft in the opening: written, deleted and rewritten, never sent.
+  (function () {
+    const text = document.getElementById('draftText');
+    const count = document.getElementById('draftCount');
+    if (!text || !count) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const drafts = [
+      'Hey, sorry it took me so long to get back to you. I’ve been thinking about what you said and',
+      'Hi! So about Tuesday. I think I came across wrong, what I meant was',
+      'Honestly, I don’t really know how to say this, so I’ll just',
+      'Hey. Could we talk at some point this week? Nothing serious, I just',
+    ];
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    let i = 0, n = parseInt(count.textContent, 10) || 0;
+    (async function run() {
+      await wait(2600);
+      for (;;) {
+        const cur = text.textContent;
+        for (let k = cur.length; k >= 0; k--) { text.textContent = cur.slice(0, k); await wait(14); }
+        count.textContent = ++n;
+        await wait(650);
+        i = (i + 1) % drafts.length;
+        const next = drafts[i];
+        for (let k = 1; k <= next.length; k++) {
+          text.textContent = next.slice(0, k);
+          await wait(next[k - 1] === ' ' ? 70 : 34 + Math.random() * 46);
+        }
+        await wait(2400);
+      }
+    })();
+  })();
+</script>
 </body>
 </html>

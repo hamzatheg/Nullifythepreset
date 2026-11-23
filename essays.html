@@ -1,33 +1,43 @@
 <!DOCTYPE html>
-<html lang="en" class="lenis">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0A100D">
+<meta name="theme-color" content="#0F2B22">
 <title>Essays — Nullify the Preset</title>
 <meta name="description" content="Twelve short essays on patterns that keep running after you understand them.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,200;0,300;0,400;1,300;1,400&family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,600&family=Schibsted+Grotesk:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
-
 <style>
-.essay-view > .label { display: inline-flex; margin-bottom: clamp(14px, 1.8vw, 18px); }
-.essay-view .doc-nav .arrow-link { max-width: 100%; }
-.essay-view .doc-nav .arrow-link .t { font-family: var(--serif); text-transform: none; letter-spacing: -0.01em; font-size: 1.05rem; color: var(--ink); }
-.essay-view .doc-nav .arrow-link { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; align-items: center; text-align: left; }
-.essay-view .doc-nav .arrow-link.next { grid-template-columns: 1fr auto; text-align: right; }
-.essay-view .doc-nav .arrow-link.next .t { grid-column: 1; }
-.essay-view .doc-nav .arrow-link.next .k { grid-column: 1; }
-.essay-view .doc-nav .arrow-link.next svg { grid-column: 2; grid-row: 1 / span 2; }
-.essay-view .doc-nav .arrow-link.prev svg { grid-row: 1 / span 2; transform: rotate(180deg); }
-.essay-view .doc-nav .arrow-link.prev:hover svg { transform: rotate(180deg) translateX(3px); }
-.essay-view .doc-nav .arrow-link .k { font-size: 10px; color: var(--ink-muted); }
-.essay-view .doc-nav { align-items: flex-start; }
-.essay-view .doc-nav .arrow-link { flex: 1 1 240px; }
-.essay-view .doc-nav .arrow-link.next { justify-items: end; }
-.essay-view .cta-cluster { margin-top: clamp(40px, 6vw, 64px); padding-top: clamp(28px, 4vw, 40px); border-top: 1px solid var(--rule); }
+
+.catalog-head { padding-block: clamp(48px, 7vw, 96px) clamp(32px, 4vw, 56px); }
+.catalog-head h1 { font-size: clamp(3.8rem, 12vw, 10rem); line-height: 0.88; letter-spacing: -0.035em; }
+.catalog-head .lead { margin-top: 22px; max-width: 30rem; }
+.toc { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line-light); }
+.toc li { border-bottom: 1px solid var(--line-light); }
+.toc a { display: grid; grid-template-columns: 2.8rem minmax(0, 1fr); gap: 10px; align-items: baseline; padding-block: clamp(18px, 2.4vw, 28px); text-decoration: none; color: var(--ink); }
+@media (min-width: 900px) { .toc a { grid-template-columns: 6rem minmax(0, 1fr); } }
+.toc .n { font-family: var(--display); font-style: italic; font-size: 1.2rem; color: var(--brass-ink); }
+.toc .t { font-family: var(--display); font-size: clamp(1.45rem, 2.9vw, 2.5rem); line-height: 1.1; letter-spacing: -0.012em; text-wrap: balance; transition: color 0.18s ease; }
+.toc a:hover .t { color: var(--brass-ink); }
+.catalog { padding-bottom: var(--section); }
+
+.doc-meta { font-family: var(--display); font-style: italic; font-size: 1.25rem; color: var(--brass-ink); margin-bottom: 14px; }
+.essay-nav { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; margin-top: clamp(48px, 6vw, 64px); padding-top: 26px; border-top: 1px solid var(--line-light); }
+@media (min-width: 640px) { .essay-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; } .essay-nav a.next { grid-column: 2; text-align: right; } }
+.essay-nav a { display: block; text-decoration: none; color: var(--ink); }
+.essay-nav .k { display: block; font-size: 0.88rem; font-weight: 600; color: var(--brass-ink); margin-bottom: 6px; }
+.essay-nav .t { display: block; font-family: var(--display); font-size: 1.3rem; line-height: 1.2; }
+.essay-nav a:hover .t { color: var(--brass-ink); }
+.essay-cta { margin-top: clamp(36px, 5vw, 56px); padding: clamp(26px, 3.4vw, 40px); background: var(--green); color: var(--bone-muted); color-scheme: dark; }
+.essay-cta p { font-family: var(--display); font-size: clamp(1.7rem, 3vw, 2.3rem); line-height: 1.05; color: var(--bone); margin: 0 0 20px; }
+.essay-cta p em { color: var(--brass); }
+.essay-cta .cta-row { margin-top: 0; }
+.essay-cta .cta-note { color: var(--bone-muted); }
+
 </style>
 <!-- Reddit Pixel -->
 <script>
@@ -36,53 +46,45 @@
 <!-- DO NOT MODIFY UNLESS TO REPLACE A USER IDENTIFIER -->
 <!-- End Reddit Pixel -->
 </head>
-<body>
+<body class="page-paper">
 
-<div class="stage" aria-hidden="true"></div>
-<div class="grain" aria-hidden="true"></div>
-<div class="progress" id="progress" aria-hidden="true"></div>
-<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
-<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
-
-<header class="topbar" id="topbar">
-  <a class="mark" href="index.html" aria-label="Nullify the Preset — home">
-    <span class="glyph"></span>
-    <span>Nullify the Preset</span>
-  </a>
-  <nav aria-label="Site">
-    <a href="essays.html" aria-current="page">Essays <span class="count">12</span></a>
-    <a href="apply.html" class="apply">Apply <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-  </nav>
+<header class="site-header">
+  <div class="container">
+    <a class="wordmark" href="index.html">Nullify the Preset</a>
+    <nav class="site-nav" aria-label="Site">
+      <a href="essays.html" aria-current="page">Essays</a>
+      <a href="ongoing.html" class="wide-only">The ongoing work</a>
+      <a href="apply.html" class="btn btn--small">Apply</a>
+    </nav>
+  </div>
 </header>
 
-<main class="index-wrap" id="catalog">
-  <div class="index-head">
-    <div>
-      <span class="label">The Archive <span class="tick">·</span> 12 essays</span>
+<main class="catalog paper" id="catalog">
+  <div class="container">
+    <div class="catalog-head">
+      <p class="runhead">The archive · 12 essays</p>
       <h1>Essays.</h1>
+      <p class="lead">Twelve short essays on patterns that keep running after you understand them.</p>
     </div>
-    <div class="lede">
-      <p>Twelve short essays on patterns that keep running after you understand them.</p>
-    </div>
-  </div>
-  <div class="rows">
-    <a class="row essay-row" href="#essay-01"><span class="idx">01</span><span class="title">You Understand the Pattern. Why Are You Still Repeating It?</span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
-    <a class="row essay-row" href="#essay-19"><span class="idx">02</span><span class="title">Even Harsh Self-Explanations Can Protect You From Change</span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
-    <a class="row essay-row" href="#essay-11"><span class="idx">03</span><span class="title">Admitting the Problem Can Make It Easier to Repeat</span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
-    <a class="row essay-row" href="#essay-12"><span class="idx">04</span><span class="title">When “I’ll Do It Properly Tomorrow” Is Just Avoidance</span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
-    <a class="row essay-row" href="#essay-06"><span class="idx">05</span><span class="title">When More Self-Analysis Stops Producing Better Answers</span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
-    <a class="row essay-row" href="#essay-08"><span class="idx">06</span><span class="title">How Smart People Make Inaction Sound Rational</span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
-    <a class="row essay-row" href="#essay-13"><span class="idx">07</span><span class="title">You Made the Decision. Why Are You Still Reopening It?</span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
-    <a class="row essay-row" href="#essay-14"><span class="idx">08</span><span class="title">Every Option Looks Wrong on a Different Day</span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
-    <a class="row essay-row" href="#essay-10"><span class="idx">09</span><span class="title">How “I Keep Doing This” Becomes “This Is Who I Am”</span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
-    <a class="row essay-row" href="#essay-09"><span class="idx">10</span><span class="title">When Looking Competent Makes It Harder to Correct a Mistake</span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
-    <a class="row essay-row" href="#essay-18"><span class="idx">11</span><span class="title">Why Insightful Therapy Sessions Can Leave Your Life Unchanged</span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
-    <a class="row essay-row" href="#essay-20"><span class="idx">12</span><span class="title">One Bad Week Does Not Erase Real Progress</span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
+    <ol class="toc">
+      <li><a class="essay-row" href="#essay-01"><span class="n">01</span><span class="t">You Understand the Pattern. Why Are You Still Repeating It?</span></a></li>
+      <li><a class="essay-row" href="#essay-19"><span class="n">02</span><span class="t">Even Harsh Self-Explanations Can Protect You From Change</span></a></li>
+      <li><a class="essay-row" href="#essay-11"><span class="n">03</span><span class="t">Admitting the Problem Can Make It Easier to Repeat</span></a></li>
+      <li><a class="essay-row" href="#essay-12"><span class="n">04</span><span class="t">When “I’ll Do It Properly Tomorrow” Is Just Avoidance</span></a></li>
+      <li><a class="essay-row" href="#essay-06"><span class="n">05</span><span class="t">When More Self-Analysis Stops Producing Better Answers</span></a></li>
+      <li><a class="essay-row" href="#essay-08"><span class="n">06</span><span class="t">How Smart People Make Inaction Sound Rational</span></a></li>
+      <li><a class="essay-row" href="#essay-13"><span class="n">07</span><span class="t">You Made the Decision. Why Are You Still Reopening It?</span></a></li>
+      <li><a class="essay-row" href="#essay-14"><span class="n">08</span><span class="t">Every Option Looks Wrong on a Different Day</span></a></li>
+      <li><a class="essay-row" href="#essay-10"><span class="n">09</span><span class="t">How “I Keep Doing This” Becomes “This Is Who I Am”</span></a></li>
+      <li><a class="essay-row" href="#essay-09"><span class="n">10</span><span class="t">When Looking Competent Makes It Harder to Correct a Mistake</span></a></li>
+      <li><a class="essay-row" href="#essay-18"><span class="n">11</span><span class="t">Why Insightful Therapy Sessions Can Leave Your Life Unchanged</span></a></li>
+      <li><a class="essay-row" href="#essay-20"><span class="n">12</span><span class="t">One Bad Week Does Not Erase Real Progress</span></a></li>
+    </ol>
   </div>
 </main>
 
-<main class="essay-view doc-wrap" id="essay-01" hidden>
-  <a class="arrow-link back back-to-catalog" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg> Back to essays</a>
+<main class="essay-view doc paper" id="essay-01" hidden>
+  <a class="back-link back-to-catalog" href="#">← Back to essays</a>
   <h1>You Understand the Pattern. Why Are You Still Repeating It?</h1>
   <div class="doc-body">
     <p>There is some comfort in labelling a problem, and you get it before anything in the problem has changed. Now that it has a label it has a shape. You can look at it, find where the fear is, and say roughly where the fear came from. For a while this can seem like most of the work. Then the message you were explaining to yourself is still there, unanswered.</p>
@@ -96,8 +98,8 @@
   </div>
 </main>
 
-<main class="essay-view doc-wrap" id="essay-19" hidden>
-  <a class="arrow-link back back-to-catalog" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg> Back to essays</a>
+<main class="essay-view doc paper" id="essay-19" hidden>
+  <a class="back-link back-to-catalog" href="#">← Back to essays</a>
   <h1>Even Harsh Self-Explanations Can Protect You From Change</h1>
   <div class="doc-body">
     <p>If you call yourself a perfectionist, you sound like you’re admitting something. You’re saying your standards are unreasonable and something is wrong with how you work. People who say it usually feel they’ve found something bad about themselves. Then they go back to the unfinished work and keep improving it in private, with the explanation fully intact.</p>
@@ -111,8 +113,8 @@
   </div>
 </main>
 
-<main class="essay-view doc-wrap" id="essay-11" hidden>
-  <a class="arrow-link back back-to-catalog" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg> Back to essays</a>
+<main class="essay-view doc paper" id="essay-11" hidden>
+  <a class="back-link back-to-catalog" href="#">← Back to essays</a>
   <h1>Admitting the Problem Can Make It Easier to Repeat</h1>
   <div class="doc-body">
     <p>When you don’t do something you said you would, you suffer two things. One is the thing that didn’t get done. The other is knowing the excuse you gave yourself was weak, that “the day got busy” doesn’t really cover it. An honest admission removes the second feeling completely. You still have the first one exactly where it was.</p>
@@ -126,8 +128,8 @@
   </div>
 </main>
 
-<main class="essay-view doc-wrap" id="essay-12" hidden>
-  <a class="arrow-link back back-to-catalog" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg> Back to essays</a>
+<main class="essay-view doc paper" id="essay-12" hidden>
+  <a class="back-link back-to-catalog" href="#">← Back to essays</a>
   <h1>When “I’ll Do It Properly Tomorrow” Is Just Avoidance</h1>
   <div class="doc-body">
     <p>You open a message you need to reply to. It’s simple, so it should only take you about seven minutes. As you start writing, you decide it would be better to wait until tomorrow and do it properly. Five minutes ago you weren’t thinking about tomorrow at all. You came to that decision at the exact point where you had to act.</p>
@@ -142,8 +144,8 @@
   </div>
 </main>
 
-<main class="essay-view doc-wrap" id="essay-06" hidden>
-  <a class="arrow-link back back-to-catalog" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg> Back to essays</a>
+<main class="essay-view doc paper" id="essay-06" hidden>
+  <a class="back-link back-to-catalog" href="#">← Back to essays</a>
   <h1>When More Self-Analysis Stops Producing Better Answers</h1>
   <div class="doc-body">
     <p>After a conversation you feel went badly, you usually have a few facts. Maybe they checked their phone once and gave one short answer. The rest is your explanation, that you talked too much and they zoned out. You can replay it for the rest of the night and end up with the same few facts and a bigger explanation.</p>
@@ -156,8 +158,8 @@
   </div>
 </main>
 
-<main class="essay-view doc-wrap" id="essay-08" hidden>
-  <a class="arrow-link back back-to-catalog" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg> Back to essays</a>
+<main class="essay-view doc paper" id="essay-08" hidden>
+  <a class="back-link back-to-catalog" href="#">← Back to essays</a>
   <h1>How Smart People Make Inaction Sound Rational</h1>
   <div class="doc-body">
     <p>Before you send a request that makes you look vulnerable, you already know the reasons not to, and none of them are made up. It’s been months since you spoke, so you may look like you’re taking advantage, or the timing might be off. Each one is plausible, so closing the draft feels like the careful choice.</p>
@@ -173,8 +175,8 @@
   </div>
 </main>
 
-<main class="essay-view doc-wrap" id="essay-13" hidden>
-  <a class="arrow-link back back-to-catalog" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg> Back to essays</a>
+<main class="essay-view doc paper" id="essay-13" hidden>
+  <a class="back-link back-to-catalog" href="#">← Back to essays</a>
   <h1>You Made the Decision. Why Are You Still Reopening It?</h1>
   <div class="doc-body">
     <p>A decision made on Tuesday and reopened on Thursday, with nothing new to go on, was only made on paper. You chose something, and the things you didn’t choose stayed open. Each bad result or waver in confidence sends you back to the moment before you decided. So you never learn whether the decision works when you actually carry it out. You keep asking whether it should exist at all.</p>
@@ -188,8 +190,8 @@
   </div>
 </main>
 
-<main class="essay-view doc-wrap" id="essay-14" hidden>
-  <a class="arrow-link back back-to-catalog" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg> Back to essays</a>
+<main class="essay-view doc paper" id="essay-14" hidden>
+  <a class="back-link back-to-catalog" href="#">← Back to essays</a>
   <h1>Every Option Looks Wrong on a Different Day</h1>
   <div class="doc-body">
     <p>When you keep changing your mind about a decision, it’s usually the same two options. You’re just using different values to judge them. One night you think what you want most is freedom, and one option is the obvious answer. The next day a bill comes, you start thinking what you need is security, and the other option is just as obvious. Each evaluation is reasonable on its own. Put together, they make the decision look very complicated, when really no value has been put in charge of it.</p>
@@ -204,8 +206,8 @@
   </div>
 </main>
 
-<main class="essay-view doc-wrap" id="essay-10" hidden>
-  <a class="arrow-link back back-to-catalog" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg> Back to essays</a>
+<main class="essay-view doc paper" id="essay-10" hidden>
+  <a class="back-link back-to-catalog" href="#">← Back to essays</a>
   <h1>How “I Keep Doing This” Becomes “This Is Who I Am”</h1>
   <div class="doc-body">
     <p>“I’ve avoided difficult conversations for years” and “I’m not a confrontational person” describe the same past. The second one drops the tense and the conditions. Something you’ve done many times gets turned into a fact about the person it happened to. From then on a hard conversation feels like going against your nature, more than doing something you just haven’t practised much.</p>
@@ -220,8 +222,8 @@
   </div>
 </main>
 
-<main class="essay-view doc-wrap" id="essay-09" hidden>
-  <a class="arrow-link back back-to-catalog" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg> Back to essays</a>
+<main class="essay-view doc paper" id="essay-09" hidden>
+  <a class="back-link back-to-catalog" href="#">← Back to essays</a>
   <h1>When Looking Competent Makes It Harder to Correct a Mistake</h1>
   <div class="doc-body">
     <p>Once you’ve given someone a confident answer, a fact you missed can feel much bigger than it is. You can probably fix it, but correcting yourself would seem to say something, that you rushed and only looked decisive because you hadn’t seen everything. So you wait and take it home, where it can ruin the rest of your night and fix nothing.</p>
@@ -235,8 +237,8 @@
   </div>
 </main>
 
-<main class="essay-view doc-wrap" id="essay-18" hidden>
-  <a class="arrow-link back back-to-catalog" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg> Back to essays</a>
+<main class="essay-view doc paper" id="essay-18" hidden>
+  <a class="back-link back-to-catalog" href="#">← Back to essays</a>
   <h1>Why Insightful Therapy Sessions Can Leave Your Life Unchanged</h1>
   <div class="doc-body">
     <p>Someone who’s good at thinking can spend months in therapy getting steadily clearer about something they still don’t do. Each week they make a new connection or draw a cleaner distinction. The shame around the pattern gets lighter, and the conversations are honest and specific. The thing they keep discussing doesn’t change.</p>
@@ -250,8 +252,8 @@
   </div>
 </main>
 
-<main class="essay-view doc-wrap" id="essay-20" hidden>
-  <a class="arrow-link back back-to-catalog" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg> Back to essays</a>
+<main class="essay-view doc paper" id="essay-20" hidden>
+  <a class="back-link back-to-catalog" href="#">← Back to essays</a>
   <h1>One Bad Week Does Not Erase Real Progress</h1>
   <div class="doc-body">
     <p>After a lapse, people tend to reach the harshest conclusion the next morning, that nothing really changed and the good weeks were a fluke. One bad evening doesn’t cancel weeks of the pattern happening less often. It does show that the improvement depended on support you had stopped paying attention to.</p>
@@ -266,50 +268,37 @@
   </div>
 </main>
 
-<footer class="site">
-  <div class="inner">
-    <div class="cols">
-      <div>
-        <a class="brand" href="index.html">
-          <svg width="40" height="40" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-            <circle cx="24" cy="24" r="22" stroke="rgba(235,229,214,0.5)" stroke-width="1"/>
-            <circle cx="24" cy="24" r="10" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-            <circle cx="24" cy="24" r="3" fill="#6E8E7B"/>
-            <line x1="24" y1="2" x2="24" y2="14" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-            <line x1="24" y1="34" x2="24" y2="46" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-            <line x1="2" y1="24" x2="14" y2="24" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-            <line x1="34" y1="24" x2="46" y2="24" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-          </svg>
-          <span class="name">Nullify the Preset</span>
-        </a>
-        <p class="tag">Psychological consulting, in writing. The first review is free.</p>
-      </div>
+<footer class="site-footer">
+  <div class="container">
+    <a class="footer-mark" href="index.html">Nullify the Preset</a>
+    <div class="footer-cols">
+      <p class="footer-tag">Psychological consulting, in writing. The first review is free.</p>
       <div>
         <h4>Read</h4>
         <ul>
-          <li><a href="essays.html">Essays <span class="count">12</span></a></li>
+          <li><a href="essays.html">Essays</a></li>
           <li><a href="apply.html">Apply for a free review</a></li>
+          <li><a href="ongoing.html">The ongoing work</a></li>
+          <li><a href="https://substack.com/@hamzapehlivanov" target="_blank" rel="noopener">Substack</a></li>
           <li><a href="privacy.html">Privacy</a></li>
         </ul>
       </div>
       <div>
         <h4>Write</h4>
         <a class="mail" href="mailto:official@nullifythepreset.com">official@nullifythepreset.com</a>
-        <p class="mail-note">Questions before applying go here. Applications go through the form.</p>
+        <p>Questions before applying go here. Applications go through the form.</p>
       </div>
     </div>
-    <div class="bottom">
-      <span>Private<span class="sep">·</span>Async<span class="sep">·</span>By application only</span>
+    <div class="footer-bottom">
+      <span>Private · Async · By application only</span>
       <span>© <span data-year>2026</span> Nullify the Preset</span>
     </div>
   </div>
 </footer>
 
-<script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js" onerror="window.__noLenis=true"></script>
 <script src="site.js"></script>
 <script>
   (function () {
-    const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
     const catalog = document.getElementById('catalog');
     const essays  = [...document.querySelectorAll('.essay-view')];
     const base    = document.title;
@@ -320,25 +309,25 @@
       if (el.dataset.ready) return;
       el.dataset.ready = '1';
       const h1 = el.querySelector('h1');
-      const label = document.createElement('span');
-      label.className = 'label';
-      label.innerHTML = 'Essay ' + String(i + 1).padStart(2, '0') + ' <span class="tick">·</span> of ' + total;
-      h1.before(label);
+      const meta = document.createElement('p');
+      meta.className = 'doc-meta';
+      meta.textContent = 'Essay ' + (i + 1) + ' of ' + total;
+      h1.before(meta);
 
       const prev = essays[i - 1], next = essays[i + 1];
       const nav = document.createElement('nav');
-      nav.className = 'doc-nav';
+      nav.className = 'essay-nav';
       nav.setAttribute('aria-label', 'Essay navigation');
       nav.innerHTML =
-        (prev ? '<a class="arrow-link prev" href="#' + prev.id + '">' + ARROW + '<span class="k">Previous</span><span class="t">' + titleOf(prev) + '</span></a>' : '<span></span>') +
-        (next ? '<a class="arrow-link next" href="#' + next.id + '">' + ARROW + '<span class="k">Next</span><span class="t">' + titleOf(next) + '</span></a>'
-              : '<a class="arrow-link next" href="#">' + ARROW + '<span class="k">Archive</span><span class="t">Back to all essays</span></a>');
+        (prev ? '<a class="prev" href="#' + prev.id + '"><span class="k">← Previous</span><span class="t">' + titleOf(prev) + '</span></a>' : '') +
+        (next ? '<a class="next" href="#' + next.id + '"><span class="k">Next →</span><span class="t">' + titleOf(next) + '</span></a>'
+              : '<a class="next" href="#"><span class="k">Archive →</span><span class="t">Back to all essays</span></a>');
       el.appendChild(nav);
 
       const cta = document.createElement('div');
-      cta.className = 'cta-cluster';
-      cta.innerHTML = '<a href="apply.html" class="cta" data-magnetic><span>Apply for a free review</span>' + ARROW + '</a>' +
-        '<span class="label bare center">Free <span class="tick">·</span> Written <span class="tick">·</span> Private</span>';
+      cta.className = 'essay-cta';
+      cta.innerHTML = '<p>The first review <em>is free.</em></p><div class="cta-row"><a href="apply.html" class="btn">Apply for a free review</a>' +
+        '<span class="cta-note">Free · Written · Private</span></div>';
       el.appendChild(cta);
     }
 
@@ -356,12 +345,11 @@
         essays.forEach(e => { e.hidden = true; });
         document.title = base;
       }
-      if (window.__lenis) window.__lenis.scrollTo(0, { immediate: true });
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     document.addEventListener('click', (e) => {
-      const a = e.target.closest('a.essay-row, a.back-to-catalog, .doc-nav a');
+      const a = e.target.closest('a.essay-row, a.back-to-catalog, .essay-nav a');
       if (!a) return;
       e.preventDefault();
       const href = a.getAttribute('href');

@@ -1,103 +1,75 @@
 <!DOCTYPE html>
-<html lang="en" class="lenis">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0A100D">
+<meta name="theme-color" content="#0F2B22">
 <title>Apply for a Free Review — Nullify the Preset</title>
 <meta name="description" content="Two written questions. A written breakdown in return within 24 hours. Free, async, read personally.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,200;0,300;0,400;1,300;1,400&family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,600&family=Schibsted+Grotesk:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
-
 <style>
-.apply-wrap {
-  position: relative; z-index: 2;
-  max-width: var(--max-w); margin: 0 auto;
-  padding: clamp(104px, 15vh, 140px) var(--pad-x) clamp(64px, 9vw, 100px);
-}
-.apply-grid { display: grid; grid-template-columns: 1fr; gap: clamp(32px, 5vw, 64px); align-items: start; }
-@media (min-width: 1000px) {
-  .apply-grid { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: clamp(48px, 6vw, 96px); }
-  .apply-aside { position: sticky; top: 104px; }
-}
-/* After the application is sent the sidebar is hidden: centre the remaining column instead of leaving it in the narrow left slot. */
-.apply-grid.is-sent { grid-template-columns: minmax(0, 1fr); max-width: 760px; margin: 0 auto; }
-.apply-aside h1 { font-size: clamp(2.6rem, 6.4vw, 4.4rem); margin: 16px 0 20px; }
-.apply-aside .lede { margin-bottom: 26px; }
-.apply-aside .facts { list-style: none; border-top: 1px solid var(--rule); margin-bottom: 26px; }
-.apply-aside .facts li {
-  display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: baseline;
-  padding: 12px 0; border-bottom: 1px solid var(--rule);
-  color: var(--ink-soft); font-size: 0.97rem;
-}
-.apply-aside .facts .idx { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--moss-light); }
-.apply-aside .write-line { justify-content: flex-start; }
 
-.form-card {
-  position: relative;
-  border: 1px solid var(--rule-strong);
-  border-radius: calc(var(--rad) + 4px);
-  padding: clamp(6px, 1vw, 12px) clamp(20px, 3vw, 40px) clamp(24px, 3vw, 40px);
-  background:
-    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(110, 142, 123, 0.10), transparent 60%),
-    linear-gradient(180deg, rgba(235, 229, 214, 0.035), rgba(235, 229, 214, 0.01));
-  box-shadow: 0 40px 80px -48px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(235, 229, 214, 0.05) inset;
+.apply-grid { display: grid; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 1000px) { .apply-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); min-height: calc(100svh - 77px); } }
+.apply-grid.is-sent { grid-template-columns: minmax(0, 1fr); }
+.apply-aside { padding-block: clamp(48px, 7vw, 88px); padding-left: max(var(--side), env(safe-area-inset-left, 0px)); padding-right: var(--side); }
+@media (min-width: 1000px) {
+  .apply-aside { padding-left: max(var(--side), calc((100vw - var(--max)) / 2 + var(--side))); padding-right: clamp(40px, 5vw, 72px); }
+  .aside-inner { position: sticky; top: 40px; }
 }
-.q {
-  display: grid; grid-template-columns: 1fr; gap: 8px 22px;
-  padding: clamp(22px, 3vw, 32px) 0;
-  border-bottom: 1px solid var(--rule);
-}
-@media (min-width: 640px) {
-  .q { grid-template-columns: 2.6rem 1fr; }
-  .q .q-num { grid-row: 1 / span 3; padding-top: 0.5em; }
-}
-.q-num { font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em; color: var(--moss-light); }
-.q-label { font-family: var(--serif); font-weight: 300; font-size: clamp(1.25rem, 1.8vw, 1.5rem); letter-spacing: -0.015em; color: var(--ink); line-height: 1.25; display: block; }
-.q-label.plain { font-family: var(--sans); font-weight: 500; font-size: 1.02rem; letter-spacing: 0; }
-.q-hint { color: var(--ink-muted); font-size: 0.95rem; margin: 0; }
-.field-wrap { position: relative; margin-top: 8px; }
+.apply-aside h1 { font-size: clamp(2.8rem, 5.4vw, 4.8rem); line-height: 0.95; letter-spacing: -0.03em; margin-bottom: 24px; }
+.apply-aside .lede { margin-bottom: 28px; max-width: 30rem; }
+.facts { list-style: none; padding: 0; margin: 0 0 28px; border-top: 1px solid var(--line-dark); max-width: 30rem; }
+.facts li { padding-block: 13px; border-bottom: 1px solid var(--line-dark); font-size: 0.98rem; }
+.aside-mail { font-size: 0.95rem; }
+.aside-mail a { overflow-wrap: anywhere; }
+
+.apply-main { padding-block: clamp(32px, 6vw, 88px) var(--section); padding-left: max(var(--side), env(safe-area-inset-left, 0px)); padding-right: max(var(--side), env(safe-area-inset-right, 0px)); min-width: 0; }
+@media (min-width: 1000px) { .apply-main { padding-left: clamp(40px, 5vw, 80px); padding-right: max(var(--side), calc((100vw - var(--max)) / 2 + var(--side))); } }
+.apply-grid.is-sent .apply-main { max-width: 820px; margin-inline: auto; padding-inline: var(--side); }
+.form-card { max-width: 46rem; }
+.q { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px 22px; padding-block: clamp(24px, 3.2vw, 34px); border-bottom: 1px solid var(--line-light); }
+.q:first-child { padding-top: 0; }
+@media (min-width: 640px) { .q { grid-template-columns: 2.6rem minmax(0, 1fr); } .q > :not(.q-num) { grid-column: 2; } .q .q-num { grid-row: 1 / span 3; } }
+.q-num { font-family: var(--display); font-style: italic; font-size: 2rem; line-height: 1; color: var(--brass-ink); }
+.q-label { display: block; font-family: var(--display); font-weight: 500; font-size: clamp(1.5rem, 2.2vw, 1.9rem); line-height: 1.15; letter-spacing: -0.01em; color: var(--ink); }
+.q-label.plain { font-family: var(--sans); font-weight: 600; font-size: 1.05rem; letter-spacing: 0; }
+.q-hint { margin: 0; font-size: 0.98rem; color: var(--ink-muted); }
+.field-wrap { margin-top: 12px; }
 .field {
-  width: 100%; display: block;
-  background: rgba(7, 16, 11, 0.55);
-  border: 1px solid var(--rule-strong);
-  border-radius: var(--rad-sm);
-  color: var(--ink);
-  font-family: var(--sans); font-size: 1rem; line-height: 1.6;
-  padding: 14px 16px;
-  min-height: 150px; resize: vertical;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  display: block; width: 100%;
+  background: var(--field); color: var(--ink);
+  border: 1px solid #B2BDB3; border-radius: 0;
+  font-family: var(--sans); font-size: 1.02rem; line-height: 1.55;
+  padding: 13px 15px; min-height: 160px; resize: vertical;
   -webkit-appearance: none; appearance: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 input.field { min-height: 0; }
-.field::placeholder { color: var(--ink-faint); }
-.field:hover { border-color: rgba(235, 229, 214, 0.26); }
-.field:focus { outline: none; border-color: var(--moss-light); box-shadow: 0 0 0 3px var(--moss-glow); background: rgba(7, 16, 11, 0.75); }
-.submit-section { padding-top: clamp(22px, 3vw, 32px); }
-.consent { display: flex; gap: 14px; align-items: flex-start; color: var(--ink-muted); font-size: 0.95rem; line-height: 1.55; margin-bottom: clamp(22px, 3vw, 28px); }
-.consent input { width: 18px; height: 18px; flex: none; margin-top: 3px; accent-color: var(--moss-light); cursor: pointer; }
+.field::placeholder { color: #8A968F; }
+.field:hover { border-color: var(--ink-muted); }
+.field:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(15, 43, 34, 0.14); }
+.submit-section { padding-top: clamp(24px, 3.2vw, 34px); }
+.consent { display: flex; gap: 12px; align-items: flex-start; font-size: 0.98rem; color: var(--ink); margin-bottom: 16px; }
+.consent input { width: 24px; height: 24px; flex: none; margin-top: 1px; accent-color: var(--green); cursor: pointer; }
 .consent label { cursor: pointer; }
-.submit-row { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; }
-.error-message { display: none; margin-bottom: 18px; padding: 12px 16px; border: 1px solid rgba(200, 120, 100, 0.4); border-radius: var(--rad-sm); color: #E4B2A4; font-size: 0.93rem; }
+.privacy-line { margin-bottom: 24px; }
+.submit-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
+.error-message { display: none; margin-bottom: 18px; padding: 12px 14px; background: var(--error-bg); border: 1px solid #E3BFB7; color: var(--error); font-size: 0.95rem; }
 .error-message.show { display: block; }
-.foot-note { margin-top: 20px; }
-.privacy-line { margin-bottom: clamp(18px, 2.4vw, 24px); }
-.privacy-line a { color: var(--ink); border-bottom: 1px solid var(--rule-strong); }
-.step-two-head { margin-bottom: clamp(24px, 3vw, 36px); outline: none; }
-.step-two-head h2 { font-size: clamp(1.7rem, 3vw, 2.3rem); margin: 12px 0 10px; }
-.step-two-head p { color: var(--ink-soft); }
-.skip-link { background: none; border: 0; padding: 8px 4px; cursor: pointer; color: var(--ink-muted); font: inherit; font-size: 0.95rem; border-bottom: 1px solid var(--rule-strong); }
+.foot-note { margin-top: 22px; font-size: 0.95rem; }
+.step-two-head { margin-bottom: clamp(16px, 2.4vw, 24px); outline: none; }
+.step-two-head h2 { font-size: clamp(2rem, 3.6vw, 3rem); line-height: 1.02; margin: 4px 0 12px; }
+.skip-link { background: none; border: 0; padding: 8px 2px; cursor: pointer; font-family: var(--sans); font-size: 0.98rem; color: var(--ink-muted); text-decoration: underline; text-underline-offset: 0.2em; }
 .skip-link:hover { color: var(--ink); }
-
-.success-state { display: none; text-align: center; max-width: 620px; margin: 0 auto; padding: clamp(24px, 6vh, 64px) 0; }
+.success-state { display: none; max-width: 640px; padding-block: clamp(24px, 6vh, 64px); }
 .success-state.show { display: block; }
-.success-state .glyph { width: 64px; height: 64px; border-radius: 50%; border: 1px solid var(--moss-light); margin: 0 auto 28px; position: relative; box-shadow: 0 0 40px var(--moss-glow); }
-.success-state .glyph::after { content: ""; position: absolute; inset: 20px; border-radius: 50%; background: var(--moss-light); }
-.success-state h2 { margin-bottom: 16px; }
-.success-state p { color: var(--ink-soft); }
+.success-state h2 { font-size: clamp(2.6rem, 6vw, 4.6rem); line-height: 0.95; margin-bottom: 20px; }
+
 </style>
 <!-- Reddit Pixel -->
 <script>
@@ -106,39 +78,36 @@ input.field { min-height: 0; }
 <!-- DO NOT MODIFY UNLESS TO REPLACE A USER IDENTIFIER -->
 <!-- End Reddit Pixel -->
 </head>
-<body>
+<body class="page-paper">
 
-<div class="stage" aria-hidden="true"></div>
-<div class="grain" aria-hidden="true"></div>
-<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
-<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
-
-<header class="topbar" id="topbar">
-  <a class="mark" href="index.html" aria-label="Nullify the Preset — home">
-    <span class="glyph"></span>
-    <span>Nullify the Preset</span>
-  </a>
-  <nav aria-label="Site">
-    <a href="essays.html">Essays <span class="count">12</span></a>
-    <a href="apply.html" class="apply" aria-current="page">Apply <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-  </nav>
+<header class="site-header">
+  <div class="container">
+    <a class="wordmark" href="index.html">Nullify the Preset</a>
+    <nav class="site-nav" aria-label="Site">
+      <a href="essays.html">Essays</a>
+      <a href="ongoing.html" class="wide-only">The ongoing work</a>
+      <a href="apply.html" class="btn btn--small" aria-current="page">Apply</a>
+    </nav>
+  </div>
 </header>
 
-<main class="apply-wrap">
+<main>
   <div class="apply-grid">
-    <aside class="apply-aside header">
-      <span class="label">The Application</span>
-      <h1>Apply for a <em>free review</em></h1>
-      <p class="lede">I ask two questions, with two optional ones after. Your breakdown is written from your answers and nothing else. I read them myself and they remain confidential.</p>
-      <ul class="facts">
-        <li><span class="idx">01</span><span>Free. No card. If I can’t help, you won’t hear from me again.</span></li>
-        <li><span class="idx">02</span><span>Async. About ten minutes, written the way it comes. It doesn’t need to be polished.</span></li>
-        <li><span class="idx">03</span><span>Written. Your breakdown arrives by email or Signal, within 24 hours.</span></li>
-      </ul>
-      <p class="write-line">Questions first? <a href="mailto:official@nullifythepreset.com">official@nullifythepreset.com</a></p>
+    <aside class="apply-aside header night">
+      <div class="aside-inner">
+        <p class="runhead">The application</p>
+        <h1>Apply for a <em>free review</em></h1>
+        <p class="lede">I ask two questions, with two optional ones after. Your breakdown is written from your answers and nothing else. I read them myself and they remain confidential.</p>
+        <ul class="facts">
+          <li><strong>Free.</strong> No card. If I can’t help, you won’t hear from me again.</li>
+          <li><strong>Async.</strong> About ten minutes, written the way it comes. It doesn’t need to be polished.</li>
+          <li><strong>Written.</strong> Your breakdown arrives by email or Signal, within 24 hours.</li>
+        </ul>
+        <p class="aside-mail">Questions first? <a href="mailto:official@nullifythepreset.com">official@nullifythepreset.com</a></p>
+      </div>
     </aside>
 
-    <div>
+    <div class="apply-main paper">
       <div class="form-card">
         <form id="applicationForm" action="https://api.web3forms.com/submit" method="POST" novalidate>
           <input type="hidden" name="access_key" value="08f08761-cdd8-4b3d-8187-a20ee032c22c">
@@ -147,21 +116,21 @@ input.field { min-height: 0; }
 
           <div id="stepOne">
           <div class="q">
-            <span class="q-num">01</span>
+            <span class="q-num">1</span>
             <label class="q-label" for="f-pattern">What keeps happening?</label>
             <p class="q-hint">Describe the pattern. What’s the trigger, and what does your mind do with it?</p>
             <div class="field-wrap"><textarea class="field" id="f-pattern" name="pattern" required placeholder="Start anywhere. The pattern will show."></textarea></div>
           </div>
 
           <div class="q">
-            <span class="q-num">02</span>
+            <span class="q-num">2</span>
             <label class="q-label" for="f-example">Give me one recent example.</label>
             <p class="q-hint">Walk me through a specific instance from the last 7 days.</p>
             <div class="field-wrap"><textarea class="field" id="f-example" name="example" required placeholder="What happened, in order."></textarea></div>
           </div>
 
           <div class="q">
-            <span class="q-num">—</span>
+            <span class="q-num" aria-hidden="true"></span>
             <label class="q-label plain" for="f-contact">Signal username or email</label>
             <p class="q-hint">Where the review should arrive.</p>
             <div class="field-wrap"><input type="text" class="field" id="f-contact" name="contact" required autocomplete="email" placeholder="@username.01 or you@example.com"></div>
@@ -177,43 +146,36 @@ input.field { min-height: 0; }
             </div>
             <p class="q-hint privacy-line">Only I read what you send. <a href="privacy.html">What happens to it</a>.</p>
             <div class="submit-row">
-              <button type="submit" class="cta" id="submitButton" data-magnetic>
-                <span>Send application</span>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </button>
-              <span class="label bare">Free <span class="tick">·</span> Async <span class="tick">·</span> Reviewed personally</span>
+              <button type="submit" class="btn btn--dark" id="submitButton"><span>Send application</span></button>
+              <span class="cta-note">Free · Async · Reviewed personally</span>
             </div>
           </div>
           </div>
 
           <div id="stepTwo" hidden>
             <div class="step-two-head" tabindex="-1" id="stepTwoHead">
-              <span class="label">Application received</span>
+              <p class="runhead">Application received</p>
               <h2>Your breakdown arrives within 24 hours.</h2>
               <p>Two optional questions. Your answers help me read it more precisely.</p>
             </div>
           <div class="q">
-            <span class="q-num">03</span>
+            <span class="q-num">3</span>
             <label class="q-label" for="f-cost">What is this costing you?</label>
             <p class="q-hint">The time you spend on it, lost sleep, attention, whatever you are neglecting because of it. Be specific.</p>
             <div class="field-wrap"><textarea class="field" id="f-cost" name="cost" placeholder="Hours, decisions, relationships, work."></textarea></div>
           </div>
 
           <div class="q">
-            <span class="q-num">04</span>
+            <span class="q-num">4</span>
             <label class="q-label" for="f-diagnosis">The failed solutions.</label>
             <p class="q-hint">What have you tried, and why did the pattern survive those attempts?</p>
             <div class="field-wrap"><textarea class="field" id="f-diagnosis" name="tried" placeholder="Include what almost worked."></textarea></div>
           </div>
 
-
             <div class="submit-section">
               <div class="error-message" id="errorMessageTwo" role="alert"></div>
               <div class="submit-row">
-                <button type="button" class="cta" id="addButton" data-magnetic>
-                  <span>Add to my application</span>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </button>
+                <button type="button" class="btn btn--dark" id="addButton"><span>Add to my application</span></button>
                 <button type="button" class="skip-link" id="skipButton">Skip these</button>
               </div>
             </div>
@@ -221,57 +183,44 @@ input.field { min-height: 0; }
         </form>
       </div>
 
-      <p class="write-line foot-note">Prefer to ask something first? <a href="mailto:official@nullifythepreset.com">official@nullifythepreset.com</a></p>
+      <p class="foot-note">Prefer to ask something first? <a href="mailto:official@nullifythepreset.com">official@nullifythepreset.com</a></p>
 
       <div class="success-state" id="successState" aria-live="polite">
-        <div class="glyph" aria-hidden="true"></div>
-        <h2>Application received.</h2>
-        <p>Thank you for writing this. I will read your answers myself and send you a breakdown by email or Signal, within 24 hours.</p>
+        <h2>Application <em>received.</em></h2>
+        <p class="lead">Thank you for writing this. I will read your answers myself and send you a breakdown by email or Signal, within 24 hours.</p>
       </div>
     </div>
   </div>
 </main>
 
-<footer class="site">
-  <div class="inner">
-    <div class="cols">
-      <div>
-        <a class="brand" href="index.html">
-          <svg width="40" height="40" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-            <circle cx="24" cy="24" r="22" stroke="rgba(235,229,214,0.5)" stroke-width="1"/>
-            <circle cx="24" cy="24" r="10" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-            <circle cx="24" cy="24" r="3" fill="#6E8E7B"/>
-            <line x1="24" y1="2" x2="24" y2="14" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-            <line x1="24" y1="34" x2="24" y2="46" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-            <line x1="2" y1="24" x2="14" y2="24" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-            <line x1="34" y1="24" x2="46" y2="24" stroke="rgba(235,229,214,0.4)" stroke-width="1"/>
-          </svg>
-          <span class="name">Nullify the Preset</span>
-        </a>
-        <p class="tag">Psychological consulting, in writing. The first review is free.</p>
-      </div>
+<footer class="site-footer">
+  <div class="container">
+    <a class="footer-mark" href="index.html">Nullify the Preset</a>
+    <div class="footer-cols">
+      <p class="footer-tag">Psychological consulting, in writing. The first review is free.</p>
       <div>
         <h4>Read</h4>
         <ul>
-          <li><a href="essays.html">Essays <span class="count">12</span></a></li>
+          <li><a href="essays.html">Essays</a></li>
           <li><a href="apply.html">Apply for a free review</a></li>
+          <li><a href="ongoing.html">The ongoing work</a></li>
+          <li><a href="https://substack.com/@hamzapehlivanov" target="_blank" rel="noopener">Substack</a></li>
           <li><a href="privacy.html">Privacy</a></li>
         </ul>
       </div>
       <div>
         <h4>Write</h4>
         <a class="mail" href="mailto:official@nullifythepreset.com">official@nullifythepreset.com</a>
-        <p class="mail-note">Questions before applying go here. Applications go through the form.</p>
+        <p>Questions before applying go here. Applications go through the form.</p>
       </div>
     </div>
-    <div class="bottom">
-      <span>Private<span class="sep">·</span>Async<span class="sep">·</span>By application only</span>
+    <div class="footer-bottom">
+      <span>Private · Async · By application only</span>
       <span>© <span data-year>2026</span> Nullify the Preset</span>
     </div>
   </div>
 </footer>
 
-<script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js" onerror="window.__noLenis=true"></script>
 <script src="site.js"></script>
 <script>
   const form = document.getElementById('applicationForm');
