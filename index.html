@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#0F2B22">
 <title>Nullify the Preset · You already know why you do it</title>
 <meta name="description" content="Psychological consulting, in writing, for patterns you understand and still repeat. The first review is free.">
+<script>document.documentElement.classList.add('js');</script>
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nullifythepreset.com/">
 <meta property="og:title" content="You already know why you do it">
@@ -14,7 +15,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,600&family=Schibsted+Grotesk:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Schibsted+Grotesk:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
 <style>
 
@@ -25,6 +26,8 @@
 .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; margin-top: clamp(36px, 5vw, 64px); }
 @media (min-width: 960px) {
   .hero-grid { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); column-gap: clamp(48px, 6vw, 96px); align-items: start; }
+  .hero-grid .draft { grid-column: 2; grid-row: 1; }
+  .hero-grid .hero-copy { grid-column: 1; grid-row: 1; }
 }
 .vignettes { border-top: 1px solid var(--line-dark); max-width: 34rem; }
 .vignettes p { margin: 0; padding-block: 13px; border-bottom: 1px solid var(--line-dark); }
@@ -39,6 +42,15 @@
   box-shadow: 0 48px 80px -44px rgba(0, 0, 0, 0.7);
 }
 @media (max-width: 959px) { .draft { justify-self: start; } }
+@media (max-width: 719px) {
+  .hero { padding-top: 30px; padding-bottom: 60px; }
+  .hero h1 { font-size: clamp(2.9rem, 13.6vw, 3.7rem); line-height: 0.92; }
+  .hero-grid { gap: 34px; margin-top: 28px; }
+  .draft { padding: 16px 18px 14px; }
+  .draft-text { font-size: 1.04rem; padding-block: 14px; }
+  .vignettes p { padding-block: 12px; }
+  .offer { font-size: 1.12rem; }
+}
 .draft-top, .draft-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 0.82rem; color: var(--ink-muted); }
 .draft-top { padding-bottom: 12px; border-bottom: 1px solid var(--line-light); }
 .draft-top b { color: var(--ink); font-weight: 600; }
@@ -47,22 +59,23 @@
 @keyframes blink { 50% { opacity: 0; } }
 .draft-foot { padding-top: 12px; border-top: 1px solid var(--line-light); }
 .draft-foot b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
-.draft-send { font-weight: 600; color: #95A199; border: 1px solid var(--line-light); padding: 5px 13px; }
+.draft-send { font-weight: 600; color: #A0957F; border: 1px solid var(--line-light); padding: 5px 13px; }
 
 /* ─── Why it keeps running ─── */
 .why h2 { max-width: 17em; }
 .why-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; margin-top: clamp(44px, 6vw, 72px); align-items: center; }
 @media (min-width: 960px) { .why-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); column-gap: clamp(48px, 6vw, 96px); } }
 .loop { width: min(100%, 420px); margin-inline: auto; }
+@media (max-width: 719px) { .loop { width: min(100%, 330px); } .why-grid { gap: 36px; margin-top: 36px; } .count { font-size: 1.65rem; } .pull { font-size: 2.7rem; margin-top: 56px; } }
 .loop svg { width: 100%; height: auto; overflow: visible; }
 .loop .ring { fill: none; stroke: var(--ink); stroke-width: 1; }
 .loop .chev { fill: none; stroke: var(--ink); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
 .loop .node { fill: var(--paper); stroke: var(--ink); stroke-width: 1; }
-.loop .lbl { font-family: var(--display); font-style: italic; font-weight: 600; font-size: 20px; fill: var(--ink); }
+.loop .lbl { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 18px; fill: var(--ink); }
 .loop .runner { fill: var(--brass-ink); }
 .loop .orbit { transform-box: view-box; transform-origin: 50% 50%; animation: orbit 14s linear infinite; }
 @keyframes orbit { to { transform: rotate(360deg); } }
-.count { font-family: var(--display); font-size: clamp(1.6rem, 2.6vw, 2.3rem); line-height: 1.18; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 0.9em; }
+.count { font-family: var(--serif); font-size: clamp(1.6rem, 2.6vw, 2.3rem); line-height: 1.18; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 0.9em; }
 .pull { margin-top: clamp(56px, 8vw, 112px); margin-bottom: 0; font-family: var(--display); font-size: clamp(2.2rem, 5.8vw, 5.2rem); line-height: 1.02; letter-spacing: -0.022em; color: var(--ink); max-width: 14em; text-wrap: balance; }
 .pull em { color: var(--brass-ink); }
 .after-pull { margin-top: clamp(28px, 4vw, 44px); }
@@ -72,26 +85,28 @@
 .review h2 { max-width: 15em; margin-bottom: clamp(40px, 5vw, 64px); }
 
 /* ─── Money ─── */
-.money { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; }
-@media (min-width: 960px) { .money { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); column-gap: clamp(48px, 6vw, 96px); align-items: start; } }
-.big-figure { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(7.5rem, 21vw, 17.5rem); line-height: 0.78; letter-spacing: -0.055em; color: var(--ink); margin-left: -0.04em; }
-.big-figure-cap { font-family: var(--display); font-style: italic; font-size: clamp(1.4rem, 2.2vw, 2rem); line-height: 1.2; color: var(--brass-ink); margin-top: 18px; }
-.big-figure-note { margin-top: 16px; max-width: 24rem; }
-.money h2 { font-size: clamp(1.9rem, 3.4vw, 3rem); line-height: 1.06; margin-bottom: 26px; }
+.money-title { max-width: 16em; margin-bottom: clamp(36px, 5vw, 60px); }
+.money { max-width: 40rem; }
 
 /* ─── Who I am ─── */
-.about { display: grid; grid-template-columns: minmax(0, 1fr); gap: 44px; }
-@media (min-width: 900px) { .about { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: clamp(48px, 6vw, 96px); align-items: center; } }
-.portrait { width: min(100%, 420px); background: var(--green-soft); }
+.about { display: grid; grid-template-columns: 112px minmax(0, 1fr); grid-template-areas: "photo head" "text text"; column-gap: 20px; row-gap: 26px; align-items: end; }
+.portrait { grid-area: photo; width: 100%; background: var(--green-soft); }
+.about-head { grid-area: head; }
+.about-text { grid-area: text; }
+.about-head h2 { margin: 0; }
+@media (min-width: 900px) {
+  .about { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); grid-template-areas: "photo head" "photo text"; column-gap: clamp(48px, 6vw, 96px); row-gap: 0; align-items: start; align-content: center; }
+  .portrait { width: min(100%, 420px); align-self: center; }
+  .about-head { align-self: end; margin-bottom: 26px; }
+}
 .portrait img { width: 100%; filter: grayscale(1) contrast(1.06); }
-.about h2 { margin-bottom: 26px; }
 .about .lead { margin-bottom: 1em; }
 
 /* ─── Questions ─── */
 .faq h2 { margin-bottom: clamp(32px, 4vw, 52px); }
 
 /* ─── Closing ─── */
-.closing h2 { font-size: clamp(3rem, 8.6vw, 7.8rem); line-height: 0.92; letter-spacing: -0.03em; }
+.closing h2 { font-family: var(--display); font-weight: 400; font-size: clamp(3rem, 8.6vw, 7.8rem); line-height: 0.92; letter-spacing: -0.03em; }
 .closing .body { margin-top: 28px; max-width: 34rem; font-size: 1.15rem; }
 .closing .after { margin-top: 40px; font-size: 0.97rem; }
 .closing .after p { margin-bottom: 0.4em; }
@@ -126,7 +141,12 @@
       <p class="runhead">Psychological consulting, in writing</p>
       <h1>You already <em>know</em><br> why you do it.</h1>
       <div class="hero-grid">
-        <div>
+        <div class="draft" aria-hidden="true">
+          <div class="draft-top"><b>Draft</b><span>Last edited 2 days ago</span></div>
+          <p class="draft-text"><span id="draftText">Hey, sorry it took me so long to get back to you. I’ve been thinking about what you said and</span><span class="caret"></span></p>
+          <div class="draft-foot"><span>Rewritten <b id="draftCount">31</b> times</span><span class="draft-send">Send</span></div>
+        </div>
+        <div class="hero-copy">
           <div class="vignettes">
             <p>A message you’ve been replying to in your head for the past two days.</p>
             <p>A decision you made on Tuesday and went back to on Thursday. No new information.</p>
@@ -137,11 +157,6 @@
             <a href="apply.html" class="btn">Apply for a free review</a>
             <span class="cta-note">Free · No card · Answer within 24 hours</span>
           </div>
-        </div>
-        <div class="draft" aria-hidden="true">
-          <div class="draft-top"><b>Draft</b><span>Last edited 2 days ago</span></div>
-          <p class="draft-text"><span id="draftText">Hey, sorry it took me so long to get back to you. I’ve been thinking about what you said and</span><span class="caret"></span></p>
-          <div class="draft-foot"><span>Rewritten <b id="draftCount">31</b> times</span><span class="draft-send">Send</span></div>
         </div>
       </div>
     </div>
@@ -182,6 +197,9 @@
       <p class="pull">Even <em>“stop overthinking”</em> becomes fresh ammunition.</p>
       <div class="after-pull">
         <p class="prose">Someone else can point out the reasons you skip, because they aren’t the one being protected. Once it’s in writing, those reasons stay where you can see them.</p>
+      </div>
+      <div class="cost">
+        <p class="figure-sentence">If one episode takes two hours and it comes three times a week, that is about <span class="big-figure">300</span> <span class="big-figure-cap">hours a year.</span></p>
       </div>
     </div>
   </section>
@@ -224,14 +242,9 @@
   <section class="section paper">
     <div class="container">
       <p class="runhead">If we keep working</p>
+      <h2 class="money-title">$325 a month, with a full refund if the first month wasn’t worth it</h2>
       <div class="money">
         <div>
-          <p class="big-figure">300</p>
-          <p class="big-figure-cap">hours a year</p>
-          <p class="big-figure-note">If one episode takes two hours and it comes three times a week, that is about 300 hours a year.</p>
-        </div>
-        <div>
-          <h2>$325 a month, with a full refund if the first month wasn’t worth it</h2>
           <p class="lead">You message me when it starts and I take it apart with you, every time. The aim is that it takes up less of your day and you get out of it faster.</p>
           <ul class="list" style="margin-top: 1.4em;">
             <li><strong>Replies when it starts,</strong> Monday to Friday.</li>
@@ -251,9 +264,11 @@
       <figure class="portrait">
         <img src="images/hamza.webp" alt="Hamza Pehlivanov" width="720" height="720">
       </figure>
-      <div>
+      <div class="about-head">
         <p class="runhead">Who I am</p>
         <h2>Hamza Pehlivanov</h2>
+      </div>
+      <div class="about-text">
         <p class="lead">I’ve taught myself philosophical psychology, mainly because I want to know why people do certain things while knowing full well that they shouldn’t.</p>
         <p>I tend to read your submissions with an eye out for the reasons you skip over, probably because they would require something of you in the coming days. Naturally, these are reasons you’ll be blind to, since you’re the one they protect. Most of my reply will be about them.</p>
         <p>There are many examples of my approach in the <a href="essays.html">essays</a> on this site.</p>
@@ -268,16 +283,16 @@
       <h2>Straight answers</h2>
       <div class="qa">
         <div class="qa-row">
-          <h3>Can’t I get this from ChatGPT?</h3>
-          <p>You can, and it may be enough if you already see everything that keeps the pattern going. It works off what you tell it, and you leave some of that out. I note what you left out, and I point to it again the next time the pattern starts.</p>
+          <h3><button class="qa-toggle" type="button">Can’t I get this from ChatGPT?<span class="qa-icon" aria-hidden="true"></span></button></h3>
+          <div class="qa-a"><div><p>You can, and it may be enough if you already see everything that keeps the pattern going. It works off what you tell it, and you leave some of that out. I note what you left out, and I point to it again the next time the pattern starts.</p></div></div>
         </div>
         <div class="qa-row">
-          <h3>What qualifies you?</h3>
-          <p>Nothing formal, and the essays here show how I work. I work from what you write. Once you are protecting yourself it is hard to spot your own excuse, and with it written down another person can see the point where the trigger turns into one. You can judge that on your own case with the free review before you pay anything, and if you do pay, the first month is refundable in full.</p>
+          <h3><button class="qa-toggle" type="button">What qualifies you?<span class="qa-icon" aria-hidden="true"></span></button></h3>
+          <div class="qa-a"><div><p>Nothing formal, and the essays here show how I work. I work from what you write. Once you are protecting yourself it is hard to spot your own excuse, and with it written down another person can see the point where the trigger turns into one. You can judge that on your own case with the free review before you pay anything, and if you do pay, the first month is refundable in full.</p></div></div>
         </div>
         <div class="qa-row">
-          <h3>Is this therapy?</h3>
-          <p>No. This is not therapy and should not be a substitute for it. If you are in crisis or have been diagnosed with a condition, please see someone who is licensed. If your application reads that way to me, I will let you know.</p>
+          <h3><button class="qa-toggle" type="button">Is this therapy?<span class="qa-icon" aria-hidden="true"></span></button></h3>
+          <div class="qa-a"><div><p>No. This is not therapy and should not be a substitute for it. If you are in crisis or have been diagnosed with a condition, please see someone who is licensed. If your application reads that way to me, I will let you know.</p></div></div>
         </div>
       </div>
     </div>
@@ -300,6 +315,8 @@
   </section>
 
 </main>
+
+<div class="mobile-cta" id="mobileCta"><a href="apply.html" class="btn">Apply for a free review</a></div>
 
 <footer class="site-footer">
   <div class="container">
@@ -336,13 +353,26 @@
     const text = document.getElementById('draftText');
     const count = document.getElementById('draftCount');
     if (!text || !count) return;
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const drafts = [
       'Hey, sorry it took me so long to get back to you. I’ve been thinking about what you said and',
       'Hi! So about Tuesday. I think I came across wrong, what I meant was',
       'Honestly, I don’t really know how to say this, so I’ll just',
       'Hey. Could we talk at some point this week? Nothing serious, I just',
     ];
+    const box = text.parentElement;
+    function reserve() {
+      const keep = text.textContent;
+      box.style.minHeight = '';
+      let tallest = 0;
+      drafts.forEach((d) => { text.textContent = d; tallest = Math.max(tallest, box.offsetHeight); });
+      text.textContent = keep;
+      box.style.minHeight = tallest + 'px';
+    }
+    reserve();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(reserve);
+    let resizeTimer;
+    addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(reserve, 150); });
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const wait = (ms) => new Promise((r) => setTimeout(r, ms));
     let i = 0, n = parseInt(count.textContent, 10) || 0;
     (async function run() {

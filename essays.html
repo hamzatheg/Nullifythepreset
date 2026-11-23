@@ -6,10 +6,11 @@
 <meta name="theme-color" content="#0F2B22">
 <title>Essays — Nullify the Preset</title>
 <meta name="description" content="Twelve short essays on patterns that keep running after you understand them.">
+<script>document.documentElement.classList.add('js');</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,600&family=Schibsted+Grotesk:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Schibsted+Grotesk:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
 <style>
 
@@ -20,20 +21,20 @@
 .toc li { border-bottom: 1px solid var(--line-light); }
 .toc a { display: grid; grid-template-columns: 2.8rem minmax(0, 1fr); gap: 10px; align-items: baseline; padding-block: clamp(18px, 2.4vw, 28px); text-decoration: none; color: var(--ink); }
 @media (min-width: 900px) { .toc a { grid-template-columns: 6rem minmax(0, 1fr); } }
-.toc .n { font-family: var(--display); font-style: italic; font-size: 1.2rem; color: var(--brass-ink); }
-.toc .t { font-family: var(--display); font-size: clamp(1.45rem, 2.9vw, 2.5rem); line-height: 1.1; letter-spacing: -0.012em; text-wrap: balance; transition: color 0.18s ease; }
+.toc .n { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 1.2rem; color: var(--brass-ink); }
+.toc .t { font-family: var(--serif); font-weight: 500; font-size: clamp(1.3rem, 2.4vw, 2.1rem); line-height: 1.2; letter-spacing: -0.012em; text-wrap: balance; transition: color 0.18s ease; }
 .toc a:hover .t { color: var(--brass-ink); }
 .catalog { padding-bottom: var(--section); }
 
-.doc-meta { font-family: var(--display); font-style: italic; font-size: 1.25rem; color: var(--brass-ink); margin-bottom: 14px; }
+.doc-meta { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 1.25rem; color: var(--brass-ink); margin-bottom: 14px; }
 .essay-nav { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; margin-top: clamp(48px, 6vw, 64px); padding-top: 26px; border-top: 1px solid var(--line-light); }
 @media (min-width: 640px) { .essay-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; } .essay-nav a.next { grid-column: 2; text-align: right; } }
 .essay-nav a { display: block; text-decoration: none; color: var(--ink); }
 .essay-nav .k { display: block; font-size: 0.88rem; font-weight: 600; color: var(--brass-ink); margin-bottom: 6px; }
-.essay-nav .t { display: block; font-family: var(--display); font-size: 1.3rem; line-height: 1.2; }
+.essay-nav .t { display: block; font-family: var(--serif); font-weight: 500; font-size: 1.3rem; line-height: 1.2; }
 .essay-nav a:hover .t { color: var(--brass-ink); }
 .essay-cta { margin-top: clamp(36px, 5vw, 56px); padding: clamp(26px, 3.4vw, 40px); background: var(--green); color: var(--bone-muted); color-scheme: dark; }
-.essay-cta p { font-family: var(--display); font-size: clamp(1.7rem, 3vw, 2.3rem); line-height: 1.05; color: var(--bone); margin: 0 0 20px; }
+.essay-cta p { font-family: var(--serif); font-weight: 500; font-size: clamp(1.7rem, 3vw, 2.3rem); line-height: 1.05; color: var(--bone); margin: 0 0 20px; }
 .essay-cta p em { color: var(--brass); }
 .essay-cta .cta-row { margin-top: 0; }
 .essay-cta .cta-note { color: var(--bone-muted); }

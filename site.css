@@ -11,26 +11,27 @@
   --green:       #0F2B22;
   --green-deep:  #0A1F18;
   --green-soft:  #173A2F;
-  --paper:       #E8ECE4;
-  --field:       #F4F6F1;
+  --paper:       #E6DCC8;
+  --field:       #EFE7D8;
 
-  --bone:        #EEE9DE;
+  --bone:        #EFE7D7;
   --bone-muted:  #B6C0B4;
-  --ink:         #0E1C17;
-  --ink-muted:   #46544D;
+  --ink:         #1B2620;
+  --ink-muted:   #4C4E42;
 
   --brass:       #D4B27C;
-  --brass-ink:   #7C5D27;
+  --brass-ink:   #6E5221;
 
-  --line-dark:   rgba(238, 233, 222, 0.16);
-  --line-light:  #C2CBC1;
+  --line-dark:   rgba(239, 231, 215, 0.16);
+  --line-light:  #CBBCA1;
 
   --error:       #8E2A1D;
   --error-bg:    #F6E4E0;
 
   --display: 'Bodoni Moda', 'Bodoni 72', Didot, Georgia, serif;
   --sans:    'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;
-  --read:    'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --serif:   'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --read:    var(--serif);
 
   --max:     1240px;
   --side:    clamp(20px, 4.5vw, 56px);
@@ -58,21 +59,23 @@ img, svg { display: block; max-width: 100%; height: auto; }
 [hidden] { display: none !important; }
 ::selection { background: var(--brass); color: var(--ink); }
 
+/* Bodoni only where it is set large; Source Serif carries every mid-sized heading */
 h1, h2, h3 {
-  font-family: var(--display);
-  font-weight: 400;
+  font-family: var(--serif);
+  font-weight: 500;
   color: var(--bone);
   text-wrap: balance;
 }
-h1 { font-size: clamp(2.6rem, 6.4vw, 5.6rem); line-height: 0.98; letter-spacing: -0.022em; }
-h2 { font-size: clamp(2.1rem, 4.6vw, 4.1rem); line-height: 1.02; letter-spacing: -0.02em; }
-h3 { font-size: clamp(1.4rem, 1.8vw, 1.7rem); line-height: 1.15; font-weight: 500; letter-spacing: -0.01em; }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2.6rem, 6.4vw, 5.6rem); line-height: 0.98; letter-spacing: -0.022em; }
+h2 { font-size: clamp(1.95rem, 3.9vw, 3.4rem); line-height: 1.08; letter-spacing: -0.018em; }
+h3 { font-size: clamp(1.3rem, 1.6vw, 1.55rem); line-height: 1.2; font-weight: 600; letter-spacing: -0.008em; }
 h1 em, h2 em, h3 em { font-style: italic; color: var(--brass); }
 
 p { margin: 0 0 1em; text-wrap: pretty; }
 p:last-child { margin-bottom: 0; }
 strong { color: var(--bone); font-weight: 600; }
 
+a, button { -webkit-tap-highlight-color: transparent; }
 a { color: var(--bone); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; text-decoration-color: var(--brass); }
 a:hover { text-decoration-thickness: 2px; }
 :focus-visible { outline: 2px solid var(--brass); outline-offset: 3px; }
@@ -97,8 +100,8 @@ a:hover { text-decoration-thickness: 2px; }
 
 /* Running head: the section's name, set in the display italic */
 .runhead {
-  font-family: var(--display); font-style: italic; font-weight: 400;
-  font-size: clamp(1.15rem, 1.2vw, 1.35rem); line-height: 1.3;
+  font-family: var(--serif); font-style: italic; font-weight: 500;
+  font-size: clamp(1.1rem, 1.1vw, 1.25rem); line-height: 1.3;
   color: var(--brass);
   margin-bottom: clamp(16px, 2vw, 24px);
 }
@@ -116,8 +119,8 @@ a:hover { text-decoration-thickness: 2px; }
   padding-top: env(safe-area-inset-top, 0px);
 }
 .wordmark {
-  font-family: var(--display); font-style: italic; font-weight: 400;
-  font-size: clamp(1.25rem, 1.6vw, 1.5rem); letter-spacing: -0.01em;
+  font-family: var(--serif); font-style: italic; font-weight: 500;
+  font-size: clamp(1.2rem, 1.5vw, 1.4rem); letter-spacing: -0.01em;
   color: var(--bone); text-decoration: none; white-space: nowrap;
 }
 .wordmark:hover { color: var(--brass); }
@@ -139,9 +142,9 @@ a:hover { text-decoration-thickness: 2px; }
   border: 1px solid var(--bone); border-radius: 0;
   background: var(--bone); color: var(--green);
   text-decoration: none; cursor: pointer;
-  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
-  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.12s ease;
 }
+.btn:active { transform: scale(0.98); }
 .btn:hover { background: var(--brass); border-color: var(--brass); color: var(--ink); }
 .btn:disabled { opacity: 0.6; cursor: progress; }
 .btn--small { padding: 9px 16px; font-size: 0.92rem; background: transparent; color: var(--bone); border-color: var(--line-dark); }
@@ -195,7 +198,21 @@ ul.list li:last-child { margin-bottom: 0; }
   border-bottom: 1px solid var(--line-light);
 }
 @media (min-width: 820px) { .qa-row { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); } }
-.qa-row h3 { font-size: clamp(1.55rem, 2.2vw, 2rem); }
+.qa-row h3 { font-size: clamp(1.35rem, 1.8vw, 1.65rem); }
+.qa-toggle { all: unset; display: block; font: inherit; color: inherit; letter-spacing: inherit; cursor: default; }
+.qa-toggle:focus-visible { outline: 2px solid var(--brass-ink); outline-offset: 4px; }
+.qa-icon { display: none; }
+.qa-a > div { min-height: 0; }
+
+/* ------------------------------------------- what the pattern costs -- */
+.cost { margin-top: clamp(64px, 9vw, 120px); padding-top: clamp(36px, 5vw, 60px); border-top: 1px solid var(--line-light); }
+.night .cost { border-top-color: var(--line-dark); }
+.figure-sentence { margin: 0; max-width: 24rem; font-family: var(--serif); font-size: clamp(1.18rem, 1.3vw, 1.35rem); line-height: 1.45; color: var(--ink); }
+.figure-sentence .big-figure { display: block; margin: 14px 0 4px -0.04em; font-family: var(--display); font-weight: 400; font-size: clamp(7.5rem, 17vw, 15rem); line-height: 0.8; letter-spacing: -0.055em; color: var(--ink); }
+.figure-sentence .big-figure-cap { display: block; font-style: italic; font-weight: 500; font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1.2; color: var(--brass-ink); }
+.night .figure-sentence, .night .figure-sentence .big-figure { color: var(--bone); }
+.night .figure-sentence .big-figure-cap { color: var(--brass); }
+@media (max-width: 719px) { .cost { margin-top: 56px; } .figure-sentence .big-figure { font-size: 8.4rem; margin-top: 10px; } }
 
 /* ------------------------------------------------------------- footer -- */
 .site-footer {
@@ -214,7 +231,7 @@ ul.list li:last-child { margin-bottom: 0; }
 .footer-mark:hover { color: var(--brass); }
 .footer-cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px 48px; padding-bottom: 40px; }
 @media (min-width: 760px) { .footer-cols { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1.4fr); } }
-.footer-tag { max-width: 26ch; color: var(--bone); font-family: var(--display); font-size: 1.3rem; line-height: 1.35; }
+.footer-tag { max-width: 26ch; color: var(--bone); font-family: var(--serif); font-size: 1.3rem; line-height: 1.35; }
 .site-footer h4 { font-family: var(--sans); font-size: 0.82rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bone-muted); margin-bottom: 14px; }
 .site-footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
 .site-footer a { color: var(--bone); text-decoration: none; }
@@ -235,7 +252,7 @@ ul.list li:last-child { margin-bottom: 0; }
   padding-left: max(var(--side), env(safe-area-inset-left, 0px));
   padding-right: max(var(--side), env(safe-area-inset-right, 0px));
 }
-.doc h1 { font-size: clamp(2.4rem, 5.2vw, 3.9rem); line-height: 1.02; margin-bottom: clamp(28px, 4vw, 44px); }
+.doc h1 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.015em; font-size: clamp(2.2rem, 4.4vw, 3.3rem); line-height: 1.02; margin-bottom: clamp(28px, 4vw, 44px); }
 .doc-body p, .doc > p:not(.runhead) {
   font-family: var(--read); font-size: clamp(1.12rem, 0.35vw + 1.04rem, 1.24rem); line-height: 1.7;
   color: var(--ink); margin-bottom: 1.1em;
@@ -254,4 +271,73 @@ ul.list li:last-child { margin-bottom: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.001ms !important; animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+}
+
+/* ==========================================================================
+   Phones. Laid out for the hand, not squeezed from the desktop grid.
+   ========================================================================== */
+.mobile-cta { display: none; }
+
+@media (max-width: 719px) {
+  :root { --section: 68px; --side: 20px; }
+  body { font-size: 1.02rem; }
+  .site-header .container { min-height: 62px; }
+  .wordmark { font-size: 1.22rem; }
+  h2 { font-size: clamp(1.8rem, 7.6vw, 2.2rem); line-height: 1.1; }
+  .runhead { font-size: 1.08rem; margin-bottom: 12px; }
+  .lead { font-size: 1.12rem; }
+
+  /* Actions span the width, their note sits centred under them */
+  .cta-row { flex-direction: column; align-items: stretch; gap: 12px; margin-top: 30px; }
+  .cta-row .btn { width: 100%; padding-block: 18px; }
+  .cta-row .cta-note { text-align: center; }
+
+  /* Steps become a timeline: numeral in its own column, a thread down the side */
+  .steps { gap: 0; }
+  .step { position: relative; display: grid; grid-template-columns: 2.6rem minmax(0, 1fr); column-gap: 16px; border-top: 0; padding: 0 0 30px; }
+  .step::before { content: ""; position: absolute; left: 1.3rem; top: 3.3rem; bottom: 12px; width: 1px; background: var(--line-dark); }
+  .paper .step::before { background: var(--line-light); }
+  .step:last-child { padding-bottom: 0; }
+  .step:last-child::before { display: none; }
+  .step .num { grid-row: 1 / span 4; text-align: center; font-size: 2.8rem; line-height: 0.95; margin: 0; }
+  .step > :not(.num) { grid-column: 2; }
+  .step h3 { font-size: 1.3rem; margin: 6px 0 6px; }
+  .step .kicker { margin: 6px 0 0; }
+
+  /* Questions open one at a time */
+  .js .qa-row { padding-block: 0; gap: 0; }
+  .js .qa-toggle { display: flex; align-items: center; justify-content: space-between; gap: 18px; width: 100%; padding-block: 22px; cursor: pointer; }
+  .js .qa-icon { display: block; position: relative; flex: none; width: 14px; height: 14px; }
+  .js .qa-icon::before, .js .qa-icon::after { content: ""; position: absolute; left: 0; top: 6.5px; width: 14px; height: 1px; background: var(--brass-ink); transition: transform 0.25s ease; }
+  .js .qa-icon::after { transform: rotate(90deg); }
+  .js .qa-row.open .qa-icon::after { transform: rotate(0deg); }
+  .js .qa-a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease; }
+  .js .qa-row.open .qa-a { grid-template-rows: 1fr; }
+  .js .qa-a > div { overflow: hidden; }
+  .js .qa-a p { padding-bottom: 24px; }
+  .qa-row h3 { font-size: 1.28rem; }
+
+  /* Footer: the two lists side by side instead of one tall stack */
+  .site-footer { padding-top: 52px; }
+  .footer-mark { font-size: 2.5rem; margin-bottom: 24px; }
+  .footer-cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 30px 20px; padding-bottom: 32px; }
+  .footer-tag { grid-column: 1 / -1; font-size: 1.2rem; }
+  .footer-cols > div { grid-column: 1 / -1; }
+  .footer-cols ul { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; }
+  .footer-bottom { flex-direction: column; gap: 4px; }
+
+  /* Long-form reading */
+  .doc { padding-top: 40px; }
+  .doc h1 { font-size: clamp(1.95rem, 8.4vw, 2.4rem); }
+
+  /* A slim apply bar along the bottom edge, shown only when no other apply button is on screen */
+  .mobile-cta {
+    display: block; position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+    padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+    background: var(--green-deep); border-top: 1px solid var(--line-dark);
+    transform: translateY(105%); visibility: hidden;
+    transition: transform 0.3s ease, visibility 0.3s;
+  }
+  .mobile-cta.show { transform: none; visibility: visible; }
+  .mobile-cta .btn { width: 100%; padding-block: 15px; }
 }

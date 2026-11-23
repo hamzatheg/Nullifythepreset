@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#0F2B22">
 <title>The ongoing work · Nullify the Preset</title>
 <meta name="description" content="How the ongoing written work goes after the free review: what you get each month, the price and the first-month refund.">
+<script>document.documentElement.classList.add('js');</script>
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nullifythepreset.com/ongoing.html">
 <meta property="og:title" content="The ongoing work · Nullify the Preset">
@@ -13,7 +14,7 @@
 <meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,600&family=Schibsted+Grotesk:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Schibsted+Grotesk:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
 <style>
 
@@ -21,7 +22,7 @@
 .on-hero h1 { font-size: clamp(2.8rem, 7vw, 6.4rem); line-height: 0.92; letter-spacing: -0.03em; max-width: 13em; }
 .on-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; margin-top: clamp(40px, 5vw, 64px); }
 @media (min-width: 960px) { .on-grid { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); column-gap: clamp(48px, 6vw, 96px); align-items: start; } }
-.honesty { font-family: var(--display); font-size: clamp(1.6rem, 2.6vw, 2.3rem); line-height: 1.16; letter-spacing: -0.01em; color: var(--bone); margin: 0 0 18px; }
+.honesty { font-family: var(--serif); font-size: clamp(1.6rem, 2.6vw, 2.3rem); line-height: 1.16; letter-spacing: -0.01em; color: var(--bone); margin: 0 0 18px; }
 .honesty strong { font-weight: 400; font-style: italic; color: var(--brass); }
 .honesty-note { font-size: 0.95rem; }
 .method h2, .changes h2 { margin-bottom: 18px; }
@@ -31,7 +32,7 @@
 .outcome h3 { font-size: clamp(1.7rem, 2.6vw, 2.3rem); margin-bottom: 12px; }
 .outcomes { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; }
 @media (min-width: 960px) { .outcomes { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.price h2 { max-width: 15em; margin-bottom: 18px; }
+.price h2 { max-width: 15em; margin-bottom: clamp(32px, 4vw, 52px); }
 .price .lead { max-width: 34rem; margin-bottom: clamp(40px, 5vw, 64px); }
 .pricing { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: start; }
 @media (min-width: 960px) { .pricing { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); } }
@@ -39,11 +40,11 @@
 .fee-line { font-size: 0.95rem; color: var(--ink-muted); }
 .fee-line strong { color: var(--brass-ink); }
 .fee-price { margin: 10px 0 8px; font-family: var(--display); font-size: clamp(4.6rem, 10vw, 8rem); line-height: 0.85; letter-spacing: -0.045em; color: var(--ink); display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 14px; }
-.fee-price small { font-family: var(--display); font-style: italic; font-size: 1.5rem; letter-spacing: 0; color: var(--brass-ink); }
+.fee-price small { font-family: var(--serif); font-weight: 500; font-style: italic; font-size: 1.5rem; letter-spacing: 0; color: var(--brass-ink); }
 .fee hr { border: 0; border-top: 1px solid var(--line-light); margin: 24px 0; }
 .guarantee { background: var(--green); color: var(--bone-muted); color-scheme: dark; padding: clamp(26px, 3.6vw, 44px); }
 .guarantee .runhead { color: var(--brass); }
-.guarantee p:last-child { font-family: var(--display); font-size: clamp(1.4rem, 2vw, 1.75rem); line-height: 1.2; color: var(--bone); }
+.guarantee p:last-child { font-family: var(--serif); font-size: clamp(1.4rem, 2vw, 1.75rem); line-height: 1.2; color: var(--bone); }
 
 </style>
 <!-- Reddit Pixel -->
@@ -132,6 +133,9 @@
           <p>You’ll still have doubts on Thursday or whenever. You see if anything has changed, and carry on working if it hasn’t.</p>
         </div>
       </div>
+      <div class="cost">
+        <p class="figure-sentence">If one episode takes two hours and it comes three times a week, that is about <span class="big-figure">300</span> <span class="big-figure-cap">hours a year.</span></p>
+      </div>
     </div>
   </section>
 
@@ -139,7 +143,6 @@
     <div class="container">
       <p class="runhead">Price</p>
       <h2>One price, and a full refund if the first month wasn’t worth it</h2>
-      <p class="lead">If one episode takes two hours and it comes three times a week, that is about 300 hours a year.</p>
       <div class="pricing">
         <div class="fee">
           <p class="fee-line"><strong>First review:</strong> Free.</p>
@@ -167,6 +170,8 @@
   </section>
 
 </main>
+
+<div class="mobile-cta" id="mobileCta"><a href="apply.html" class="btn">Apply for a free review</a></div>
 
 <footer class="site-footer">
   <div class="container">
